@@ -46,7 +46,7 @@ public class RabbitConfiguration {
 	
 	public static final String PETICAO_REGISTRADA_EXCHANGE = "autuacao.peticao.registrada";
 	
-	@Value("${rabbitmq.host:localhost}")
+	@Value("${rabbitmq.host:rabbit}")
 	private String host;
 	
 	@Value("${rabbitmq.port:5672}")
