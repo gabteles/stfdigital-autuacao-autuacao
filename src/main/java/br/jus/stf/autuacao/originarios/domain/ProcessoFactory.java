@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.autuacao.originarios.domain.model.Processo;
 import br.jus.stf.autuacao.originarios.domain.model.Status;
+import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseOriginaria;
 import br.jus.stf.core.shared.processo.ProcessoId;
 import br.jus.stf.core.shared.protocolo.ProtocoloId;
 
@@ -16,8 +17,8 @@ import br.jus.stf.core.shared.protocolo.ProtocoloId;
 @Component
 public class ProcessoFactory {
 
-    public Processo novoProcesso(ProcessoId processoId, ProtocoloId protocoloId, Status status) {
-        return new Processo(processoId, protocoloId, status);
+    public Processo novoProcesso(ProcessoId processoId, ProtocoloId protocoloId, ClasseOriginaria classe, Status status) {
+        return new Processo(processoId, protocoloId, classe, status);
     }
 
 }

@@ -25,12 +25,12 @@ public class ProcessoOriginarioEventHandler {
     
     @RabbitListener(queues = RabbitConfiguration.REMESSA_RECEBIDA_QUEUE)
     public void handle(RecebimentoFinalizado event) {
-        originariosApplicationService.handle(new IniciarAutuacaoCommand(new ProtocoloId(event.getProtocoloId())));
+        originariosApplicationService.handle(new IniciarAutuacaoCommand(new ProtocoloId(event.getProtocoloId()), null));
     }
 
     @RabbitListener(queues = RabbitConfiguration.PETICAO_ORIGINARIO_QUEUE)
     public void handle(PeticaoRegistrada event) {
-        originariosApplicationService.handle(new IniciarAutuacaoCommand(new ProtocoloId(event.getProtocoloId())));
+        originariosApplicationService.handle(new IniciarAutuacaoCommand(new ProtocoloId(event.getProtocoloId()), event.getClasseId()));
     }
 
 }

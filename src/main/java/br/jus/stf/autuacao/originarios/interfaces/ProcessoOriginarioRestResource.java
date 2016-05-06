@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.autuacao.originarios.application.AutuacaoDeOriginariosApplicationService;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoCommand;
+import br.jus.stf.autuacao.originarios.application.commands.RejeitarProcessoCommand;
 
 /**
  * @author Rodrigo Barreiros
@@ -27,6 +28,15 @@ public class ProcessoOriginarioRestResource {
 
     @RequestMapping(value = "autuacao", method = RequestMethod.POST)
     public void autuar(@RequestBody @Valid AutuarProcessoCommand command, BindingResult binding) {
+        if (binding.hasErrors()) {
+            throw new IllegalArgumentException("Processo Inválido: " + binding.getAllErrors());
+        }
+        
+        autuarProcessoCommandHandler.handle(command);
+    }
+    
+    @RequestMapping(value = "rejeicao", method = RequestMethod.POST)
+    public void rejeitar(@RequestBody @Valid RejeitarProcessoCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
             throw new IllegalArgumentException("Processo Inválido: " + binding.getAllErrors());
         }
