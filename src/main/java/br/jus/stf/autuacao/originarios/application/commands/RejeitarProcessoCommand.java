@@ -7,8 +7,6 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
-import br.jus.stf.core.shared.processo.ProcessoId;
-
 /**
  * @author Rafael Alencar
  * 
@@ -20,13 +18,13 @@ public class RejeitarProcessoCommand {
 
     @NotNull
     @ApiModelProperty(value = "O identificador do processo originário criado ao iniciar o fluxo de autuação.", required=true)
-    private ProcessoId processoId;
+    private Long processoId;
     
     @NotBlank
 	@ApiModelProperty(value = "O motivo de rejeição do processo originário.", required=true)
     private String motivo;
     
-	public ProcessoId getProcessoId() {
+	public Long getProcessoId() {
 	    return processoId;
 	}
 

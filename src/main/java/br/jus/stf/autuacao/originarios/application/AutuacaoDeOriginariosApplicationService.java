@@ -60,21 +60,22 @@ public class AutuacaoDeOriginariosApplicationService {
 	private RabbitTemplate rabbitTemplate;
     
     @Transactional(propagation = REQUIRES_NEW)
-    public void handle(IniciarAutuacaoCommand command) {
+    public Long handle(IniciarAutuacaoCommand command) {
         ProcessoId processoId = processoRepository.nextProcessoId();
         Status status = statusAdapter.nextStatus(processoId);
         ClasseOriginaria classe = classeRepository.findOne(new ClasseId(command.getClasseId()));
         Processo processo = processoFactory.novoProcesso(processoId, command.getProtocoloId(), classe, status);
         
         processoRepository.save(processo);
-        
         // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
         rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_REGISTRADO_QUEUE, new ProcessoRegistrado(command.getProtocoloId().toLong(), processoId.toString()));
+        
+        return processoId.toLong();
     }
 
     @Transactional
     public void handle(AutuarProcessoCommand command) {
-        Processo processo = processoRepository.findOne(command.getProcessoId());
+        Processo processo = processoRepository.findOne(new ProcessoId(command.getProcessoId()));
         Status status = statusAdapter.nextStatus(processo.identity(), "DISTRIBUIR");
         Identificacao numero = numeroProcessoAdapter.novoNumeroProcesso(command.getClasseId());
         ClasseOriginaria classe = classeRepository.findOne(new ClasseId(command.getClasseId()));
@@ -82,10 +83,10 @@ public class AutuacaoDeOriginariosApplicationService {
         Autuador autuador = new Autuador("USUARIO_FALSO", new PessoaId(1L));
         //TODO: Alterar para reutilizar pessoas.
         Set<Parte> partes = new HashSet<>(0);
-        command.getPoloAtivo().forEach(parteDto -> partes.add(new Parte(parteDto.getApresentacao(), Polo.ATIVO, parteDto.getPessoa())));
-        command.getPoloPassivo().forEach(parteDto -> partes.add(new Parte(parteDto.getApresentacao(), Polo.PASSIVO, parteDto.getPessoa())));
+        command.getPoloAtivo().forEach(parteDto -> partes.add(new Parte(parteDto.getApresentacao(), Polo.ATIVO, new PessoaId(parteDto.getPessoa()))));
+        command.getPoloPassivo().forEach(parteDto -> partes.add(new Parte(parteDto.getApresentacao(), Polo.PASSIVO, new PessoaId(parteDto.getPessoa()))));
         
-        processo.autuar(classe, partes, autuador, status);
+        processo.autuar(classe, numero.numero(), partes, autuador, status);
         
         processoRepository.save(processo);
         
@@ -95,7 +96,7 @@ public class AutuacaoDeOriginariosApplicationService {
     
     @Transactional
     public void handle(RejeitarProcessoCommand command) {
-        Processo processo = processoRepository.findOne(command.getProcessoId());
+        Processo processo = processoRepository.findOne(new ProcessoId(command.getProcessoId()));
         Status status = statusAdapter.nextStatus(processo.identity(), "REJEITAR");
 
         processo.rejeitar(command.getMotivo(), status);

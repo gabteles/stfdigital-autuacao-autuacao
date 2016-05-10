@@ -11,7 +11,6 @@ import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
 import br.jus.stf.autuacao.originarios.interfaces.dto.ParteDto;
-import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
  * @author Rodrigo Barreiros
@@ -24,7 +23,7 @@ public class AutuarProcessoCommand {
 
     @NotNull
     @ApiModelProperty(value = "O identificador do processo originário criado ao iniciar o fluxo de autuação.", required=true)
-    private ProcessoId processoId;
+    private Long processoId;
     
     @NotBlank
 	@ApiModelProperty(value = "O identificador da classe processual definitiva, selecionada pelo autuador", required=true)
@@ -38,7 +37,7 @@ public class AutuarProcessoCommand {
 	@ApiModelProperty(value = "Lista com as partes do polo passivo", required=true)
 	private List<ParteDto> poloPassivo;
     
-	public ProcessoId getProcessoId() {
+	public Long getProcessoId() {
 	    return processoId;
 	}
 

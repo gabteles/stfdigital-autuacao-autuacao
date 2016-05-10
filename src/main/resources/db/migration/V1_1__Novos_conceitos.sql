@@ -24,6 +24,7 @@ create table autuacao.parte (seq_parte number not null, nom_apresentacao varchar
 alter table autuacao.parte add constraint fk_processo_part foreign key (seq_processo) references autuacao.processo(seq_processo);
 alter table autuacao.parte add constraint ck_part_tip_polo check (tip_polo in ('ATIVO', 'PASSIVO', 'INTERESSADO'));
 
+alter table autuacao.processo add column num_processo number;
 alter table autuacao.processo add column sig_autuador varchar2(30);
 alter table autuacao.processo add column dat_autuacao date;
 

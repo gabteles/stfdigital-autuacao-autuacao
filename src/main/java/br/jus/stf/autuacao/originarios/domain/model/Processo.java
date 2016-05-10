@@ -56,6 +56,9 @@ public class Processo extends EntitySupport<Processo, ProcessoId> implements Agg
     @JoinColumn(name = "SIG_CLASSE")
 	private ClasseOriginaria classe;
     
+    @Column(name = "NUM_PROCESSO")
+    private Long numero;
+    
     @OneToMany(cascade = ALL)
     @JoinTable(name = "PROCESSO_PREFERENCIA", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PROCESSO", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PREFERENCIA", nullable = false))
@@ -104,13 +107,15 @@ public class Processo extends EntitySupport<Processo, ProcessoId> implements Agg
     	this.preferencias = Optional.ofNullable(preferencias).orElse(new HashSet<>(0));
     }
     
-    public void autuar(ClasseOriginaria classe, Set<Parte> partes, Autuador autuador, Status status) {
+    public void autuar(ClasseOriginaria classe, Long numero, Set<Parte> partes, Autuador autuador, Status status) {
 		Validate.notNull(classe, "Classe requerida.");
+		Validate.notNull(numero, "Número requerido.");
 		Validate.notEmpty(partes, "Partes requeridas.");
 		Validate.notNull(autuador, "Autuador requerido.");
 		Validate.notNull(status, "Status requerido.");
 		
 		this.classe = classe;
+		this.numero = numero;
 		this.partes = partes;
 		this.status = status;
 		this.autuador = autuador;
