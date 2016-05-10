@@ -18,7 +18,8 @@ public class IniciarAutuacaoCommand {
     @ApiModelProperty(value = "O identificador do protocolo gerado durante o peticionamento digital ou o registro de uma remessa.", required=true)
     private ProtocoloId protocoloId;
     
-    @ApiModelProperty(value = "O identificador da classe informado no peticionamento digital ou na preautuação de uma remessa.")
+    @NotNull
+    @ApiModelProperty(value = "O identificador da classe informado no peticionamento digital ou na preautuação de uma remessa.", required=true)
     private String classeId;
     
     public IniciarAutuacaoCommand(ProtocoloId protocoloId, String classeId) {
