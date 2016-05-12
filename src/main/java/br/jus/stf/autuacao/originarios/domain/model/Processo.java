@@ -129,4 +129,8 @@ public class Processo extends EntitySupport<Processo, ProcessoId> implements Agg
         return processoId;
     }
 
+	public ProtocoloId protocoloId() {
+		return protocoloId;
+	}
+
 }
