@@ -6,17 +6,17 @@ package br.jus.stf.autuacao.originarios.interfaces.dto;
  * @since 1.0.0
  * @since 29.04.2016
  */
-public class ParteDto {
+public class AutuarParteCommand {
 	
 	private String apresentacao;
 	
 	private Long pessoa;
 	
-	public ParteDto() {
+	public AutuarParteCommand() {
 		
 	}
 	
-	public ParteDto(String apresentacao, Long pessoa) {
+	public AutuarParteCommand(String apresentacao, Long pessoa) {
 		this.apresentacao = apresentacao;
 		this.pessoa = pessoa;
 	}
