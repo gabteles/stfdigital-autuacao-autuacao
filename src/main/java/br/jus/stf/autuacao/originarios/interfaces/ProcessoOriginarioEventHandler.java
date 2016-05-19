@@ -9,7 +9,7 @@ import br.jus.stf.autuacao.originarios.application.commands.IniciarAutuacaoComma
 import br.jus.stf.autuacao.originarios.infra.RabbitConfiguration;
 import br.jus.stf.core.shared.eventos.PeticaoRegistrada;
 import br.jus.stf.core.shared.eventos.RecebimentoFinalizado;
-import br.jus.stf.core.shared.protocolo.ProtocoloId;
+import br.jus.stf.core.shared.processo.MeioTramitacao;
 
 /**
  * @author Rodrigo Barreiros
@@ -25,12 +25,12 @@ public class ProcessoOriginarioEventHandler {
     
     @RabbitListener(queues = RabbitConfiguration.REMESSA_RECEBIDA_QUEUE)
     public void handle(RecebimentoFinalizado event) {
-        originariosApplicationService.handle(new IniciarAutuacaoCommand(new ProtocoloId(event.getProtocoloId()), event.getClasseId()));
+        originariosApplicationService.handle(new IniciarAutuacaoCommand(event.getProtocoloId(), event.getClasseId(), event.getTipoProcesso(), MeioTramitacao.FISICO.toString(), event.getSigilo()));
     }
 
     @RabbitListener(queues = RabbitConfiguration.PETICAO_ORIGINARIO_QUEUE)
     public void handle(PeticaoRegistrada event) {
-        originariosApplicationService.handle(new IniciarAutuacaoCommand(new ProtocoloId(event.getProtocoloId()), event.getClasseId()));
+        originariosApplicationService.handle(new IniciarAutuacaoCommand(event.getProtocoloId(), event.getClasseId(), event.getTipoProcesso(), MeioTramitacao.ELETRONICO.toString(), event.getSigilo()));
     }
 
 }

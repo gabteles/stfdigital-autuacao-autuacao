@@ -1,14 +1,17 @@
 package br.jus.stf.autuacao.originarios.infra;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import br.jus.stf.autuacao.originarios.domain.model.MotivoInaptidao;
 import br.jus.stf.autuacao.originarios.domain.model.Processo;
 import br.jus.stf.autuacao.originarios.domain.model.ProcessoOriginarioRepository;
 import br.jus.stf.core.shared.processo.ProcessoId;
@@ -28,15 +31,41 @@ public class ProcessoOriginarioRepositoryImpl extends SimpleJpaRepository<Proces
 	@Autowired
     public ProcessoOriginarioRepositoryImpl(EntityManager entityManager) {
         super(Processo.class, entityManager);
-        
         this.entityManager = entityManager;
     }
     
+	/** Processo **/
     @Override
     public ProcessoId nextProcessoId() {
     	Query q = entityManager.createNativeQuery("SELECT autuacao.seq_processo.NEXTVAL FROM DUAL");
     	
     	return new ProcessoId(((BigInteger) q.getSingleResult()).longValue());
     }
+
+    /** Motido de inaptidão **/
+	@Override
+	public MotivoInaptidao findOneMotivoInaptidao(Long id) {
+		TypedQuery<MotivoInaptidao> query = entityManager.createQuery("FROM MotivoInaptidao motivo WHERE motivo.codigo = :id", MotivoInaptidao.class);
+
+		query.setParameter("id", id);
+		return query.getSingleResult();
+	}
+	
+	@Override
+	public List<MotivoInaptidao> findAllMotivoInaptidao() {
+		TypedQuery<MotivoInaptidao> query = entityManager.createQuery("FROM MotivoInaptidao motivo ORDER BY motivo.descricao", MotivoInaptidao.class);
+		
+		return query.getResultList();
+	}
+	
+	@Override
+	public <M extends MotivoInaptidao> M saveMotivoInaptidao(M motivoInaptidao) {
+		return entityManager.merge(motivoInaptidao);
+	}
+
+	@Override
+	public void deleteMotivoInaptidao(MotivoInaptidao motivoInaptidao) {
+		entityManager.remove(motivoInaptidao);
+	}
 
 }

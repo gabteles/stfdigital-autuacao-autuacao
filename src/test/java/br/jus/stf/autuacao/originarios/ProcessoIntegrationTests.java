@@ -13,7 +13,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import br.jus.stf.autuacao.originarios.application.AutuacaoDeOriginariosApplicationService;
 import br.jus.stf.autuacao.originarios.application.commands.IniciarAutuacaoCommand;
 import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
-import br.jus.stf.core.shared.protocolo.ProtocoloId;
 
 /**
  * Valida a API de autuação de originários.
@@ -32,7 +31,7 @@ public class ProcessoIntegrationTests extends IntegrationTestsSupport {
 	
 	@Test
 	public void autuarProcesso() throws Exception {
-		IniciarAutuacaoCommand command = new IniciarAutuacaoCommand(new ProtocoloId(1L), "ADI");
+		IniciarAutuacaoCommand command = new IniciarAutuacaoCommand(1L, "ADI", "ORIGINARIO", "FISICO", "PUBLICO");
 		String processoId = autuacaoOriginarioAppService.handle(command).toString();
 		
 		String processo = "{\"processoId\":@processoId,\"classeId\":\"ADO\",\"poloAtivo\":[{\"apresentacao\":\"Maria\",\"pessoa\":1},{\"apresentacao\":\"João\"}],\"poloPassivo\":[{\"apresentacao\":\"Antônia\",\"pessoa\":3}]}";
@@ -42,7 +41,7 @@ public class ProcessoIntegrationTests extends IntegrationTestsSupport {
 
 	@Test
 	public void rejeitarProcesso() throws Exception {
-		IniciarAutuacaoCommand command = new IniciarAutuacaoCommand(new ProtocoloId(1L), "ADI");
+		IniciarAutuacaoCommand command = new IniciarAutuacaoCommand(1L, "ADI", "ORIGINARIO", "FISICO", "PUBLICO");
 		String processoId = autuacaoOriginarioAppService.handle(command).toString();
 		
 		String processo = "{\"processoId\":@processoId,\"motivo\":\"Dados inconsistentes.\"}";

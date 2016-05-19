@@ -11,6 +11,8 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
@@ -21,6 +23,7 @@ import org.apache.commons.lang3.Validate;
 import br.jus.stf.autuacao.originarios.domain.model.preferencia.Preferencia;
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
 import br.jus.stf.core.shared.classe.ClasseId;
+import br.jus.stf.core.shared.processo.TipoProcesso;
 
 /**
  * @author Rafael Alencar
@@ -29,13 +32,13 @@ import br.jus.stf.core.shared.classe.ClasseId;
  * @since 22.04.2016
  */
 @Entity
-@Table(name = "CLASSE_ORIGINARIA", schema = "AUTUACAO")
-public class ClasseOriginaria extends EntitySupport<ClasseOriginaria, ClasseId> {
+@Table(name = "CLASSE", schema = "AUTUACAO")
+public class Classe extends EntitySupport<Classe, ClasseId> {
 	
 	@EmbeddedId
 	private ClasseId sigla;
 	
-	@Column(name = "NOM_CLASSE")
+	@Column(name = "NOM_CLASSE", nullable = false)
 	private String nome;
 	
 	@OneToMany(cascade = ALL, fetch = EAGER)
@@ -43,21 +46,31 @@ public class ClasseOriginaria extends EntitySupport<ClasseOriginaria, ClasseId> 
 		inverseJoinColumns = @JoinColumn(name = "SEQ_PREFERENCIA", nullable = false))
 	private Set<Preferencia> preferencias = new HashSet<>(0);
 	
-	public ClasseOriginaria() {
+	@Column(name = "TIP_PROCESSO", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TipoProcesso tipo;
+	
+	public Classe() {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
-	public ClasseOriginaria(ClasseId sigla, String nome, Set<Preferencia> preferencias) {
+	public Classe(ClasseId sigla, String nome, TipoProcesso tipo, Set<Preferencia> preferencias) {
 		Validate.notNull(sigla, "Sigla requerida.");
 		Validate.notBlank(nome, "Nome requerido.");
+		Validate.notNull(tipo, "Tipo requerido.");
 		
 		this.sigla = sigla;
 		this.nome = nome;
+		this.tipo = tipo;
 		this.preferencias = Optional.ofNullable(preferencias).orElse(new HashSet<>(0));
 	}
 	
 	public String nome() {
 		return nome;
+	}
+	
+	public TipoProcesso tipo() {
+		return tipo;
 	}
 	
 	public Set<Preferencia> preferencias() {

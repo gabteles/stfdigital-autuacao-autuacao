@@ -23,7 +23,7 @@ public class Preferencia extends EntitySupport<Preferencia, PreferenciaId> {
 	@EmbeddedId
 	private PreferenciaId id;
 	
-	@Column(name = "NOM_PREFERENCIA")
+	@Column(name = "NOM_PREFERENCIA", nullable = false)
 	private String nome;
 	
 	public Preferencia() {

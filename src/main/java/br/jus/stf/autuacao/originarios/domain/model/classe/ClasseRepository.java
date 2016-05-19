@@ -3,6 +3,7 @@ package br.jus.stf.autuacao.originarios.domain.model.classe;
 import java.util.List;
 
 import br.jus.stf.core.shared.classe.ClasseId;
+import br.jus.stf.core.shared.processo.TipoProcesso;
 
 /**
  * @author Rafael Alencar
@@ -10,10 +11,12 @@ import br.jus.stf.core.shared.classe.ClasseId;
  * @since 1.0.0
  * @since 22.04.2016
  */
-public interface ClasseOriginariaRepository {
+public interface ClasseRepository {
 
-	List<ClasseOriginaria> findAll();
+	List<Classe> findAll();
 	
-	ClasseOriginaria findOne(ClasseId id);
+	Classe findOne(ClasseId id);
+	
+	List<Classe> findByTipo(TipoProcesso tipo);
 
 }

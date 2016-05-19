@@ -10,25 +10,30 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.Validate;
 
-import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseOriginaria;
+import br.jus.stf.autuacao.originarios.domain.model.classe.Classe;
 import br.jus.stf.autuacao.originarios.domain.model.preferencia.Preferencia;
 import br.jus.stf.core.framework.domaindrivendesign.AggregateRoot;
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
+import br.jus.stf.core.shared.processo.MeioTramitacao;
 import br.jus.stf.core.shared.processo.ProcessoId;
+import br.jus.stf.core.shared.processo.Sigilo;
+import br.jus.stf.core.shared.processo.TipoProcesso;
 import br.jus.stf.core.shared.protocolo.ProtocoloId;
 
 /**
@@ -39,8 +44,10 @@ import br.jus.stf.core.shared.protocolo.ProtocoloId;
  * @since 04.02.2016
  */
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "TIP_PROCESSO")
 @Table(name = "PROCESSO", schema = "AUTUACAO")
-public class Processo extends EntitySupport<Processo, ProcessoId> implements AggregateRoot<Processo, ProcessoId> {
+public abstract class Processo extends EntitySupport<Processo, ProcessoId> implements AggregateRoot<Processo, ProcessoId> {
 
     @EmbeddedId 
     private ProcessoId processoId;
@@ -54,7 +61,7 @@ public class Processo extends EntitySupport<Processo, ProcessoId> implements Agg
     
     @ManyToOne
     @JoinColumn(name = "SIG_CLASSE")
-	private ClasseOriginaria classe;
+	private Classe classe;
     
     @Column(name = "NUM_PROCESSO")
     private Long numero;
@@ -78,28 +85,36 @@ public class Processo extends EntitySupport<Processo, ProcessoId> implements Agg
     @Column(name = "DAT_AUTUACAO")
     private Date dataAutuacao;
     
-    @OneToOne(cascade = ALL)
-    @JoinColumn(name = "SEQ_PROCESSO", referencedColumnName = "SEQ_PROCESSO", insertable = false, updatable = false)
-    private Rejeicao rejeicao;
+    @Column(name = "TIP_MEIO_TRAMITACAO", nullable = false)
+	@Enumerated(EnumType.STRING)
+    private MeioTramitacao meioTramitacao;
+    
+    @Column(name = "TIP_SIGILO", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Sigilo sigilo;
     
     public Processo() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
 
-    public Processo(ProcessoId id, ProtocoloId protocoloId, ClasseOriginaria classe, Status status) {
+    public Processo(ProcessoId id, ProtocoloId protocoloId, Classe classe, MeioTramitacao meioTramitacao, Sigilo sigilo, Status status) {
     	Validate.notNull(id, "Processo requerido.");
-    	Validate.notNull(protocoloId, "Protocolo requerido.");
-    	Validate.notNull(classe, "Classe requerida");
+    	Validate.notNull(classe, "Classe requerida.");
+    	Validate.notNull(meioTramitacao, "Meio de tramitação requerido.");
+    	Validate.notNull(sigilo, "Sigilo requerido.");
     	Validate.notNull(status, "Status requerido.");
+    	Validate.isTrue(tipo().equals(classe.tipo()), "O tipo do processo e da classe são incompatíveis.");
     	
         this.processoId = id;
         this.protocoloId = protocoloId;
         this.classe = classe;
+        this.meioTramitacao = meioTramitacao;
+        this.sigilo = sigilo;
         this.status = status;
     }
     
-    public Processo(ProcessoId id, ProtocoloId protocoloId, ClasseOriginaria classe, Set<Preferencia> preferencias, Status status) {
-    	this(id, protocoloId, classe, status);
+    public Processo(ProcessoId id, ProtocoloId protocoloId, Classe classe, Set<Preferencia> preferencias, MeioTramitacao meioTramitacao, Sigilo sigilo, Status status) {
+    	this(id, protocoloId, classe, meioTramitacao, sigilo, status);
     	
     	Validate.isTrue(!Optional.ofNullable(preferencias).isPresent() || classe.preferencias().containsAll(preferencias),
 				"Alguma(s) preferência(s) não pertence(m) à classe selecionada.");
@@ -107,31 +122,42 @@ public class Processo extends EntitySupport<Processo, ProcessoId> implements Agg
     	this.preferencias = Optional.ofNullable(preferencias).orElse(new HashSet<>(0));
     }
     
-    public void autuar(ClasseOriginaria classe, Long numero, Set<Parte> partes, Autuador autuador, Status status) {
-		Validate.notNull(classe, "Classe requerida.");
-		Validate.notNull(numero, "Número requerido.");
+    public abstract TipoProcesso tipo();
+    
+    @Override
+    public ProcessoId identity() {
+        return processoId;
+    }
+    
+    public void atribuirPartes(Set<Parte> partes) {
+		Validate.notEmpty(partes, "Partes requeridas.");
+		
+		this.partes.addAll(partes);
+	}
+    
+    protected void autuar(Set<Parte> partes, Autuador autuador, Status status) {
 		Validate.notEmpty(partes, "Partes requeridas.");
 		Validate.notNull(autuador, "Autuador requerido.");
 		Validate.notNull(status, "Status requerido.");
 		
-		this.classe = classe;
-		this.numero = numero;
 		this.partes = partes;
 		this.status = status;
 		this.autuador = autuador;
 		this.dataAutuacao = new Date();
 	}
     
-    public void rejeitar(String motivo, Status status) {
-    	Validate.notNull(status, "Status requerido.");
-    	
-    	rejeicao = new Rejeicao(processoId, motivo);
-    	this.status = status;
+    protected void identificar(Classe classe, Long numero) {
+    	Validate.notNull(classe, "Classe requerida.");
+		Validate.notNull(numero, "Número requerido.");
+		
+		this.classe = classe;
+		this.numero = numero;
     }
     
-    @Override
-    public ProcessoId identity() {
-        return processoId;
+    protected void alterarStatus(Status status) {
+    	Validate.notNull(status, "Status requerido.");
+    	
+    	this.status = status;
     }
 
 }

@@ -19,18 +19,23 @@ import br.jus.stf.autuacao.originarios.domain.StatusAdapter;
 import br.jus.stf.autuacao.originarios.domain.model.Autuador;
 import br.jus.stf.autuacao.originarios.domain.model.Parte;
 import br.jus.stf.autuacao.originarios.domain.model.Processo;
+import br.jus.stf.autuacao.originarios.domain.model.ProcessoOriginario;
 import br.jus.stf.autuacao.originarios.domain.model.ProcessoOriginarioRepository;
 import br.jus.stf.autuacao.originarios.domain.model.Status;
-import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseOriginaria;
-import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseOriginariaRepository;
+import br.jus.stf.autuacao.originarios.domain.model.classe.Classe;
+import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseRepository;
 import br.jus.stf.autuacao.originarios.infra.RabbitConfiguration;
 import br.jus.stf.core.shared.classe.ClasseId;
 import br.jus.stf.core.shared.eventos.ProcessoAutuado;
 import br.jus.stf.core.shared.eventos.ProcessoRegistrado;
 import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.core.shared.processo.Identificacao;
+import br.jus.stf.core.shared.processo.MeioTramitacao;
 import br.jus.stf.core.shared.processo.Polo;
 import br.jus.stf.core.shared.processo.ProcessoId;
+import br.jus.stf.core.shared.processo.Sigilo;
+import br.jus.stf.core.shared.processo.TipoProcesso;
+import br.jus.stf.core.shared.protocolo.ProtocoloId;
 
 /**
  * @author Rodrigo Barreiros
@@ -45,7 +50,7 @@ public class AutuacaoDeOriginariosApplicationService {
     private ProcessoOriginarioRepository processoRepository;
     
     @Autowired
-    private ClasseOriginariaRepository classeRepository;
+    private ClasseRepository classeRepository;
     
     @Autowired
     private NumeroProcessoAdapter numeroProcessoAdapter;
@@ -63,22 +68,24 @@ public class AutuacaoDeOriginariosApplicationService {
     public Long handle(IniciarAutuacaoCommand command) {
         ProcessoId processoId = processoRepository.nextProcessoId();
         Status status = statusAdapter.nextStatus(processoId);
-        ClasseOriginaria classe = classeRepository.findOne(new ClasseId(command.getClasseId()));
-        Processo processo = processoFactory.novoProcesso(processoId, command.getProtocoloId(), classe, status);
+        Classe classe = classeRepository.findOne(new ClasseId(command.getClasseId()));
+        TipoProcesso tipoProcesso = TipoProcesso.valueOf(command.getTipoProcesso());
+        MeioTramitacao meioTramitacao = MeioTramitacao.valueOf(command.getMeioTramitacao());
+        Sigilo sigilo = Sigilo.valueOf(command.getSigilo());
+        Processo processo = processoFactory.novoProcesso(processoId, new ProtocoloId(command.getProtocoloId()), classe, tipoProcesso, meioTramitacao, sigilo, status);
         
         processoRepository.save(processo);
         // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
-        rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_REGISTRADO_QUEUE, new ProcessoRegistrado(command.getProtocoloId().toLong(), processoId.toString()));
-        
+        rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_REGISTRADO_QUEUE, new ProcessoRegistrado(command.getProtocoloId(), processoId.toString()));
         return processoId.toLong();
     }
 
     @Transactional
     public void handle(AutuarProcessoCommand command) {
-        Processo processo = processoRepository.findOne(new ProcessoId(command.getProcessoId()));
+        ProcessoOriginario processo = (ProcessoOriginario) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
         Status status = statusAdapter.nextStatus(processo.identity(), "DISTRIBUIR");
         Identificacao numero = numeroProcessoAdapter.novoNumeroProcesso(command.getClasseId());
-        ClasseOriginaria classe = classeRepository.findOne(new ClasseId(command.getClasseId()));
+        Classe classe = classeRepository.findOne(new ClasseId(command.getClasseId()));
         //TODO: Alterar para pegar dados do autuador pelo usuário da sessão.
         Autuador autuador = new Autuador("USUARIO_FALSO", new PessoaId(1L));
         //TODO: Alterar para reutilizar pessoas.
@@ -87,20 +94,17 @@ public class AutuacaoDeOriginariosApplicationService {
         command.getPoloPassivo().forEach(parteDto -> partes.add(new Parte(parteDto.getApresentacao(), Polo.PASSIVO, new PessoaId(parteDto.getPessoa()))));
         
         processo.autuar(classe, numero.numero(), partes, autuador, status);
-        
         processoRepository.save(processo);
-        
         // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
         rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processo.identity().toString(), numero.toString()));
     }
     
     @Transactional
     public void handle(RejeitarProcessoCommand command) {
-        Processo processo = processoRepository.findOne(new ProcessoId(command.getProcessoId()));
+        ProcessoOriginario processo = (ProcessoOriginario) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
         Status status = statusAdapter.nextStatus(processo.identity(), "REJEITAR");
 
         processo.rejeitar(command.getMotivo(), status);
-        
         processoRepository.save(processo);
     }
 
