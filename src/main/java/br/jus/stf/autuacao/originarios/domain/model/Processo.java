@@ -160,4 +160,8 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
     	this.status = status;
     }
 
+	public ProtocoloId protocoloId() {
+		return protocoloId;
+	}
+
 }

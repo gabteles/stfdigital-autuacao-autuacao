@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
-import br.jus.stf.autuacao.originarios.interfaces.dto.ParteDto;
+import br.jus.stf.autuacao.originarios.interfaces.dto.AutuarParteCommand;
 
 /**
  * @author Rodrigo Barreiros
@@ -31,11 +31,11 @@ public class AutuarProcessoCommand {
     
     @NotEmpty
 	@ApiModelProperty(value = "Lista com as partes do polo ativo", required=true)
-	private List<ParteDto> poloAtivo;
+	private List<AutuarParteCommand> poloAtivo;
 	
 	@NotEmpty
 	@ApiModelProperty(value = "Lista com as partes do polo passivo", required=true)
-	private List<ParteDto> poloPassivo;
+	private List<AutuarParteCommand> poloPassivo;
     
 	public Long getProcessoId() {
 	    return processoId;
@@ -45,11 +45,11 @@ public class AutuarProcessoCommand {
 		return classeId;
 	}
 	
-	public List<ParteDto> getPoloAtivo() {
+	public List<AutuarParteCommand> getPoloAtivo() {
 		return poloAtivo;
 	}
 	
-	public List<ParteDto> getPoloPassivo() {
+	public List<AutuarParteCommand> getPoloPassivo() {
 		return poloPassivo;
 	}
 
