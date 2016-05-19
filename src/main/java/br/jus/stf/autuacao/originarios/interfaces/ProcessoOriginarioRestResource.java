@@ -1,9 +1,7 @@
 package br.jus.stf.autuacao.originarios.interfaces;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -21,7 +19,7 @@ import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoComman
 import br.jus.stf.autuacao.originarios.application.commands.RejeitarProcessoCommand;
 import br.jus.stf.autuacao.originarios.domain.RemessaAdapter;
 import br.jus.stf.autuacao.originarios.domain.model.ProcessoOriginarioRepository;
-import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseOriginariaRepository;
+import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseRepository;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ClasseDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ClasseDtoAssembler;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ProcessoDto;
@@ -42,7 +40,7 @@ public class ProcessoOriginarioRestResource {
     private AutuacaoDeOriginariosApplicationService autuarProcessoCommandHandler;
     
     @Autowired
-    private ClasseOriginariaRepository classeOriginariaRepository;
+    private ClasseRepository classeOriginariaRepository;
     
     @Autowired
     private ProcessoOriginarioRepository processoOriginarioRepository;

@@ -3,7 +3,7 @@ package br.jus.stf.autuacao.originarios.interfaces.dto;
 import org.apache.commons.lang3.Validate;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseOriginaria;
+import br.jus.stf.autuacao.originarios.domain.model.classe.Classe;
 
 /**
  * @author anderson.araujo
@@ -14,7 +14,7 @@ import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseOriginaria;
 @Component
 public class ClasseDtoAssembler {
 	
-	public ClasseDto toDto(ClasseOriginaria classe) {
+	public ClasseDto toDto(Classe classe) {
 		Validate.notNull(classe);
 		return new ClasseDto(classe.identity().toString(), classe.nome());
 	}
