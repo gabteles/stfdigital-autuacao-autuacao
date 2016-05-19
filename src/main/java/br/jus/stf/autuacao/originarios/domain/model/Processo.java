@@ -25,7 +25,6 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseOriginaria;
-import br.jus.stf.autuacao.originarios.domain.model.parte.Parte;
 import br.jus.stf.autuacao.originarios.domain.model.preferencia.Preferencia;
 import br.jus.stf.core.framework.domaindrivendesign.AggregateRoot;
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;

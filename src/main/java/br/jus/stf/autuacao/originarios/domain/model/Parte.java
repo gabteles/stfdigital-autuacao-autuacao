@@ -1,4 +1,4 @@
-package br.jus.stf.autuacao.originarios.domain.model.parte;
+package br.jus.stf.autuacao.originarios.domain.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
