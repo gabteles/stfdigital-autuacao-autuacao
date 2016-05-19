@@ -1,5 +1,6 @@
 package br.jus.stf.autuacao.originarios.interfaces.dto;
 
+import br.jus.stf.autuacao.originarios.infra.ParteDto;
 import br.jus.stf.autuacao.originarios.infra.RemessaDto;
 
 /**
@@ -12,10 +13,12 @@ public class ProcessoDto {
 	
 	private RemessaDto remessa;
 	
-	public ProcessoDto(Long processoId, RemessaDto remessaDto) {
+	private ParteDto partes;
+	
+	public ProcessoDto(Long processoId, RemessaDto remessaDto, ParteDto partes) {
 		this.processoId = processoId;
-
 		this.remessa = remessaDto;
+		this.partes = partes;
 	}
 	
 	public Long getProcessoId() {
@@ -29,6 +32,16 @@ public class ProcessoDto {
 	public void setRemessa(RemessaDto remessaDto) {
 		this.remessa = remessaDto;
 	}
+
+	public ParteDto getPartes() {
+		return partes;
+	}
+
+	public void setPartes(ParteDto partes) {
+		this.partes = partes;
+	}
+	
+	
 
 	
  

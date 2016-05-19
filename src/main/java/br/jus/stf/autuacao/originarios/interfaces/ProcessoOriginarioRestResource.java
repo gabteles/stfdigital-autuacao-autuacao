@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.jus.stf.autuacao.originarios.application.AutuacaoDeOriginariosApplicationService;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoCommand;
 import br.jus.stf.autuacao.originarios.application.commands.RejeitarProcessoCommand;
+import br.jus.stf.autuacao.originarios.domain.ParteAdapter;
 import br.jus.stf.autuacao.originarios.domain.RemessaAdapter;
 import br.jus.stf.autuacao.originarios.domain.model.ProcessoOriginarioRepository;
 import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseOriginariaRepository;
@@ -53,6 +54,9 @@ public class ProcessoOriginarioRestResource {
     @Autowired
     private RemessaAdapter remessaAdapter;
     
+    @Autowired 
+    private ParteAdapter parteAdapter;
+    
     @Autowired
     private ProcessoDtoAssembler processoDtoAssembler;
 
@@ -84,7 +88,8 @@ public class ProcessoOriginarioRestResource {
     public ProcessoDto consultar(@PathVariable("processoId") Long id){
 		ProcessoId processoId = new ProcessoId(id);
 		return Optional.ofNullable(processoOriginarioRepository.findOne(processoId))
-				.map(processo -> processoDtoAssembler.toDto(processoId.toLong(), remessaAdapter.consultar(processo.protocoloId())))
+				.map(processo -> processoDtoAssembler.toDto(processoId.toLong(), remessaAdapter.consultar(processo.protocoloId()), 
+						parteAdapter.consultar(processo.protocoloId())))
 				.orElseThrow(IllegalArgumentException::new);
     }
 

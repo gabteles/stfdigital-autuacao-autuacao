@@ -28,12 +28,12 @@
                     <div layout="column" layout-gt-sm="row" class="layout-gt-sm-row layout-column">
                         <md-input-container flex="" class="md-icon-float flex md-default-theme md-input-invalid">
                             <label>Informe o nome da parte do polo ativo</label>
-                            <input type="text" name="txtPartePoloAtivo" ng-model="autuacao.partePoloAtivo" class="ng-pristine" aria-label="" aria-invalid="true" ng-keydown="$event.which === 13 && autuacao.adicionarPartePoloAtivo()" ng-click= "$event.stopPropagation()">
+                            <input type="text" name="txtPartePoloAtivo" id="txtPoloAtivo" ng-model="autuacao.partePoloAtivo" class="ng-pristine" aria-label="" aria-invalid="true" ng-keydown="$event.which === 13 && autuacao.adicionarPartePoloAtivo()" ng-click= "$event.stopPropagation()">
                              
                         </md-input-container>
                         <md-input-container flex="" class="md-icon-float flex md-default-theme md-input-invalid">    
                             <label>Informe o nome da parte do polo passivo</label>
-                            <input type="text" name="txtPartePoloPassivo" ng-model="autuacao.partePoloPassivo" class="ng-pristine ng-empty ng-invalid ng-invalid-required 
+                            <input type="text" name="txtPartePoloPassivo" id="txtPoloPassivo" ng-model="autuacao.partePoloPassivo" class="ng-pristine ng-empty ng-invalid ng-invalid-required 
                             ng-touched" aria-label="" aria-invalid="true"  ng-keydown="$event.which === 13 && autuacao.adicionarPartePoloPassivo()" ng-click= "$event.stopPropagation()">
                         </md-input-container>
                     </div>
@@ -111,8 +111,8 @@
 	                    </md-input-container>
                     </div>
                     
-                    <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
-                        <md-input-container flex>
+                    <div layout="row" layout-gt-xs="column" class="layout-gt-xs-row">
+                        <md-input-container style="width:50%">
                             <label>Classificação</label>
                             <md-select ng-model="autuacao.classe" id="classes">
                                 <md-option></md-option>
@@ -121,13 +121,15 @@
                                 </md-option>
                             </md-select>
                         </md-input-container>
-						<md-input-container flex>
-							<span style="color=grey">Aptidão:</span>
-	                        <md-radio-group ng-model="autuacao.valida">
-	                            <md-radio-button aria-checked="true" value="true" aria-label="Válida" id="valida" class="md-primary md-default-theme">Válida</md-radio-button>
-	                            <md-radio-button aria-checked="false" value="false" aria-label="Inválida" id="invalida" class="md-primary md-default-theme">Inválida</md-radio-button>
-	                        </md-radio-group>
-	                    </md-input-container>
+					<div>
+						<label style="font-size:70%; color: rgba(0,0,0,0.87)">Aptidão</label>
+							<div class="radio radio-success">
+		                        <input type="radio" ng-model="autuacao.valida" value="true" id="yes"> 
+		                        <label for="yes">Válida</label> 
+		                        <input type="radio" ng-model="autuacao.valida" value="false" id="no"> 
+		                        <label for="no">Inválida</label>
+		                    </div>
+                    </div>
                     </div>
 
                     <md-button type="button" class="md-raised md-accent" id="btnRegistrarAutuacao" aria-label="Submit" 
