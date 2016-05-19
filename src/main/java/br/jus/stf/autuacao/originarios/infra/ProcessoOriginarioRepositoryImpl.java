@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import br.jus.stf.autuacao.originarios.domain.model.MotivoInaptidao;
+import br.jus.stf.autuacao.originarios.domain.model.Parte;
 import br.jus.stf.autuacao.originarios.domain.model.Processo;
 import br.jus.stf.autuacao.originarios.domain.model.ProcessoOriginarioRepository;
 import br.jus.stf.core.shared.processo.ProcessoId;
@@ -41,6 +42,16 @@ public class ProcessoOriginarioRepositoryImpl extends SimpleJpaRepository<Proces
     	
     	return new ProcessoId(((BigInteger) q.getSingleResult()).longValue());
     }
+    
+	@Override
+	public List<Parte> consultarPartes(Long processoId) {
+		TypedQuery<Parte> query = entityManager
+				.createQuery("SELECT proc.partes FROM Processo proc WHERE processoId.id = :id", Parte.class);
+
+		query.setParameter("id", processoId);
+
+		return query.getResultList();
+	}
 
     /** Motido de inaptidão **/
 	@Override

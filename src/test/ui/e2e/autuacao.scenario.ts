@@ -1,12 +1,12 @@
 import {LoginPage} from "./pages/login.page";
 import {PrincipalPage}  from "./pages/principal.page";
-import {RecebimentoPage} from "./pages/recebimento.page";
+import {AutuacaoPage} from "./pages/autuacao.page";
 
 describe('Autuação de Petições Físicas Originárias', () => {	
 	
     var loginPage: LoginPage = new LoginPage();
     var principalPage: PrincipalPage = new PrincipalPage();
-	var recebimentoPage : RecebimentoPage = new RecebimentoPage();
+	var autuacaoPage : AutuacaoPage = new AutuacaoPage();
                 
     it ('Deveria logar na tela', () => {
         loginPage.open();
@@ -19,11 +19,11 @@ describe('Autuação de Petições Físicas Originárias', () => {
     });
     
     it('Deveria preencher as informações da petição física', () => {
-    	recebimentoPage.preencherQtdVolumes(2);
-    	recebimentoPage.preencherQtdApensos(3);
-    	recebimentoPage.selecionarFormaRecebimento();
-    	recebimentoPage.selecionarTipoRecebimento();
-    	recebimentoPage.registrarPeticao();
+    	autuacaoPage.preencherQtdVolumes(2);
+    	autuacaoPage.preencherQtdApensos(3);
+    	autuacaoPage.selecionarFormaRecebimento();
+    	autuacaoPage.selecionarTipoRecebimento();
+    	autuacaoPage.registrarPeticao();
     });
     
 });

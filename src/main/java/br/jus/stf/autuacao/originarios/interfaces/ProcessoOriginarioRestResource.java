@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 import br.jus.stf.autuacao.originarios.application.AutuacaoDeOriginariosApplicationService;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoCommand;
 import br.jus.stf.autuacao.originarios.application.commands.RejeitarProcessoCommand;
+import br.jus.stf.autuacao.originarios.domain.ParteAdapter;
 import br.jus.stf.autuacao.originarios.domain.RemessaAdapter;
 import br.jus.stf.autuacao.originarios.domain.model.ProcessoOriginarioRepository;
 import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseRepository;
+import br.jus.stf.autuacao.originarios.infra.ParteDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ClasseDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ClasseDtoAssembler;
+import br.jus.stf.autuacao.originarios.interfaces.dto.ParteDtoAssembler;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ProcessoDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ProcessoDtoAssembler;
 import br.jus.stf.core.shared.processo.ProcessoId;
@@ -51,8 +54,14 @@ public class ProcessoOriginarioRestResource {
     @Autowired
     private RemessaAdapter remessaAdapter;
     
+    @Autowired 
+    private ParteAdapter parteAdapter;
+    
     @Autowired
     private ProcessoDtoAssembler processoDtoAssembler;
+    
+    @Autowired
+    private ParteDtoAssembler parteDtoAssembler;
 
     @RequestMapping(method = RequestMethod.POST)
     public void autuar(@RequestBody @Valid AutuarProcessoCommand command, BindingResult binding) {
@@ -82,8 +91,14 @@ public class ProcessoOriginarioRestResource {
     public ProcessoDto consultar(@PathVariable("processoId") Long id){
 		ProcessoId processoId = new ProcessoId(id);
 		return Optional.ofNullable(processoOriginarioRepository.findOne(processoId))
-				.map(processo -> processoDtoAssembler.toDto(processoId.toLong(), remessaAdapter.consultar(processo.protocoloId())))
+				.map(processo -> processoDtoAssembler.toDto(processoId.toLong(), remessaAdapter.consultar(processo.protocoloId()), 
+						parteAdapter.consultar(processo.protocoloId())))
 				.orElseThrow(IllegalArgumentException::new);
     }
+	
+	@RequestMapping(value = "/parte/{processoId}", method = RequestMethod.GET)
+	public List<ParteDto> listarPartes(@PathVariable("processoId") Long id){
+		return processoOriginarioRepository.consultarPartes(id).stream().map(parte -> parteDtoAssembler.toDto(parte)).collect(Collectors.toList());
+	}
 
 }

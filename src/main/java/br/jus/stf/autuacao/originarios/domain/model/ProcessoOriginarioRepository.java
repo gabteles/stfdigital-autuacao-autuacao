@@ -28,4 +28,6 @@ public interface ProcessoOriginarioRepository {
     
     void deleteMotivoInaptidao(MotivoInaptidao motivoInaptidao);
 
+    List<Parte> consultarPartes(Long processoId);
+
 }
