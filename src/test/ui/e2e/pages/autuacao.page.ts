@@ -17,8 +17,8 @@ export class AutuacaoPage {
 		element.all(by.repeater('classe in autuacao.classes')).get(2).click();
 	};
 	
-	public registrarPeticao() : void {
-		element(by.id('btnRegistrarPeticao')).click();
+	public registrarAutuacao() : void {
+		element(by.id('btnRegistrarAutuacao')).click();
 	};
 	
 }

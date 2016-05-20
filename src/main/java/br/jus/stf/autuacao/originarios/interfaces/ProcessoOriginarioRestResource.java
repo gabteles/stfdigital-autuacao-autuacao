@@ -65,7 +65,7 @@ public class ProcessoOriginarioRestResource {
     @Autowired
     private ParteDtoAssembler parteDtoAssembler;
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/autucacao", method = RequestMethod.POST)
     public void autuar(@RequestBody @Valid AutuarProcessoCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
             throw new IllegalArgumentException("Processo Inválido: " + binding.getAllErrors());
@@ -98,8 +98,8 @@ public class ProcessoOriginarioRestResource {
 				.orElseThrow(IllegalArgumentException::new);
     }
 	
-	@RequestMapping(value = "/parte/{processoId}", method = RequestMethod.GET)
-	public List<ParteDto> listarPartes(@PathVariable("processoId") Long id){
+	@RequestMapping(value = "/{id}/parte", method = RequestMethod.GET)
+	public List<ParteDto> listarPartes(@PathVariable("id") Long id){
 		return processoOriginarioRepository.consultarPartes(id).stream().map(parte -> parteDtoAssembler.toDto(parte)).collect(Collectors.toList());
 	}
 
