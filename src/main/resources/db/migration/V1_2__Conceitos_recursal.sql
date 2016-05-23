@@ -55,3 +55,5 @@ alter table autuacao.processo add flg_analise_apta varchar2(1);
 alter table autuacao.processo add txt_analise_pressuposto_formal varchar2(1000);
 alter table autuacao.processo add constraint ck_proc_flg_analise_apta check (flg_analise_apta is null or flg_analise_apta in ('Y', 'N'));
 alter table autuacao.processo add txt_analise_repercussao_geral varchar2(1000);
+alter table autuacao.processo add column tip_processo varchar2(10) not null;
+alter table autuacao.processo add constraint ck_proc_tip_processo check (tip_processo in ('ORIGINARIO', 'RECURSAL'));
