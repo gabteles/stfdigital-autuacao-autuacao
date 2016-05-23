@@ -26,7 +26,7 @@ public class ParteAdapterImpl implements ParteAdapter {
 				.findAny()
 				.map(instance -> {
 					URI servicesUri = instance.getUri();
-					URI uri = UriComponentsBuilder.fromUri(servicesUri).path("/api/partes/").queryParam("protocoloId", protocoloId.toLong()).build().toUri();
+					URI uri = UriComponentsBuilder.fromUri(servicesUri).path("/api/peticoes/{id}/envolvidos").queryParam("id", protocoloId.toLong()).build().toUri();
 					return restTemplate.getForObject(uri, ParteDto.class); 
 				}).orElse(new ParteDto());
 	}

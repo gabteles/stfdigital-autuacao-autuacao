@@ -51,7 +51,7 @@
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="parte in autuacao.partesPoloAtivo">
-											    <td>{{parte}}</td>
+											    <td>{{parte.apresentacao | uppercase}}</td>
 											    <td align="right">
                                                     <span class="hint-text small">
                                                         <a href="#" ng-click="autuacao.removerPartePoloAtivo(parte)">Remover</a>
@@ -75,7 +75,7 @@
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="parte in autuacao.partesPoloPassivo">
-											    <td>{{parte}}</td>
+											    <td>{{parte.apresentacao | uppercase}}</td>
 											    <td align="right">
                                                     <span class="hint-text small">
                                                         <a href="#" ng-click="autuacao.removerPartePoloPassivo(parte)">Remover</a>

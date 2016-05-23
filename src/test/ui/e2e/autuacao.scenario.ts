@@ -19,11 +19,10 @@ describe('Autuação de Petições Físicas Originárias', () => {
     });
     
     it('Deveria preencher as informações da petição física', () => {
-    	autuacaoPage.preencherQtdVolumes(2);
-    	autuacaoPage.preencherQtdApensos(3);
-    	autuacaoPage.selecionarFormaRecebimento();
-    	autuacaoPage.selecionarTipoRecebimento();
-    	autuacaoPage.registrarPeticao();
+    	autuacaoPage.cadastrarPoloAtivo('Maria da Silva');
+    	autuacaoPage.cadastrarPoloPassivo('João Carneiro')
+    	autuacaoPage.selecionarClasse();
+    	autuacaoPage.registrarAutuacao();
     });
     
 });

@@ -8,8 +8,15 @@ import IPromise = angular.IPromise;
 import autuacao from "./autuacao.module";
 
 export class ParteDto{
-	public aprensenta : String;
+	
+	public apresentacao : string;
 	public pessoa : number;
+
+	constructor (apresentacao : string , pessoa? : number) {
+		this.apresentacao = apresentacao;
+		this.pessoa = pessoa;
+	}
+
 }
 
 export class AutuacaoController {
@@ -17,8 +24,8 @@ export class AutuacaoController {
 	public basicForm: Object = {};
 	public partePoloAtivo: string;
 	public partePoloPassivo: string;
-	public partesPoloAtivo: Array<string> = new Array<string>();
-	public partesPoloPassivo: Array<string> = new Array<string>();
+	public partesPoloAtivo: Array<ParteDto> = new Array<ParteDto>();
+	public partesPoloPassivo: Array<ParteDto> = new Array<ParteDto>();
 	public processo : Object = {};
 	public classe : String = "";
 	public valida : boolean;
@@ -32,19 +39,24 @@ export class AutuacaoController {
     		
     		//let resource = $stateParams['resources']
     		//this.processo = autuacaoService.consultar(angular.isObject(resource) ? resource.processoId : resource);
-    	
-    		this.processo = this.mockProcessoAutuacao()
+    		this.processo = this.mockProcessoAutuacao();
+    		
+    		let parteAtiva = new ParteDto('JOSÉ DE SOUZA', 2);
+    		this.partesPoloAtivo.push(parteAtiva);
+    		
+    		let partePassiva = new ParteDto('ALINE PEREIRA', 3);
+    		this.partesPoloPassivo.push(partePassiva);
     }
     
     public adicionarPartePoloAtivo(): void {
         for (let i = 0; i < this.partesPoloAtivo.length; i++){
-            if (this.partesPoloAtivo[i] == this.partePoloAtivo.toUpperCase()){
+            if (this.partesPoloAtivo[i].apresentacao == this.partePoloAtivo.toUpperCase()){
                 this.partePoloAtivo = "";
                 return;
             }
         }
-        
-        this.partesPoloAtivo.push(this.partePoloAtivo.toUpperCase());
+        let parte = new ParteDto(this.partePoloAtivo.toUpperCase());
+        this.partesPoloAtivo.push(parte);
         this.partePoloAtivo = "";
     }
     
@@ -54,13 +66,14 @@ export class AutuacaoController {
     
     public adicionarPartePoloPassivo(): void {
         for (let i = 0; i < this.partesPoloPassivo.length; i++){
-            if (this.partesPoloPassivo[i] == this.partePoloPassivo.toUpperCase()){
+            if (this.partesPoloPassivo[i].apresentacao == this.partePoloPassivo.toUpperCase()){
                 this.partePoloPassivo = "";        
                 return;
             }
         }
         
-        this.partesPoloPassivo.push(this.partePoloPassivo.toUpperCase());
+        let parte = new ParteDto(this.partePoloPassivo.toUpperCase())
+        this.partesPoloPassivo.push(parte);
         this.partePoloPassivo = "";
     }
     
@@ -77,22 +90,7 @@ export class AutuacaoController {
 	};
 
 	private commandAutuacao(): AutuacaoCommand {
-		let partesAtivo : Array<Object> = new Array<Object>();
-		let partesPassivo : Array<Object> = new Array<Object>();
-		
-		if (this.partesPoloAtivo.length > 0){
-			for (let parte of this.partesPoloAtivo){
-				partesAtivo.push({apresentacao : parte, pessoa : 1});
-			}
-		}
-		
-		if (this.partesPoloPassivo.length > 0){
-			for (let parte of this.partesPoloPassivo){
-				partesPassivo.push({apresentacao : parte, pessoa : 1});
-			}
-		}
-		
-	    return new AutuacaoCommand(1, this.classe, partesAtivo, partesPassivo);
+	    return new AutuacaoCommand(1, this.classe, this.partesPoloPassivo, this.partesPoloPassivo);
 	};
 	
 	public mockProcessoAutuacao () : Object {

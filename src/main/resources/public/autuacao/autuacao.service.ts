@@ -24,7 +24,7 @@ export class AutuacaoService {
     constructor(private $http: IHttpService, private properties) { }
 
     public autuar(processo: AutuacaoCommand): IPromise<any> {
-        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.apiProcesso, processo);
+        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.apiProcesso + '/autuacao', processo);
     }
     
     public consultar(processoId : number) : IPromise<Processo> {
