@@ -42,4 +42,10 @@ public class MotivoInaptidao extends EntitySupport<MotivoInaptidao, Long> {
 		return String.format("%d - %s", codigo, descricao);
 	}
 
+	public String descricao() {
+		return descricao;
+	}
+	
+	
+
 }

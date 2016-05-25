@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.autuacao.originarios.application.AutuacaoDeOriginariosApplicationService;
+import br.jus.stf.autuacao.originarios.application.commands.AnalisarProcessoCommand;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoCommand;
 import br.jus.stf.autuacao.originarios.application.commands.RejeitarProcessoCommand;
 import br.jus.stf.autuacao.originarios.domain.ParteAdapter;
@@ -24,6 +25,8 @@ import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseRepository;
 import br.jus.stf.autuacao.originarios.infra.ParteDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ClasseDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ClasseDtoAssembler;
+import br.jus.stf.autuacao.originarios.interfaces.dto.MotivoInaptidaoDto;
+import br.jus.stf.autuacao.originarios.interfaces.dto.MotivoInaptidaoDtoAssembler;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ParteDtoAssembler;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ProcessoDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ProcessoDtoAssembler;
@@ -62,9 +65,21 @@ public class ProcessoOriginarioRestResource {
     
     @Autowired
     private ParteDtoAssembler parteDtoAssembler;
+    
+    @Autowired
+    private MotivoInaptidaoDtoAssembler motivoInaptidaoDtoAssembler;
 
     @RequestMapping(value = "/autucacao", method = RequestMethod.POST)
     public void autuar(@RequestBody @Valid AutuarProcessoCommand command, BindingResult binding) {
+        if (binding.hasErrors()) {
+            throw new IllegalArgumentException("Processo Inválido: " + binding.getAllErrors());
+        }
+        
+        autuarProcessoCommandHandler.handle(command);
+    }
+    
+    @RequestMapping(value = "/analise-pressupostos", method = RequestMethod.POST)
+    public void analisarPressupostos(@RequestBody @Valid AnalisarProcessoCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
             throw new IllegalArgumentException("Processo Inválido: " + binding.getAllErrors());
         }
@@ -100,5 +115,11 @@ public class ProcessoOriginarioRestResource {
 	public List<ParteDto> listarPartes(@PathVariable("id") Long id){
 		return processoOriginarioRepository.consultarPartes(id).stream().map(parte -> parteDtoAssembler.toDto(parte)).collect(Collectors.toList());
 	}
+	
+	@RequestMapping(value="/motivoinaptidao", method = RequestMethod.GET)
+    public List<MotivoInaptidaoDto> listarMotivos(){
+    	return processoOriginarioRepository.findAllMotivoInaptidao().stream()
+    			.map(motivo -> motivoInaptidaoDtoAssembler.toDto(motivo)).collect(Collectors.toList());
+    }
 
 }

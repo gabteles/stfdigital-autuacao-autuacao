@@ -4,12 +4,12 @@ export class AutuacaoPage {
 	
 	public cadastrarPoloAtivo(nome : string) : void {
 		element(by.id('txtPoloAtivo')).sendKeys(nome);
-		browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
+		browser.actions().sendKeys(protractor.Key.ENTER).perform();
 	};
 	
 	public cadastrarPoloPassivo(nome : string) : void {
 		element(by.id('txtPoloPassivo')).sendKeys(nome);
-		browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
+		browser.actions().sendKeys(protractor.Key.ENTER).perform();
 	};
 	
 	public selecionarClasse() : void {
@@ -18,7 +18,9 @@ export class AutuacaoPage {
 	};
 	
 	public registrarAutuacao() : void {
-		element(by.id('btnRegistrarAutuacao')).click();
+		let select = element(by.id("btnRegistrarAutuacao" ));
+	    browser.executeScript("arguments[0].scrollIntoView();", select.getWebElement());
+	    select.click();
 	};
 	
 }

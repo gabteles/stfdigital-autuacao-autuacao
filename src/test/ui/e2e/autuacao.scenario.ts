@@ -13,9 +13,9 @@ describe('Autuação de Petições Físicas Originárias', () => {
         loginPage.login('aaa', '123');
     });
     
-    it ('Deveria acessar a pagina de peticao física', () => {
+    it ('Deveria acessar a pagina para autuar petição', () => {
         principalPage.iniciarProcesso();
-        principalPage.iniciarPeticaoFisica();
+        principalPage.iniciarAutuacao();
     });
     
     it('Deveria preencher as informações da petição física', () => {

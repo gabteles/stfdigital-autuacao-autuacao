@@ -3,13 +3,16 @@ package br.jus.stf.autuacao.originarios.application;
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.jus.stf.autuacao.originarios.application.commands.AnalisarProcessoCommand;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoCommand;
 import br.jus.stf.autuacao.originarios.application.commands.IniciarAutuacaoCommand;
 import br.jus.stf.autuacao.originarios.application.commands.RejeitarProcessoCommand;
@@ -17,10 +20,12 @@ import br.jus.stf.autuacao.originarios.domain.NumeroProcessoAdapter;
 import br.jus.stf.autuacao.originarios.domain.ProcessoFactory;
 import br.jus.stf.autuacao.originarios.domain.StatusAdapter;
 import br.jus.stf.autuacao.originarios.domain.model.Autuador;
+import br.jus.stf.autuacao.originarios.domain.model.MotivoInaptidao;
 import br.jus.stf.autuacao.originarios.domain.model.Parte;
 import br.jus.stf.autuacao.originarios.domain.model.Processo;
 import br.jus.stf.autuacao.originarios.domain.model.ProcessoOriginario;
 import br.jus.stf.autuacao.originarios.domain.model.ProcessoOriginarioRepository;
+import br.jus.stf.autuacao.originarios.domain.model.ProcessoRecursal;
 import br.jus.stf.autuacao.originarios.domain.model.Status;
 import br.jus.stf.autuacao.originarios.domain.model.classe.Classe;
 import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseRepository;
@@ -29,6 +34,7 @@ import br.jus.stf.core.shared.classe.ClasseId;
 import br.jus.stf.core.shared.eventos.ProcessoAutuado;
 import br.jus.stf.core.shared.eventos.ProcessoRegistrado;
 import br.jus.stf.core.shared.identidade.PessoaId;
+import br.jus.stf.core.shared.preferencia.PreferenciaId;
 import br.jus.stf.core.shared.processo.Identificacao;
 import br.jus.stf.core.shared.processo.MeioTramitacao;
 import br.jus.stf.core.shared.processo.Polo;
@@ -97,6 +103,20 @@ public class AutuacaoDeOriginariosApplicationService {
         processoRepository.save(processo);
         // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
         rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processo.identity().toString(), numero.toString()));
+    }
+    
+    @Transactional
+    public void handle(AnalisarProcessoCommand command) {
+        ProcessoRecursal processoRecursal = (ProcessoRecursal) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
+        Set<MotivoInaptidao> motivos = Optional.ofNullable(command.getMotivos())
+        		//TODO Creio que o processo recursal deveria usar o seu próprio processoRecusalRepository
+				.map(motvs -> motvs.stream().map(motivo -> processoRepository.findOneMotivoInaptidao(motivo))
+						.collect(Collectors.toCollection(() -> new HashSet<MotivoInaptidao>())))
+				.get();
+        processoRecursal.analisarPressupostosFormais(command.isAptidao(), command.getObservacao(), motivos);
+        processoRepository.save(processoRecursal);
+        // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
+        rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processoRecursal.identity().toString(), processoRecursal.toString()));
     }
     
     @Transactional
