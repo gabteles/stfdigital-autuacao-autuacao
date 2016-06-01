@@ -1,6 +1,5 @@
 package br.jus.stf.autuacao.originarios.interfaces.dto;
 
-import br.jus.stf.autuacao.originarios.infra.ParteDto;
 import br.jus.stf.autuacao.originarios.infra.RemessaDto;
 
 /**
