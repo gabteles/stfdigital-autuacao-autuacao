@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.jus.stf.autuacao.originarios.domain.ParteAdapter;
+import br.jus.stf.autuacao.originarios.interfaces.dto.ParteDto;
 import br.jus.stf.core.shared.protocolo.ProtocoloId;
 
 @Component

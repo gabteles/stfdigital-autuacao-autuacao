@@ -17,16 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 import br.jus.stf.autuacao.originarios.application.AutuacaoDeOriginariosApplicationService;
 import br.jus.stf.autuacao.originarios.application.commands.AnalisarProcessoCommand;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoCommand;
+import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoRecursalCommand;
 import br.jus.stf.autuacao.originarios.application.commands.RejeitarProcessoCommand;
 import br.jus.stf.autuacao.originarios.domain.ParteAdapter;
 import br.jus.stf.autuacao.originarios.domain.RemessaAdapter;
 import br.jus.stf.autuacao.originarios.domain.model.ProcessoOriginarioRepository;
 import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseRepository;
-import br.jus.stf.autuacao.originarios.infra.ParteDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ClasseDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ClasseDtoAssembler;
 import br.jus.stf.autuacao.originarios.interfaces.dto.MotivoInaptidaoDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.MotivoInaptidaoDtoAssembler;
+import br.jus.stf.autuacao.originarios.interfaces.dto.ParteDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ParteDtoAssembler;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ProcessoDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ProcessoDtoAssembler;
@@ -71,6 +72,15 @@ public class ProcessoOriginarioRestResource {
 
     @RequestMapping(value = "/autuacao", method = RequestMethod.POST)
     public void autuar(@RequestBody @Valid AutuarProcessoCommand command, BindingResult binding) {
+        if (binding.hasErrors()) {
+            throw new IllegalArgumentException("Processo Inválido: " + binding.getAllErrors());
+        }
+        
+        autuarProcessoCommandHandler.handle(command);
+    }
+    
+    @RequestMapping(value = "/autuacao/recursal", method = RequestMethod.POST)
+    public void autuarProcessoRecursal(@RequestBody @Valid AutuarProcessoRecursalCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
             throw new IllegalArgumentException("Processo Inválido: " + binding.getAllErrors());
         }
