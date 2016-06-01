@@ -69,7 +69,7 @@ public class ProcessoOriginarioRestResource {
     @Autowired
     private MotivoInaptidaoDtoAssembler motivoInaptidaoDtoAssembler;
 
-    @RequestMapping(value = "/autucacao", method = RequestMethod.POST)
+    @RequestMapping(value = "/autuacao", method = RequestMethod.POST)
     public void autuar(@RequestBody @Valid AutuarProcessoCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
             throw new IllegalArgumentException("Processo Inválido: " + binding.getAllErrors());
