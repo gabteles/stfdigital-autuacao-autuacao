@@ -14,7 +14,7 @@
         </userTask>
         
 		<sequenceFlow id="rejeitar" sourceRef="autuacao" targetRef="rejeitado">
-            <conditionExpression xsi:type="tFormalExpression">${transition == 'rejeitar'}</conditionExpression>
+            <conditionExpression xsi:type="tFormalExpression">${transition == 'REJEITAR'}</conditionExpression>
         </sequenceFlow>
 		
         <endEvent id="rejeitado" name="Processo Rejeitado">
@@ -28,7 +28,7 @@
 		<sequenceFlow id="autuarOrgao" sourceRef="peticaoOrgao" targetRef="autuacao" />
 		
 		<sequenceFlow id="distribuir" sourceRef="autuacao" targetRef="distribuicao">
-            <conditionExpression xsi:type="tFormalExpression">${transition == 'distribuir'}</conditionExpression>
+            <conditionExpression xsi:type="tFormalExpression">${transition == 'DISTRIBUIR'}</conditionExpression>
         </sequenceFlow>
 
         <endEvent id="distribuicao" name="Distribuir">

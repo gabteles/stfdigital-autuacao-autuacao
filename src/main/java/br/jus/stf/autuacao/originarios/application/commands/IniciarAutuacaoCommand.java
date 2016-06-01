@@ -4,8 +4,6 @@ import javax.validation.constraints.NotNull;
 
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
-import br.jus.stf.core.shared.protocolo.ProtocoloId;
-
 /**
  * @author Rodrigo Barreiros
  * 
@@ -15,15 +13,51 @@ import br.jus.stf.core.shared.protocolo.ProtocoloId;
 public class IniciarAutuacaoCommand {
     
     @NotNull
-    @ApiModelProperty(value = "O identificador do protocolo gerado durante o peticionamento digital ou o registro de uma remessa físca.", required=true)
-    private ProtocoloId protocoloId;
+    @ApiModelProperty(value = "O identificador do protocolo gerado durante o peticionamento digital ou o registro de uma remessa.", required=true)
+    private Long protocoloId;
     
-    public IniciarAutuacaoCommand(ProtocoloId protocoloId) {
+    @NotNull
+    @ApiModelProperty(value = "O identificador da classe informado no peticionamento digital ou na preautuação de uma remessa.", required=true)
+    private String classeId;
+    
+    @NotNull
+    @ApiModelProperty(value = "O tipo de processo da petição ou da remessa.", required=true)
+    private String tipoProcesso;
+    
+    @NotNull
+    @ApiModelProperty(value = "O meio de tramitação do processo.", required=true)
+    private String meioTramitacao;
+    
+    @NotNull
+    @ApiModelProperty(value = "O grau de sigilo do processo.", required=true)
+    private String sigilo;
+    
+    public IniciarAutuacaoCommand(Long protocoloId, String classeId, String tipoProcesso, String meioTramitacao, String sigilo) {
         this.protocoloId = protocoloId;
+        this.classeId = classeId;
+        this.tipoProcesso = tipoProcesso;
+        this.meioTramitacao = meioTramitacao;
+        this.sigilo = sigilo;
     }
 
-    public ProtocoloId getProtocoloId() {
+    public Long getProtocoloId() {
         return protocoloId;
+    }
+    
+    public String getClasseId() {
+    	return classeId;
+    }
+    
+    public String getTipoProcesso() {
+    	return tipoProcesso;
+    }
+    
+    public String getMeioTramitacao() {
+    	return meioTramitacao;
+    }
+    
+    public String getSigilo() {
+    	return sigilo;
     }
 
 }

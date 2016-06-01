@@ -25,9 +25,9 @@ public class NumeroProcessoRestAdapter implements NumeroProcessoAdapter {
     
 	@Override
 	public Identificacao novoNumeroProcesso(String classe) {
-		URI servicesUri = discoveryClient.getInstances("services").get(0).getUri();
+		URI servicesUri = discoveryClient.getInstances("gateway").get(0).getUri();
 		
-		URI uri = UriComponentsBuilder.fromUri(servicesUri).path("/api/identificadores").queryParam("categoria", classe).build().toUri();
+		URI uri = UriComponentsBuilder.fromUri(servicesUri).path("/services/api/identificadores").queryParam("categoria", classe).build().toUri();
 		
 		IdentificacaoDto identificacao = new RestTemplate().getForObject(uri, IdentificacaoDto.class);
     	
