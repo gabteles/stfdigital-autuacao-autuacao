@@ -81,7 +81,7 @@ public class AutuacaoDeOriginariosApplicationService {
     private TeseRepository teseRepository;
     
     @Transactional(propagation = REQUIRES_NEW)
-    public Long handle(IniciarAutuacaoCommand command) {
+    public void handle(IniciarAutuacaoCommand command) {
         ProcessoId processoId = processoRepository.nextProcessoId();
         Status status = statusAdapter.nextStatus(processoId);
         Classe classe = classeRepository.findOne(new ClasseId(command.getClasseId()));
@@ -93,7 +93,7 @@ public class AutuacaoDeOriginariosApplicationService {
         processoRepository.save(processo);
         // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
         rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_REGISTRADO_QUEUE, new ProcessoRegistrado(command.getProtocoloId(), processoId.toString()));
-        return processoId.toLong();
+        processoId.toLong();
     }
 
     @Transactional
