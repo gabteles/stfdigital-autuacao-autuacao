@@ -39,6 +39,11 @@ public class Assunto extends EntitySupport<Assunto, AssuntoId> {
 		this.assuntoPai = assuntoPai;
 	}
 	
+	
+	public String descricao() {
+		return descricao;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("%s - %s", codigo.toString(), descricao);

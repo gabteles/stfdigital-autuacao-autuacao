@@ -15,6 +15,7 @@ import br.jus.stf.autuacao.originarios.domain.model.MotivoInaptidao;
 import br.jus.stf.autuacao.originarios.domain.model.Parte;
 import br.jus.stf.autuacao.originarios.domain.model.Processo;
 import br.jus.stf.autuacao.originarios.domain.model.ProcessoOriginarioRepository;
+import br.jus.stf.autuacao.originarios.domain.model.controletese.Assunto;
 import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
@@ -65,6 +66,13 @@ public class ProcessoOriginarioRepositoryImpl extends SimpleJpaRepository<Proces
 	@Override
 	public List<MotivoInaptidao> findAllMotivoInaptidao() {
 		TypedQuery<MotivoInaptidao> query = entityManager.createQuery("FROM MotivoInaptidao motivo ORDER BY motivo.descricao", MotivoInaptidao.class);
+		
+		return query.getResultList();
+	}
+	
+	@Override
+	public List<Assunto> findAllAssuntos() {
+		TypedQuery<Assunto> query = entityManager.createQuery("FROM Assunto assunto ORDER BY assunto.descricao", Assunto.class);
 		
 		return query.getResultList();
 	}

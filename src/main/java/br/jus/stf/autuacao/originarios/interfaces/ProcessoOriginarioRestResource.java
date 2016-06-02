@@ -23,6 +23,8 @@ import br.jus.stf.autuacao.originarios.domain.RemessaAdapter;
 import br.jus.stf.autuacao.originarios.domain.model.ProcessoOriginarioRepository;
 import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseRepository;
 import br.jus.stf.autuacao.originarios.infra.ParteDto;
+import br.jus.stf.autuacao.originarios.interfaces.dto.AssuntoDto;
+import br.jus.stf.autuacao.originarios.interfaces.dto.AssuntoDtoAssembler;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ClasseDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ClasseDtoAssembler;
 import br.jus.stf.autuacao.originarios.interfaces.dto.MotivoInaptidaoDto;
@@ -68,6 +70,9 @@ public class ProcessoOriginarioRestResource {
     
     @Autowired
     private MotivoInaptidaoDtoAssembler motivoInaptidaoDtoAssembler;
+    
+    @Autowired
+    private AssuntoDtoAssembler assuntoDtoAssembler;
 
     @RequestMapping(value = "/autucacao", method = RequestMethod.POST)
     public void autuar(@RequestBody @Valid AutuarProcessoCommand command, BindingResult binding) {
@@ -121,5 +126,10 @@ public class ProcessoOriginarioRestResource {
     	return processoOriginarioRepository.findAllMotivoInaptidao().stream()
     			.map(motivo -> motivoInaptidaoDtoAssembler.toDto(motivo)).collect(Collectors.toList());
     }
+	
+	@RequestMapping(value="/assuntos", method = RequestMethod.GET)
+	public List<AssuntoDto> listarAssuntos(){
+		return processoOriginarioRepository.findAllAssuntos().stream().map(assunto -> assuntoDtoAssembler.toDto(assunto)).collect(Collectors.toList());
+	}
 
 }
