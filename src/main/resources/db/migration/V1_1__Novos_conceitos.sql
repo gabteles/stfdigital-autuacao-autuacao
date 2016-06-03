@@ -28,7 +28,7 @@ alter table autuacao.processo add column num_processo integer;
 alter table autuacao.processo add column sig_autuador varchar2(30);
 alter table autuacao.processo add column dat_autuacao date;
 alter table autuacao.processo add constraint fk_classe_proc foreign key (sig_classe) references autuacao.classe(sig_classe);
-alter table autuacao.processo add constraint uk_proc_sig_classe unique (sig_classe, num_processo);
+--alter table autuacao.processo add constraint uk_proc_sig_classe unique (sig_classe, NVL(num_processo, seq_processo));
 
 create table autuacao.rejeicao (seq_processo number not null, dsc_motivo varchar2(1000) not null, constraint pk_rejeicao primary key (seq_processo));
 alter table autuacao.rejeicao add constraint fk_processo_reje foreign key (seq_processo) references autuacao.processo(seq_processo);

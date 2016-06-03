@@ -24,8 +24,8 @@ import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
 public class ProcessoOriginarioIntegrationTests extends IntegrationTestsSupport {
 	
 	@Test
-	public void autuarProcesso() throws Exception {
-		loadDataTests("autuarProcesso.sql");
+	public void autuarRemessa() throws Exception {
+		loadDataTests("autuarRemessaOriginario.sql");
 		
 		String processo = "{\"processoId\":@processoId,\"classeId\":\"ADO\",\"poloAtivo\":[{\"apresentacao\":\"Maria\",\"pessoa\":1},{\"apresentacao\":\"João\"}],\"poloPassivo\":[{\"apresentacao\":\"Antônia\",\"pessoa\":3}]}";
 		String processoId = "9000";
@@ -35,10 +35,32 @@ public class ProcessoOriginarioIntegrationTests extends IntegrationTestsSupport 
 	}
 	
 	@Test
-	public void rejeitarProcesso() throws Exception {
-		loadDataTests("rejeitarProcesso.sql");
+	public void rejeitarRemessa() throws Exception {
+		loadDataTests("rejeitarRemessaOriginario.sql");
 		
 		String processoId = "9001";
+		String processo = "{\"processoId\":@processoId,\"motivo\":\"Protocolo já foi autuado.\"}";
+		ResultActions result = mockMvc.perform(post("/api/processos/rejeicao").contentType(APPLICATION_JSON).content(processo.replace("@processoId", processoId)));
+		
+		result.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void autuarPeticao() throws Exception {
+		loadDataTests("autuarPeticaoOriginario.sql");
+		
+		String processo = "{\"processoId\":@processoId,\"classeId\":\"ADO\",\"poloAtivo\":[{\"apresentacao\":\"Carlos\",\"pessoa\":1},{\"apresentacao\":\"Marta\"}],\"poloPassivo\":[{\"apresentacao\":\"Pedro\",\"pessoa\":3}]}";
+		String processoId = "9002";
+		ResultActions result = mockMvc.perform(post("/api/processos/autuacao").contentType(APPLICATION_JSON).content(processo.replace("@processoId", processoId)));
+		
+		result.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void rejeitarPeticao() throws Exception {
+		loadDataTests("rejeitarPeticaoOriginario.sql");
+		
+		String processoId = "9003";
 		String processo = "{\"processoId\":@processoId,\"motivo\":\"Protocolo já foi autuado.\"}";
 		ResultActions result = mockMvc.perform(post("/api/processos/rejeicao").contentType(APPLICATION_JSON).content(processo.replace("@processoId", processoId)));
 		
