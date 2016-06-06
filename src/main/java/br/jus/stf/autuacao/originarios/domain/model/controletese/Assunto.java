@@ -43,6 +43,10 @@ public class Assunto extends EntitySupport<Assunto, AssuntoId> {
 	public String descricao() {
 		return descricao;
 	}
+	
+	public Assunto assuntoPai() {
+		return assuntoPai;
+	}
 
 	@Override
 	public String toString() {

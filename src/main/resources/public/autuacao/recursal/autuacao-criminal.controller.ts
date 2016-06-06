@@ -44,16 +44,10 @@ export class AutuacaoCriminalController {
 	
     constructor(private $state: IStateService, private autuacaoCriminalService: AutuacaoCriminalService,
     		private $stateParams : IStateParamService, private properties, private $scope : IScope, private $http : IHttpService ) {
-
-			/*$scope.$watch(() => {return this.assunto;}, (novo : Assunto)  => {
-				if (novo){
-					this.adicionarAssuntoNaLista(novo);
-				}
-			});*/
     }
     
     public pesquisaAssuntos(assunto : string) : void{
-    	this.$http.get(this.properties.apiUrl + '/autuacao/api/processos/assuntos', {params: {'assunto' : assunto}})
+    	this.$http.get(this.properties.apiUrl + '/autuacao/api/processos/assuntos', {params: {'termo' : assunto}})
     		.then((response : ng.IHttpPromiseCallbackArg<Assunto[]>) => {
     			this.assuntos = response.data;
     		});

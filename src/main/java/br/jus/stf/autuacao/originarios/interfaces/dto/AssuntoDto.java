@@ -7,13 +7,16 @@ package br.jus.stf.autuacao.originarios.interfaces.dto;
  */
 public class AssuntoDto {
 	
-	public String codigo;
+	private String codigo;
 	
 	private String descricao;
 	
-	public AssuntoDto(String codigo, String descricao) {
+	private int nivel;
+	
+	public AssuntoDto(String codigo, String descricao, int nivel ) {
 		this.codigo = codigo;
 		this.descricao = descricao;
+		this.nivel = nivel;
 	}
 
 	public String getCodigo() {
@@ -22,6 +25,10 @@ public class AssuntoDto {
 
 	public String getDescricao() {
 		return descricao;
+	}
+
+	public int getNivel() {
+		return nivel;
 	}
 
 }

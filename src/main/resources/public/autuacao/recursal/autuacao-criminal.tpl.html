@@ -89,11 +89,11 @@
 
                     <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
 <!--                             <label>pesquisa de assuntos</label> -->
-                            	<ui-select ng-model="autuacao.assunto" on-select="autuacao.adicionarAssuntoNaLista($item)" theme="select2" ng-disabled="disabled" style="min-width: 300px;">
+                            	<ui-select ng-model="autuacao.assunto" on-select="autuacao.adicionarAssuntoNaLista($item)" theme="select2" ng-disabled="disabled" style="min-width: 600px;">
 								    <ui-select-match placeholder="Selecione o códido ou a descrição do assunto">{{$select.selected.codigo + '-' + $select.selected.descricao}}</ui-select-match>
-								    <ui-select-choices refresh="autuacao.pesquisaAssuntos($select.search)" repeat="codigo as assunto in autuacao.assuntos">
-								    	<div style="padding-left: {{15 * assunto.treelevel}}px"> 
-								    		<div ng-bind-html="assunto.codigo +'-' + assunto.descricao | highlight: $select.search"></div>
+								    <ui-select-choices refresh="autuacao.pesquisaAssuntos($select.search)" minimum-input-length="3" repeat="codigo as assunto in autuacao.assuntos">
+								    	<div style="padding-left: {{15 * assunto.nivel}}px"> 
+								    		<div ng-bind-html="assunto.codigo +'-' + assunto.descricao"></div>
 								      	</div>
 								    </ui-select-choices>
 								</ui-select>
