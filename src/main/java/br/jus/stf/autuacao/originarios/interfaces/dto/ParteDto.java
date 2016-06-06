@@ -1,4 +1,4 @@
-package br.jus.stf.autuacao.originarios.infra;
+package br.jus.stf.autuacao.originarios.interfaces.dto;
 
 public class ParteDto {
 	
