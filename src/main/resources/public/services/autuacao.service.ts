@@ -30,16 +30,35 @@ export class AutuarProcessoCommand {
  */
 export class AutuarProcessoRecursalCommand {
     public processoId: number;
-    public assuntos: Array<Assunto>;
+    public assuntos: Array<string>;
     public poloAtivo: Array<string>;
     public poloPassivo: Array<string>;
     
-    constructor(processoId: number, assuntos: Array<Assunto>, poloAtivo: Array<string>, poloPassivo: Array<string>) {
+    constructor(processoId: number, assuntos: Array<string>, poloAtivo: Array<string>, poloPassivo: Array<string>) {
         this.processoId = processoId;
         this.assuntos = assuntos;
         this.poloAtivo = poloAtivo;
         this.poloPassivo = poloPassivo;
     }
+}
+
+/*
+ * Comando usado para revisar uma análise de pressupostos formais.
+ * @author anderson.araujo
+ * @since 33/05/2016 
+ */
+export class RevisarAnalisePressupostosCommand {
+    public processoId: number; 
+    public classificacao: boolean;
+    public motivos: Array<number>;
+    public observacao: string
+    
+    constructor(processoId: number, classificacao: boolean, motivos: Array<number>, observacao: string) { 
+        this.processoId = processoId;
+        this.classificacao = classificacao;
+        this.motivos = motivos;
+        this.observacao = observacao;
+    }    
 }
 
 /*
@@ -53,15 +72,15 @@ export class AutuacaoService {
 
     /** @ngInject **/
     constructor(private $http: IHttpService, private properties) { }
-    /*
+    
     public consultarProcesso(processoId : number) : IPromise<Processo> {
         return this.$http.get(this.properties.url + ":" + this.properties.port + AutuacaoService.url + '/processo/' + processoId)
                 .then((response: IHttpPromiseCallbackArg<Processo>) => { 
                     return response.data; 
                 });
     }
-    */
     
+    /*
     public consultarProcesso(processoId : number) : Processo {        
         let assuntos = new Array<Assunto>();
         assuntos.push(new Assunto("2620", "Rescisão de contrato de trabalho", null));
@@ -72,7 +91,7 @@ export class AutuacaoService {
         
         return new Processo(1, "RE 123/2016", teses, assuntos);
     }
-    
+    */
     public autuarProcessoOriginario(processoId: number, classeId: string, poloAtivo: Array<string>, 
         poloPassivo: Array<string>): IPromise<any>{
         let cmd = new AutuarProcessoCommand(processoId, classeId, poloAtivo, poloPassivo);
@@ -88,8 +107,28 @@ export class AutuacaoService {
      */
     public autuarProcessoRecursal(processoId: number, poloAtivo: Array<string>, poloPassivo: Array<string>, 
         assuntos: Array<Assunto>): IPromise<any> {
-        let cmd = new AutuarProcessoRecursalCommand(processoId, assuntos, poloAtivo, poloPassivo);
-        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + '/autuacao/recursal', cmd);
+        let listaAssuntos = new Array<string>();    
+        
+        assuntos.forEach((assunto) => {
+            listaAssuntos.push(assunto.codigo);
+        });
+        
+        let cmd = new AutuarProcessoRecursalCommand(processoId, listaAssuntos, poloAtivo, poloPassivo);
+        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + 
+            "/autuacao/recursal", cmd);
+    }
+    
+    /*
+     * Envia para o back-end um comando para a realização de uma revisão de uma dada análise de pressupostos formais.
+     * @param processoId Id do processo.
+     * @param apto Se true indica que o processo está ápto.
+     * @param motivos Motivos da análise.
+     * @param observacao Observação feita pelo revisor da análise.
+     */
+    public revisarAnalisePressupostos(processoId: number, apto: boolean, motivos: Array<number>, observacao: string): IPromise<any> {
+        let cmd = new RevisarAnalisePressupostosCommand(processoId, apto, motivos, observacao);
+        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + 
+            "/autuacao/recursal/revisao-analise-pressupostos", cmd);
     }
 }
 
