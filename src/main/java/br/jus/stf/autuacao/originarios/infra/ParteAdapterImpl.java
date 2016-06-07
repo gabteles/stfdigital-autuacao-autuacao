@@ -1,6 +1,8 @@
 package br.jus.stf.autuacao.originarios.infra;
 
 import java.net.URI;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -22,16 +24,13 @@ public class ParteAdapterImpl implements ParteAdapter {
 	DiscoveryClient discoveryClient;
 
 	@Override
-	public ParteDto consultar(ProtocoloId protocoloId) {
+	public List<ParteDto> consultar(ProtocoloId protocoloId) {
 		return discoveryClient.getInstances("peticionamento").stream()
 				.findAny()
 				.map(instance -> {
 					URI servicesUri = instance.getUri();
 					URI uri = UriComponentsBuilder.fromUri(servicesUri).path("/api/peticoes/{id}/envolvidos").queryParam("id", protocoloId.toLong()).build().toUri();
-					return restTemplate.getForObject(uri, ParteDto.class); 
-				}).orElse(new ParteDto());
+					return Arrays.asList(restTemplate.getForObject(uri, ParteDto[].class)); 
+				}).orElseThrow(IllegalArgumentException::new);
 	}
-	
-	
-
 }

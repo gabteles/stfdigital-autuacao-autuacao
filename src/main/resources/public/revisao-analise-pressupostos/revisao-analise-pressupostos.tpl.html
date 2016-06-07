@@ -12,10 +12,10 @@
     							{{ vm.classificacao }}
   							</md-switch>
                         </md-input-container>
-                        <md-input-container flex="60" ng-show="analise.classificacao == 'inapto'">
+                        <md-input-container flex="60" ng-show="vm.classificacao == 'inapto'">
                             <label>Motivo</label>
-                             <md-select multiple ng-model="vm.motivosSelecionados" id="motivo">
-                                <md-option ng-repeat="motivo in vm.motivos" value="{{motivo.id}}">
+                             <md-select multiple ng-model="vm.motivosInaptidaoSelecionados" id="cboMotivo">
+                                <md-option ng-repeat="motivo in vm.motivosInaptidao" value="{{motivo.id}}">
                                     {{motivo.descricao}}
                                 </md-option>
                             </md-select>
@@ -27,8 +27,8 @@
           					<textarea ng-model="vm.observacao" md-maxlength="150" rows="5" md-select-on-focus id="observacao"></textarea>
         				</md-input-container>
                     </div>
-                    <md-button type="button" class="md-raised md-accent" id="btnRegistrarAnalise" aria-label="Submit" 
-                    	ng-disabled="basicForm.$invalid || basicForm.$pristine" ng-click ="vm.revisarAnalisePressupostos()" >
+                    <md-button type="button" class="md-raised md-accent" id="btnRevisarAnalisePressupostos" aria-label="Submit" 
+                    	ng-click ="vm.revisarAnalisePressupostos()" >
                         	Revisar Analisar de Pressupostos
                     </md-button>
                 </form>

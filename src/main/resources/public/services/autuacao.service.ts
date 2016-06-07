@@ -2,7 +2,7 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 import autuacaoServices from "./services.module";
-import {Tese, Assunto, Processo} from "./model";
+import {Tese, Assunto, Processo, MotivoInaptidao} from "./model";
 
 /*
  * Comando usado para autuar um processo originário.
@@ -68,13 +68,13 @@ export class RevisarAnalisePressupostosCommand {
  */
 export class AutuacaoService {
 
-    private static url: string = '/autuacao/api/processos';
+    private static url: string = "/autuacao/api/processos";
 
     /** @ngInject **/
     constructor(private $http: IHttpService, private properties) { }
     
     public consultarProcesso(processoId : number) : IPromise<Processo> {
-        return this.$http.get(this.properties.url + ":" + this.properties.port + AutuacaoService.url + '/processo/' + processoId)
+        return this.$http.get(this.properties.url + ":" + this.properties.port + AutuacaoService.url + "/processo/" + processoId)
                 .then((response: IHttpPromiseCallbackArg<Processo>) => { 
                     return response.data; 
                 });
@@ -95,7 +95,7 @@ export class AutuacaoService {
     public autuarProcessoOriginario(processoId: number, classeId: string, poloAtivo: Array<string>, 
         poloPassivo: Array<string>): IPromise<any>{
         let cmd = new AutuarProcessoCommand(processoId, classeId, poloAtivo, poloPassivo);
-        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + '/autuacao', cmd);
+        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + "/autuacao", cmd);
     }
     
     /*
@@ -127,9 +127,19 @@ export class AutuacaoService {
      */
     public revisarAnalisePressupostos(processoId: number, apto: boolean, motivos: Array<number>, observacao: string): IPromise<any> {
         let cmd = new RevisarAnalisePressupostosCommand(processoId, apto, motivos, observacao);
-        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + 
-            "/autuacao/recursal/revisao-analise-pressupostos", cmd);
+        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + "/revisao-analise-pressupostos", cmd);
     }
+    
+    /**
+     * Retorna a lista de Motivos de inaptidão de processos.
+     * @return Lista de motivos de inaptidão de processos.
+     */
+	public listarMotivosInaptidao() : IPromise<MotivoInaptidao[]> {
+		return this.$http.get(this.properties.url + ":" + this.properties.port + AutuacaoService.url + "/motivoinaptidao")
+        .then((response: IHttpPromiseCallbackArg<MotivoInaptidao[]>) => { 
+            return response.data; 
+        });
+	}
 }
 
 autuacaoServices.service("app.novo-processo.autuacao-services.AutuacaoService", AutuacaoService);

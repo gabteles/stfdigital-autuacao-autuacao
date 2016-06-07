@@ -1,7 +1,7 @@
 import IStateService = angular.ui.IStateService;
 import IStateParamService = angular.ui.IStateParamsService;
 import revisaoAnalisePressupostos from "./revisao-analise-pressupostos.module";
-import {Tese, Assunto, Processo} from "../services/model";
+import {Tese, Assunto, Processo, MotivoInaptidao} from "../services/model";
 import {AutuacaoService} from "../services/autuacao.service";
 
 export class RevisaoAnalisePressupostosController {
@@ -10,21 +10,33 @@ export class RevisaoAnalisePressupostosController {
 	public processoId: number;
     public apto: boolean = false;
 	public classificacao: string;
-	public motivosSelecionados: Array<number>;
+	public motivosInaptidaoSelecionados: Array<number>;
+	public motivosInaptidao: Array<MotivoInaptidao>;
 	public observacao: string;
-	public peticao: Object = {};
     
     /** @ngInject **/
     static $inject = ["$state", "app.novo-processo.autuacao-services.AutuacaoService"];
     
     constructor(private $state: IStateService, private autuacaoService: AutuacaoService){
-        this.processoId = 1; //Alterar para o valor recebido como parâmetro.
+        //Mock
+		this.autuacaoService.listarMotivosInaptidao().then((motivos) => {
+			this.motivosInaptidao = motivos;
+			this.processoId = 1; //Alterar para o valor recebido como parâmetro.
+			this.motivosInaptidaoSelecionados = [2, 3];
+			this.apto = true;
+			this.classificacao = "inapto";
+			this.observacao = "Bla bla bla bla";
+		});		
     }
     
-    public registrarAnalise(): void {
-	    this.autuacaoService.revisarAnalisePressupostos(this.processoId, this.apto, this.motivosSelecionados, this.observacao) 
-	        .then(() => {
-	            this.$state.go("app.tarefas.minhas-tarefas", {}, { reload: true });
+	/**
+	 * Realiza a revisão da análise de pressupostos formais realizada. 
+	 */
+    public revisarAnalisePressupostos(): void {
+		
+	    this.autuacaoService.revisarAnalisePressupostos(this.processoId, this.apto, this.motivosInaptidaoSelecionados, 
+			this.observacao).then(() => { 
+				this.$state.go("app.tarefas.minhas-tarefas", {}, { reload: true });
 	    });
 	};
 }

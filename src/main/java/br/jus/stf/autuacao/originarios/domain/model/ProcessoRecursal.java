@@ -105,6 +105,10 @@ public class ProcessoRecursal extends Processo {
 		this.assuntos.addAll(assuntos);
 	}
     
+    public Set<MotivoInaptidao> motivosInaptidao(){
+    	return this.analisePressupostoFormal.motivosInaptidao();
+    }
+    
     @Override
     public TipoProcesso tipo() {
     	return TipoProcesso.RECURSAL;
