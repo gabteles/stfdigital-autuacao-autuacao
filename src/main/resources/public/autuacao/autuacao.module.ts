@@ -1,8 +1,7 @@
 import ITranslatePartialLoaderProvider = angular.translate.ITranslatePartialLoaderProvider;
 import IStateProvider = angular.ui.IStateProvider;
 import IModule = angular.IModule;
-//import {AutuacaoService} from "./autuacao.service";
-import {ClasseService} from "./classe.service";
+import {AutuacaoService} from "../services/autuacao.service";
 
 /** @ngInject **/
 function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider,
@@ -21,13 +20,14 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
             }
         },
         resolve : {
-            classes : ['app.novo-processo.autuacao.ClasseService', (classeService: ClasseService) => {
-                return classeService.listar();
+            classes : ['app.novo-processo.autuacao-services.AutuacaoService', (autuacaoService: AutuacaoService) => {
+                return autuacaoService.listarClasses();
             }]
         }
     });
 }
 
-let autuacao: IModule = angular.module('app.novo-processo.autuacao', ['app.novo-processo', 'app.constants']);
+let autuacao: IModule = angular.module('app.novo-processo.autuacao', 
+    ['app.novo-processo.autuacao-services', 'app.novo-processo', 'app.constants']);
 autuacao.config(config);
 export default autuacao;

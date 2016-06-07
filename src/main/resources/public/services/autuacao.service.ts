@@ -2,7 +2,7 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 import autuacaoServices from "./services.module";
-import {Tese, Assunto, Processo, MotivoInaptidao} from "./model";
+import {Tese, Assunto, Processo, MotivoInaptidao, Classe} from "./model";
 
 /*
  * Comando usado para autuar um processo originário.
@@ -140,6 +140,17 @@ export class AutuacaoService {
             return response.data; 
         });
 	}
+    
+    /**
+     * Retorna as classes processuais.
+     * @return Array de classes.
+     */
+    public listarClasses() : IPromise<Classe[]> {
+        return this.$http.get(this.properties.url + ":" + this.properties.port + "/autuacao/api/processos/classe")
+            .then((response: IHttpPromiseCallbackArg<Classe[]>) => { 
+                    return response.data; 
+            });
+    }
 }
 
 autuacaoServices.service("app.novo-processo.autuacao-services.AutuacaoService", AutuacaoService);
