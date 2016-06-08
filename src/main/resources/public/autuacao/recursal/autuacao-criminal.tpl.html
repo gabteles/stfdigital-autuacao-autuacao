@@ -3,8 +3,8 @@
     <!-- CONTENT -->
     <div class="content" layout="column">
 
-        <div class="md-title mt-10">Preautuação</div>
-        <div class="pb-16">Informe a preferência e a motição da petição</div>
+        <div class="md-title mt-10">Autuação Criminal Eleitoral</div>
+        <div class="pb-16">Informe as partes e o assunto para o processo.</div>
 
         <div layout="row">
             <div class="form-wrapper md-whiteframe-1dp" flex="100">
@@ -88,9 +88,9 @@
                     </div>
 
                     <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
-                    	<ui-select ng-model="autuacao.assunto" on-select="autuacao.adicionarAssuntoNaLista($item)" theme="select2" ng-disabled="disabled" style="min-width: 600px;">
-						    <ui-select-match placeholder="Selecione o códido ou a descrição do assunto">{{$select.selected.codigo + '-' + $select.selected.descricao}}</ui-select-match>
-						    <ui-select-choices refresh="autuacao.pesquisaAssuntos($select.search)" minimum-input-length="3" repeat="codigo as assunto in autuacao.assuntos">
+                    	<ui-select ng-model="autuacao.assunto" on-select="autuacao.adicionarAssuntoNaLista($item)" theme="select2" ng-disabled="disabled" style="min-width: 600px;" id="assunto">
+						    <ui-select-match placeholder="Selecione o códido ou a descrição do assunto" id="assuntoUiSelect">{{$select.selected.codigo + '-' + $select.selected.descricao}}</ui-select-match>
+						    <ui-select-choices refresh="autuacao.pesquisaAssuntos($select.search)" minimum-input-length="3" repeat="codigo as assunto in autuacao.assuntos" id="assuntoUiChoice">
 						    	<div style="padding-left: {{15 * assunto.nivel}}px"> 
 						    		<div ng-bind-html="assunto.codigo +'-' + assunto.descricao"></div>
 						      	</div>
