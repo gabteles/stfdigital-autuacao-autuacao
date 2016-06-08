@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
+
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -26,13 +26,17 @@ import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoComman
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoCriminalCommand;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoRecursalCommand;
 import br.jus.stf.autuacao.originarios.application.commands.RejeitarProcessoCommand;
+import br.jus.stf.autuacao.originarios.application.commands.RevisarAnalisePressupostosCommand;
 import br.jus.stf.autuacao.originarios.domain.ParteAdapter;
 import br.jus.stf.autuacao.originarios.domain.RemessaAdapter;
+import br.jus.stf.autuacao.originarios.domain.model.Processo;
 import br.jus.stf.autuacao.originarios.domain.model.ProcessoOriginarioRepository;
+import br.jus.stf.autuacao.originarios.domain.model.ProcessoRecursal;
 import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseRepository;
 import br.jus.stf.autuacao.originarios.domain.model.controletese.Assunto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.AssuntoDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.AssuntoDtoAssembler;
+import br.jus.stf.autuacao.originarios.infra.RemessaDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ClasseDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ClasseDtoAssembler;
 import br.jus.stf.autuacao.originarios.interfaces.dto.MotivoInaptidaoDto;
@@ -120,6 +124,15 @@ public class ProcessoOriginarioRestResource {
         autuarProcessoCommandHandler.handle(command);
     }
     
+    @RequestMapping(value = "/revisao-analise-pressupostos", method = RequestMethod.POST)
+    public void revisarAnalisePressupostos(@RequestBody @Valid RevisarAnalisePressupostosCommand command, BindingResult binding) {
+        if (binding.hasErrors()) {
+            throw new IllegalArgumentException("Processo Inválido: " + binding.getAllErrors());
+        }
+        
+        autuarProcessoCommandHandler.handle(command);
+    }
+    
     @RequestMapping(value = "/rejeicao", method = RequestMethod.POST)
     public void rejeitar(@RequestBody @Valid RejeitarProcessoCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
@@ -137,11 +150,22 @@ public class ProcessoOriginarioRestResource {
 	
 	@RequestMapping(value="/processo/{processoId}", method = RequestMethod.GET)
     public ProcessoDto consultar(@PathVariable("processoId") Long id){
-		ProcessoId processoId = new ProcessoId(id);
-		return Optional.ofNullable(processoOriginarioRepository.findOne(processoId))
-				.map(processo -> processoDtoAssembler.toDto(processoId.toLong(), remessaAdapter.consultar(processo.protocoloId()), 
-						parteAdapter.consultar(processo.protocoloId())))
-				.orElseThrow(IllegalArgumentException::new);
+		Processo processo = processoOriginarioRepository.findOne(new ProcessoId(id));
+		
+		if (processo == null){
+			throw new IllegalArgumentException("Processo não encontrado");
+		}
+		
+		List<ParteDto> partes = parteAdapter.consultar(processo.protocoloId());
+		RemessaDto remessa = remessaAdapter.consultar(processo.protocoloId());
+		List<MotivoInaptidaoDto> motivosInaptidao = new ArrayList<MotivoInaptidaoDto>();
+		
+		if (processo instanceof ProcessoRecursal){
+			ProcessoRecursal processoRecursal = (ProcessoRecursal) processo;
+			processoRecursal.motivosInaptidao().forEach(motivo -> new MotivoInaptidaoDto(motivo.identity(), motivo.descricao()));
+		}
+		
+		return processoDtoAssembler.toDto(processo.identity().toLong(), remessa, partes, motivosInaptidao);
     }
 	
 	@RequestMapping(value = "/{id}/parte", method = RequestMethod.GET)

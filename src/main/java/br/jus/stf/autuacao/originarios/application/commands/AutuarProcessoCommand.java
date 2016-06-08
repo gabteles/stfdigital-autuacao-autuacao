@@ -10,8 +10,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
-import br.jus.stf.autuacao.originarios.interfaces.dto.AutuarParteCommand;
-
 /**
  * @author Rodrigo Barreiros
  * 

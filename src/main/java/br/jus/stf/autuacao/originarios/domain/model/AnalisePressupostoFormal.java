@@ -51,5 +51,9 @@ public class AnalisePressupostoFormal extends ValueObjectSupport<AnalisePressupo
 		this.observacao = observacao;
 		this.motivacaoInaptidao = Optional.ofNullable(motivacaoInaptidao).orElse(new HashSet<>(0));
 	}
+	
+	public Set<MotivoInaptidao> motivosInaptidao(){
+		return this.motivosInaptidao();
+	}
 
 }

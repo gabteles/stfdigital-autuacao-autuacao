@@ -1,5 +1,7 @@
 package br.jus.stf.autuacao.originarios.interfaces.dto;
 
+import java.util.List;
+
 import br.jus.stf.autuacao.originarios.infra.RemessaDto;
 
 /**
@@ -12,12 +14,21 @@ public class ProcessoDto {
 	
 	private RemessaDto remessa;
 	
-	private ParteDto partes;
+	private List<ParteDto> partes;
 	
-	public ProcessoDto(Long processoId, RemessaDto remessaDto, ParteDto partes) {
+	private List<MotivoInaptidaoDto> motivosInaptidao;
+	
+	public ProcessoDto(Long processoId, RemessaDto remessaDto, List<ParteDto> partes) {
 		this.processoId = processoId;
 		this.remessa = remessaDto;
 		this.partes = partes;
+	}
+	
+	public ProcessoDto(Long processoId, RemessaDto remessaDto, List<ParteDto> partes, List<MotivoInaptidaoDto> motivosInaptidao) {
+		this.processoId = processoId;
+		this.remessa = remessaDto;
+		this.partes = partes;
+		this.motivosInaptidao = motivosInaptidao;
 	}
 	
 	public Long getProcessoId() {
@@ -28,20 +39,11 @@ public class ProcessoDto {
 		return remessa;
 	}
 
-	public void setRemessa(RemessaDto remessaDto) {
-		this.remessa = remessaDto;
-	}
-
-	public ParteDto getPartes() {
+	public List<ParteDto> getPartes() {
 		return partes;
 	}
-
-	public void setPartes(ParteDto partes) {
-		this.partes = partes;
+	
+	public List<MotivoInaptidaoDto> getMotivoInaptidao() {
+		return motivosInaptidao;
 	}
-	
-	
-
-	
- 
 }

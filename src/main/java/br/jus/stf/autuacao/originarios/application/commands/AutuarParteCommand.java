@@ -1,4 +1,4 @@
-package br.jus.stf.autuacao.originarios.interfaces.dto;
+package br.jus.stf.autuacao.originarios.application.commands;
 
 /**
  * @author Rafael Alencar

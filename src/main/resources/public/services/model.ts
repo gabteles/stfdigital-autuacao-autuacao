@@ -67,3 +67,13 @@ export class Processo {
         this.assuntos = assuntos;
     }
 }
+
+export class MotivoInaptidao {
+	public id: number;
+    public descricao: string;
+    
+    constructor(id: number, descricao: string) {
+        this.id = id;
+        this.descricao = descricao;
+    }
+}

@@ -18,6 +18,7 @@ import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoCrimin
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoRecursalCommand;
 import br.jus.stf.autuacao.originarios.application.commands.IniciarAutuacaoCommand;
 import br.jus.stf.autuacao.originarios.application.commands.RejeitarProcessoCommand;
+import br.jus.stf.autuacao.originarios.application.commands.RevisarAnalisePressupostosCommand;
 import br.jus.stf.autuacao.originarios.domain.NumeroProcessoAdapter;
 import br.jus.stf.autuacao.originarios.domain.PessoaAdapter;
 import br.jus.stf.autuacao.originarios.domain.ProcessoFactory;
@@ -164,6 +165,28 @@ public class AutuacaoDeOriginariosApplicationService {
         processoRepository.save(processoRecursal);
         // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
         rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processoRecursal.identity().toString(), processoRecursal.toString()));
+    }
+    
+    @Transactional
+    public void handle(RevisarAnalisePressupostosCommand command) {
+        /*
+         * O código abaixo está incompleto. Falta implementar a o método de revisão da análise no domínio. Além disso, há a necessidade
+         * de fazer pequenas adaptações para que ela funcione corretamente com o mecanismo de ações a ser implementado. 
+         * 
+         */
+    	
+    	/*
+    	ProcessoRecursal processoRecursal = (ProcessoRecursal) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
+        Set<MotivoInaptidao> motivos = Optional.ofNullable(command.getMotivos())
+        		//TODO Creio que o processo recursal deveria usar o seu próprio processoRecusalRepository
+				.map(motvs -> motvs.stream().map(motivo -> processoRepository.findOneMotivoInaptidao(motivo))
+						.collect(Collectors.toCollection(() -> new HashSet<MotivoInaptidao>()))).get();
+        //Falta implementar no model o método de revisão.
+        //processoRecursal.analisarPressupostosFormais(command.isAptidao(), command.getObservacao(), motivos);
+        processoRepository.save(processoRecursal);
+        // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
+        rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processoRecursal.identity().toString(), processoRecursal.toString()));
+        */
     }
     
     @Transactional

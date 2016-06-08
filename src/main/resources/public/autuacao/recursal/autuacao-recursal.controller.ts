@@ -33,20 +33,24 @@ export class AutuacaoRecursalController {
     static $inject = ["$state", "$mdDialog", "app.novo-processo.autuacao-services.AutuacaoService"];
     
     constructor(private $state: IStateService, private $mdDialog: IDialogService, private autuacaoService: AutuacaoService){
-        /*
+        
         autuacaoService.consultarProcesso(1).then((processo: Processo) => {
-			this.numero = processo.numero;
+			this.numeroProcesso = processo.numero;
             this.teses = processo.teses;
             this.assuntos = processo.assuntos;
+            this.poloAtivo = new Array<string>();
+            this.poloPassivo = new Array<string>();
+            this.processoId = 1;
 		});
-        */
+        
+        /*
         let processo = this.autuacaoService.consultarProcesso(1);
         this.numeroProcesso = processo.numero;
         this.teses = processo.teses;
         this.assuntos = processo.assuntos;
         this.poloAtivo = new Array<string>();
         this.poloPassivo = new Array<string>();
-        this.processoId = 1;
+        this.processoId = 1;*/
     }
     
     /**
