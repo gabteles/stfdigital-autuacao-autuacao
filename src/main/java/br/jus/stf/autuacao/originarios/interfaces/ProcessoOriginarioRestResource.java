@@ -1,11 +1,11 @@
 package br.jus.stf.autuacao.originarios.interfaces;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.jus.stf.autuacao.originarios.application.AutuacaoDeOriginariosApplicationService;
 import br.jus.stf.autuacao.originarios.application.commands.AnalisarProcessoCommand;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoCommand;
+import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoCriminalCommand;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoRecursalCommand;
 import br.jus.stf.autuacao.originarios.application.commands.RejeitarProcessoCommand;
 import br.jus.stf.autuacao.originarios.domain.ParteAdapter;
@@ -101,6 +102,15 @@ public class ProcessoOriginarioRestResource {
         autuarProcessoCommandHandler.handle(command);
     }
     
+    @RequestMapping(value = "/autuacao/criminal", method = RequestMethod.POST)
+    public void autuarProcessoCriminalEleitoral(@RequestBody @Valid AutuarProcessoCriminalCommand command, BindingResult binding) {
+        if (binding.hasErrors()) {
+            throw new IllegalArgumentException("Processo Inválido: " + binding.getAllErrors());
+        }
+        
+        autuarProcessoCommandHandler.handle(command);
+    }
+    
     @RequestMapping(value = "/analise-pressupostos", method = RequestMethod.POST)
     public void analisarPressupostos(@RequestBody @Valid AnalisarProcessoCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
@@ -156,7 +166,7 @@ public class ProcessoOriginarioRestResource {
 				assuntosDto.add((assuntoDtoAssembler.toDto(assunto, 0)));					
 			}
 		}else{
-			List<Assunto> assuntos = processoOriginarioRepository.listarAssuntos(termo.toUpperCase());
+			List<Assunto> assuntos = desnormalizar(processoOriginarioRepository.listarAssuntos(termo.toUpperCase()));
 			List<AssuntoDto> assuntosRaizes = new ArrayList<>();
 			Iterator<Assunto> iterator = assuntos.iterator();
 			while (iterator.hasNext()){
@@ -174,6 +184,22 @@ public class ProcessoOriginarioRestResource {
 		return assuntosFinais;
 	}
 	
+	private List<Assunto> desnormalizar(List<Assunto> lista) {
+		Set<Assunto> assuntos = new HashSet<>();
+		for (Assunto ass: lista) {
+			assuntos.add(ass);
+			desnormalizarItem(assuntos, ass);
+		}
+		return new ArrayList<>(assuntos);
+	}
+
+	private void desnormalizarItem(Set<Assunto> assuntos, Assunto ass) {
+		if (ass.assuntoPai() != null) {
+			assuntos.add(ass.assuntoPai());
+			desnormalizarItem(assuntos, ass.assuntoPai());
+		}
+	}
+
 	private void identaAssuntos (List<AssuntoDto> listaFinal, List<Assunto> assuntos, List<AssuntoDto> listaDto,  int nivel){
 		if (assuntos.size() == 0){
 			return;
@@ -191,7 +217,7 @@ public class ProcessoOriginarioRestResource {
 				}
 			}
 		}
-		identaAssuntos(listaFinal, assuntos, proximaLista, nivel++ );
+		identaAssuntos(listaFinal, assuntos, proximaLista, ++nivel );
 	}
 
 }

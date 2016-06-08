@@ -43,6 +43,25 @@ export class AutuarProcessoRecursalCommand {
 }
 
 /*
+ * Comando usado para autuar um processo recursal criminal e eleitoral.
+ * @author viniciusk
+ * @since 07/06/2016 
+ */
+export class AutuarProcessoCriminalCommand {
+    public processoId: number;
+    public poloAtivo: Array<string>;
+    public poloPassivo: Array<string>;
+    public assuntos: Array<string>;
+    
+    constructor(processoId: number, poloAtivo: Array<string>, poloPassivo: Array<string>, assuntos: Array<string>) {
+        this.processoId = processoId;
+        this.poloAtivo = poloAtivo;
+        this.poloPassivo = poloPassivo;
+        this.assuntos = assuntos;
+    }
+}
+
+/*
  * Serviço de autuação de processos.
  * @author anderson.araujo
  * @since 31/05/2016
@@ -91,6 +110,18 @@ export class AutuacaoService {
         let cmd = new AutuarProcessoRecursalCommand(processoId, assuntos, poloAtivo, poloPassivo);
         return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + '/autuacao/recursal', cmd);
     }
+        
+    /*
+     * Realiza a atuação de um processo recursal criminal / eleitoral.
+     * @param processoId Id do processo.
+     * @param poloAtivo Partes do polo ativo do processo.
+     * @param poloPassivo Partes do polo passivo do processo.
+     * @param assuntos Assuntos relacionados ao processo.
+     */
+    public autuarProcessoCriminalEleitoral(autuarProcessoCriminalCommand : AutuarProcessoCriminalCommand): IPromise<any> {
+        let cmd = autuarProcessoCriminalCommand;
+        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + '/autuacao/criminal', cmd);
+    }    
 }
 
 autuacaoServices.service("app.novo-processo.autuacao-services.AutuacaoService", AutuacaoService);

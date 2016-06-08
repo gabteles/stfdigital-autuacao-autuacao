@@ -1,13 +1,18 @@
-/**
- * @author Viniciusk
- */
-import {AutuarRecursalCommand, AutuacaoCriminalService} from "./autuacao-criminal.service";
+//import {AutuarRecursalCommand, AutuacaoCriminalService} from "./autuacao-criminal.service";
+import {AutuarProcessoCriminalCommand, AutuacaoService} from "../../services/autuacao.service";
 import IStateService = angular.ui.IStateService;
 import IScope = angular.IScope
 import IStateParamService = angular.ui.IStateParamsService;
 import IPromise = angular.IPromise;
 import IHttpService = angular.IHttpService;
+import {Assunto} from "../../services/model";
+import {AssuntoDto, AssuntoService} from "../../services/assunto.service";
+import "../../services/assunto.service";
 import analise from "./autuacao-criminal.module";
+
+/**
+ * @author viniciusk
+ */
 
 export class ParteDto{
 	
@@ -18,13 +23,8 @@ export class ParteDto{
 		this.apresentacao = apresentacao;
 		this.pessoa = pessoa;
 	}
-
 }
 
-export class Assunto {
-	public codigo : string;
-	public descricao : string;
-}
 
 export class AutuacaoCriminalController {
 	
@@ -34,30 +34,31 @@ export class AutuacaoCriminalController {
 	public partesPoloAtivo: Array<ParteDto> = new Array<ParteDto>();
 	public partesPoloPassivo: Array<ParteDto> = new Array<ParteDto>();
 	public apto : boolean = false;
-	public assuntosSelecionados : Array<Assunto> = [];
+	public assuntosSelecionados : Array<AssuntoDto> = [];
 	public observacao : string;
 	public peticao : Object = {};
 	public assunto : Assunto;
-	public assuntos : Array<Assunto> = [];
+	public assuntos : Array<AssuntoDto> = [];
 
-	static $inject = ['$state', 'app.novo-processo.criminal.AutuacaoCriminalService', '$stateParams', 'properties', '$scope', '$http'];
+	static $inject = ['$state', 'app.novo-processo.autuacao-services.AutuacaoService', 
+	                  'app.novo-processo.autuacao-services.AssuntoService', '$stateParams', 'properties', '$scope', '$http'];
 	
-    constructor(private $state: IStateService, private autuacaoCriminalService: AutuacaoCriminalService,
+    constructor(private $state: IStateService, private autuacaoService: AutuacaoService, private assuntoService : AssuntoService,
     		private $stateParams : IStateParamService, private properties, private $scope : IScope, private $http : IHttpService ) {
     }
     
     public pesquisaAssuntos(assunto : string) : void{
-    	this.$http.get(this.properties.apiUrl + '/autuacao/api/processos/assuntos', {params: {'termo' : assunto}})
-    		.then((response : ng.IHttpPromiseCallbackArg<Assunto[]>) => {
-    			this.assuntos = response.data;
-    		});
-    }
+    	this.assuntoService.listarAssuntos(assunto).then((assuntos : AssuntoDto[])=> {
+    		this.assuntos = assuntos;
+    	});
+    };
     
-    public adicionarAssuntoNaLista (assunto : Assunto): void {
+    public adicionarAssuntoNaLista (assunto : AssuntoDto): void {
     	let verificaSeAssuntoExiste : boolean = false;
     	for (let i  of this.assuntosSelecionados){
     		if (i.codigo == assunto.codigo){
     			verificaSeAssuntoExiste = true;
+    			this.assunto = null;
     		}
     	}
     	if (!verificaSeAssuntoExiste){
@@ -103,22 +104,33 @@ export class AutuacaoCriminalController {
         this.partesPoloPassivo.splice(indice);
     }
     
-	public autuarRecursal(): void {
-	    this.autuacaoCriminalService.autuar(this.commandAutuacaoRecursal())
+    
+	public autuarCriminalEleitoral(): void {
+	    this.autuacaoService.autuarProcessoCriminalEleitoral(this.commandAutuacaoCriminal(1, this.partesPoloAtivo, this.partesPoloPassivo, this.assuntos))
 	        .then(() => {
 	            this.$state.go('app.tarefas.minhas-tarefas', {}, { reload: true });
 	    });
 	};
 
-	private commandAutuacaoRecursal(): AutuarRecursalCommand {
-	    return new AutuarRecursalCommand(1, this.apto, [], this.observacao);
+	private commandAutuacaoCriminal(processoId : number, partesAtivo : Array<ParteDto>, partesPassivo : Array<ParteDto>, assuntosC : Array<AssuntoDto>): AutuarProcessoCriminalCommand {
+		let assuntosCommand : string[];
+		for(let assunto of assuntosC){
+			assuntosCommand.push(assunto.codigo);
+		}
+		
+		let partesAtivaCommand : string[];
+		for(let parte of partesAtivo){
+			partesAtivaCommand.push(parte.apresentacao);
+		}
+		
+		let partesPassivaCommand : string[];
+		for(let parte of partesPassivo){
+			partesPassivaCommand.push(parte.apresentacao);
+		}
+		
+	    return new AutuarProcessoCriminalCommand(1, partesAtivaCommand, partesPassivaCommand, assuntosCommand);
 	};
 	
-/*	public mockProcessoAutuacao () : Object {
-		let processoMock : Object = {processoId : 1, remessa : {classeSugerida : 'RE',  qtdVolumes : 2, qtdApensos : 3, formaRecebimento : 'SEDEX', numeroSedex : '2000'}} ;
-		return processoMock;
-	} 
-*/	
 }
 
 analise.controller('app.novo-processo.criminal.AutuacaoCriminalController', AutuacaoCriminalController);

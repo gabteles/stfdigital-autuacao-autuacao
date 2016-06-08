@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.jus.stf.autuacao.originarios.application.commands.AnalisarProcessoCommand;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoCommand;
+import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoCriminalCommand;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoRecursalCommand;
 import br.jus.stf.autuacao.originarios.application.commands.IniciarAutuacaoCommand;
 import br.jus.stf.autuacao.originarios.application.commands.RejeitarProcessoCommand;
@@ -116,6 +117,24 @@ public class AutuacaoDeOriginariosApplicationService {
     }
     
     public void handle(AutuarProcessoRecursalCommand command) {
+		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
+        Status status = statusAdapter.nextStatus(processo.identity(), "DISTRIBUIR");
+        //TODO: Alterar para pegar dados do autuador pelo usuário da sessão.
+        Autuador autuador = new Autuador("USUARIO_FALSO", new PessoaId(1L));
+        Set<Parte> partes = new HashSet<Parte>();
+        pessoaAdapter.criarPessoas(command.getPoloAtivo()).forEach(p1 -> partes.add(new Parte(p1.getApresentacao(), Polo.ATIVO, new PessoaId(p1.getPessoaId()))));
+        pessoaAdapter.criarPessoas(command.getPoloPassivo()).forEach(p2 -> partes.add(new Parte(p2.getApresentacao(), Polo.PASSIVO, new PessoaId(p2.getPessoaId()))));
+
+        Set<Assunto> assuntos = new HashSet<Assunto>();
+        command.getAssuntos().forEach(assunto -> teseRepository.findOneAssunto(new AssuntoId(assunto)));
+        
+        processo.autuar(assuntos, partes, autuador, status);
+        processoRepository.save(processo);
+        // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
+        rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processo.identity().toString(), processo.toString()));
+    }
+    
+    public void handle(AutuarProcessoCriminalCommand command) {
 		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
         Status status = statusAdapter.nextStatus(processo.identity(), "DISTRIBUIR");
         //TODO: Alterar para pegar dados do autuador pelo usuário da sessão.

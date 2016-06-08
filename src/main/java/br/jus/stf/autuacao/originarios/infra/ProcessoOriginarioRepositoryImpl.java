@@ -73,8 +73,8 @@ public class ProcessoOriginarioRepositoryImpl extends SimpleJpaRepository<Proces
 	
 	@Override
 	public List<Assunto> listarAssuntos(String descricao) {
-		TypedQuery<Assunto> query = entityManager.createQuery("SELECT assu FROM Assunto assu LEFT JOIN FETCH assu.assuntoPai WHERE "
-				+ "UPPER(assu.descricao) LIKE UPPER(:descricao) ORDER BY assu.assuntoPai", Assunto.class);
+		TypedQuery<Assunto> query = entityManager.createQuery("FROM Assunto assunto LEFT JOIN FETCH assunto.assuntoPai as assuntoPai "
+				+ "WHERE UPPER(assunto.descricao) LIKE UPPER(:descricao)) ", Assunto.class);
 		
 		query.setParameter("descricao", "%" + descricao + "%");
 		return query.getResultList();
