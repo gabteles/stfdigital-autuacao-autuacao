@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.autuacao.originarios.application.AutuacaoDeOriginariosApplicationService;
-import br.jus.stf.autuacao.originarios.application.commands.AnalisarProcessoCommand;
+import br.jus.stf.autuacao.originarios.application.commands.AnalisarPressupostosCommand;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoCommand;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoRecursalCommand;
 import br.jus.stf.autuacao.originarios.application.commands.RejeitarProcessoCommand;
@@ -93,7 +93,7 @@ public class ProcessoOriginarioRestResource {
     }
     
     @RequestMapping(value = "/analise-pressupostos", method = RequestMethod.POST)
-    public void analisarPressupostos(@RequestBody @Valid AnalisarProcessoCommand command, BindingResult binding) {
+    public void analisarPressupostos(@RequestBody @Valid AnalisarPressupostosCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
             throw new IllegalArgumentException("Processo Inválido: " + binding.getAllErrors());
         }

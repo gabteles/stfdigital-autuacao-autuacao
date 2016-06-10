@@ -1,0 +1,44 @@
+[    
+    {
+        "id": "autuar-processo",
+        "stateName": "app.novo-processo.autuacao",
+        "urlPrefix": "/novo-processo/autuacao/autuar",
+        "src": "autuacao/autuacao"
+    },
+     
+    {
+        "id": "autuar-processo-recursal",
+        "stateName": "app.novo-processo.autuacao-recursal",
+        "urlPrefix": "/novo-processo/autuacao/recursal",
+        "src": "autuacao/autuacao-recursal"
+    },
+    
+    {
+        "id": "analisar-processo",
+        "stateName": "app.novo-processo.analise-pressupostos",
+        "urlPrefix": "/novo-processo/autuacao/analise",
+        "src": "autuacao/analise-pressupostos"
+	},
+	
+	{
+        "id": "revisar-analise-pressupostos",
+        "stateName": "app.novo-processo.revisao-analise-pressupostos",
+        "urlPrefix": "/novo-processo/recursal/revisao-analise-pressupostos",
+        "src": "autuacao/revisao-analise-pressupostos"
+    },
+    
+    {
+        "description": "Revisão de Análise de Repercussão Geral",
+        "stateName": "app.novo-processo.revisao-analise-repercussao-geral",
+        "urlPrefix": "/novo-processo/recursal/revisao-analise-repercussao-geral",
+        "type": "load",
+        "src": "autuacao/revisao-analise-repercussao-geral"
+    },
+     
+    {
+        "description": "Autuação de recursais",
+        "stateName": "app.novo-processo.autuacao-criminal",
+        "urlPrefix": "/novo-processo/autuacao/criminal",
+        "src": "autuacao/autuacao-criminal"
+    }
+]

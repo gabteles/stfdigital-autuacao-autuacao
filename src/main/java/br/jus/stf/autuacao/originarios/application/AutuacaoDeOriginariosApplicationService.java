@@ -9,10 +9,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.jus.stf.autuacao.originarios.application.commands.AnalisarProcessoCommand;
+import br.jus.stf.autuacao.originarios.application.commands.AnalisarPressupostosCommand;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoCommand;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoRecursalCommand;
 import br.jus.stf.autuacao.originarios.application.commands.IniciarAutuacaoCommand;
@@ -35,6 +34,8 @@ import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseRepository;
 import br.jus.stf.autuacao.originarios.domain.model.controletese.Assunto;
 import br.jus.stf.autuacao.originarios.domain.model.controletese.TeseRepository;
 import br.jus.stf.autuacao.originarios.infra.RabbitConfiguration;
+import br.jus.stf.core.framework.component.command.Command;
+import br.jus.stf.core.framework.domaindrivendesign.ApplicationService;
 import br.jus.stf.core.shared.classe.ClasseId;
 import br.jus.stf.core.shared.controletese.AssuntoId;
 import br.jus.stf.core.shared.eventos.ProcessoAutuado;
@@ -54,7 +55,8 @@ import br.jus.stf.core.shared.protocolo.ProtocoloId;
  * @since 1.0.0
  * @since 04.01.2016
  */
-@Component
+@ApplicationService
+@Transactional
 public class AutuacaoDeOriginariosApplicationService {
     
     @Autowired
@@ -97,7 +99,7 @@ public class AutuacaoDeOriginariosApplicationService {
         processoId.toLong();
     }
 
-    @Transactional
+    @Command(description = "Autuação")
     public void handle(AutuarProcessoCommand command) {
         ProcessoOriginario processo = (ProcessoOriginario) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
         Status status = statusAdapter.nextStatus(processo.identity(), "DISTRIBUIR");
@@ -116,6 +118,7 @@ public class AutuacaoDeOriginariosApplicationService {
         rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processo.identity().toString(), numero.toString()));
     }
     
+    @Command(description = "Autuação de Recursais")
     public void handle(AutuarProcessoRecursalCommand command) {
 		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
         Status status = statusAdapter.nextStatus(processo.identity(), "DISTRIBUIR");
@@ -134,8 +137,9 @@ public class AutuacaoDeOriginariosApplicationService {
         rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processo.identity().toString(), processo.toString()));
     }
     
-    @Transactional
-    public void handle(AnalisarProcessoCommand command) {
+
+    @Command(description = "Análise de Prossupostos")
+    public void handle(AnalisarPressupostosCommand command) {
         ProcessoRecursal processoRecursal = (ProcessoRecursal) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
         Set<MotivoInaptidao> motivos = Optional.ofNullable(command.getMotivos())
         		//TODO Creio que o processo recursal deveria usar o seu próprio processoRecusalRepository
@@ -148,7 +152,8 @@ public class AutuacaoDeOriginariosApplicationService {
         rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processoRecursal.identity().toString(), processoRecursal.toString()));
     }
     
-    @Transactional
+
+    @Command(description = "Revisão de Análise de Pressupostos")
     public void handle(RevisarAnalisePressupostosCommand command) {
         /*
          * O código abaixo está incompleto. Falta implementar a o método de revisão da análise no domínio. Além disso, há a necessidade
@@ -170,7 +175,7 @@ public class AutuacaoDeOriginariosApplicationService {
         */
     }
     
-    @Transactional
+    @Command(description = "Rejeitar Processo")
     public void handle(RejeitarProcessoCommand command) {
         ProcessoOriginario processo = (ProcessoOriginario) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
         Status status = statusAdapter.nextStatus(processo.identity(), "REJEITAR");
