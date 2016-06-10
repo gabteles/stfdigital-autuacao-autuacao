@@ -2,6 +2,8 @@ package br.jus.stf.autuacao.originarios.domain.model;
 
 import java.util.List;
 
+import br.jus.stf.autuacao.originarios.domain.model.controletese.Assunto;
+import br.jus.stf.core.shared.controletese.AssuntoId;
 import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
@@ -29,5 +31,9 @@ public interface ProcessoOriginarioRepository {
     void deleteMotivoInaptidao(MotivoInaptidao motivoInaptidao);
 
     List<Parte> consultarPartes(Long processoId);
+    
+    List<Assunto> listarAssuntos(String descricao);
+    
+    Assunto findOneAssunto(AssuntoId id);
 
 }
