@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * @author Rodrigo Barreiros
@@ -27,6 +28,11 @@ public class ApplicationContextInitializer {
 	@Bean(initMethod = "start", destroyMethod = "stop")
 	public Server h2WebServer() throws SQLException {
 		return Server.createWebServer("-web", "-webAllowOthers", "-webPort", "8192");	
+	}
+	
+	@Bean
+	public RestTemplate restTemplate() {
+	    return new RestTemplate();
 	}
 	
 }

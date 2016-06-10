@@ -18,18 +18,18 @@ import br.jus.stf.core.shared.protocolo.ProtocoloId;
 public class ParteAdapterImpl implements ParteAdapter {
 	
 	@Autowired
-	RestTemplate restTemplate;
+	private RestTemplate restTemplate;
 	
 	@Autowired
-	DiscoveryClient discoveryClient;
+	private DiscoveryClient discoveryClient;
 
 	@Override
 	public List<ParteDto> consultar(ProtocoloId protocoloId) {
-		return discoveryClient.getInstances("peticionamento").stream()
+		return discoveryClient.getInstances("gateway").stream()
 				.findAny()
 				.map(instance -> {
 					URI servicesUri = instance.getUri();
-					URI uri = UriComponentsBuilder.fromUri(servicesUri).path("/api/peticoes/{id}/envolvidos").queryParam("id", protocoloId.toLong()).build().toUri();
+					URI uri = UriComponentsBuilder.fromUri(servicesUri).path("/peticionamento/api/peticoes/{id}/envolvidos").queryParam("id", protocoloId.toLong()).build().toUri();
 					return Arrays.asList(restTemplate.getForObject(uri, ParteDto[].class)); 
 				}).orElseThrow(IllegalArgumentException::new);
 	}
