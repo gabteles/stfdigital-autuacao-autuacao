@@ -10,6 +10,66 @@
                        		<label>Número do Processo</label>
                             <input ng-model="vm.numeroProcesso" id="txtNumero" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
                         </md-input-container>
+                    </div>
+                    <div layout="row" layout-gt-xs="row" class="layout-gt-xs-row">
+                        <div flex="50">
+                            <div layout="row" layout-gt-xs="row" class="layout-gt-xs-row">
+                                <div>
+                                    <md-input-container flex>
+                                        <label>Tipo de Tese</label>
+                                        <md-select ng-model="vm.tipoTese" id="cboTipoTese">
+                                            <md-option ng-repeat="tipoTese in vm.tiposTese" value="{{tipoTese.id}}">
+                                                {{tipoTese.descricao}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+                                <div>
+                                    <md-input-container flex>
+                                        <input type="text" id="txtNumeroControversia" ng-model="vm.numeroControversia" class="ng-pristine" 
+                                            aria-label="" aria-invalid="true" placeholder="Nº da Tese" />
+                                        <!--
+                                        <input type="text" id="txtNumeroControversia" ng-model="vm.numeroControversia" class="ng-pristine" aria-label="" aria-invalid="true" 
+                                            ng-keydown="$event.which === 13 && vm.adicionarPartePoloAtivo()" ng-click= "$event.stopPropagation()"> -->
+                                    </md-input-container>
+                                </div>
+                            </div>
+                        </div>
+                        <div flex="50">
+                            <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
+                                <div>
+                                    <md-input-container flex>
+                                        <label>Tipo de Tese</label>
+                                        <input type="text" id="txtAssunto" ng-model="" class="ng-pristine" 
+                                            aria-label="" aria-invalid="true" placeholder="Código ou descrição" />
+                                    </md-input-container>
+                                </div>
+                                <div>
+                                    <div class="simple-table-container md-whiteframe-4dp">
+                                        <div class="ms-responsive-table-wrapper">
+                                            <table class="simple" ms-responsive-table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Polo Passivo</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="assunto in vm.assuntos">
+                                                        <td>xxxxxx</td>
+                                                        <td align="right">
+                                                            <span class="hint-text small">
+                                                                <a href="#" id="lnkRemoverEnvolvidoPoloPassivo-{{$index}}" ng-click="">Remover</a>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>                    
                     <md-button type="button" class="md-raised md-accent" id="btnRevisarAnaliseRepercussaoGeral" aria-label="Submit" 
                     	ng-click ="vm.revisarAnalisePressupostos()" >

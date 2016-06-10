@@ -1,7 +1,7 @@
 import IStateService = angular.ui.IStateService;
 import IStateParamService = angular.ui.IStateParamsService;
 import revisaoAnaliseRepercussaoGeral from "./revisao-analise-repercussao-geral.module";
-//import {Tese, Assunto, Processo, MotivoInaptidao} from "../services/model";
+import {TipoTese} from "../services/model";
 import {AutuacaoService} from "../services/autuacao.service";
 
 export class RevisaoAnaliseRepercussaoGeralController {
@@ -9,6 +9,8 @@ export class RevisaoAnaliseRepercussaoGeralController {
 	public basicForm: Object = {};
     public processoId: number;
 	public numeroProcesso: string;
+	public tiposTese: Array<TipoTese>;
+	public tipoTese: TipoTese;
 	
     /** @ngInject **/
     static $inject = ["$state", "app.novo-processo.autuacao-services.AutuacaoService"];
@@ -16,7 +18,9 @@ export class RevisaoAnaliseRepercussaoGeralController {
     constructor(private $state: IStateService, private autuacaoService: AutuacaoService){
         //Mock
 		this.processoId = 1;
-		this.numeroProcesso = "RE 123/2016";		
+		this.numeroProcesso = "RE 123/2016";
+		this.tiposTese = this.autuacaoService.listarTiposTeses();
+		this.tipoTese = this.tiposTese[0];		
     }
     
     /**
