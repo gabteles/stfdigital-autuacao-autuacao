@@ -28,7 +28,7 @@
     },
     
     {
-        "description": "Revisão de Análise de Repercussão Geral",
+        "id": "revisar-analise-repercussao-geral",
         "stateName": "app.novo-processo.revisao-analise-repercussao-geral",
         "urlPrefix": "/novo-processo/recursal/revisao-analise-repercussao-geral",
         "type": "load",
@@ -36,7 +36,7 @@
     },
      
     {
-        "description": "Autuação de recursais",
+        "id": "autuar-processo-criminal",
         "stateName": "app.novo-processo.autuacao-criminal",
         "urlPrefix": "/novo-processo/autuacao/criminal",
         "src": "autuacao/autuacao-criminal"
