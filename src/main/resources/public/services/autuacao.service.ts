@@ -2,7 +2,7 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 import autuacaoServices from "./services.module";
-import {Tese, Assunto, Processo, MotivoInaptidao, Classe} from "./model";
+import {Tese, Assunto, Processo, MotivoInaptidao, Classe, TipoTese} from "./model";
 
 /*
  * Comando usado para autuar um processo originário.
@@ -181,6 +181,19 @@ export class AutuacaoService {
     public autuarProcessoCriminalEleitoral(autuarProcessoCriminalCommand : AutuarProcessoCriminalCommand): IPromise<any> {
         let cmd = autuarProcessoCriminalCommand;
         return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + '/autuacao/criminal', cmd);
+    }
+
+    /**
+     * Retorna os tipos de tese.
+     * @return Array de tipos de tese.
+     */
+    public listarTiposTeses() : Array<TipoTese> {
+        let tiposTese = new Array<TipoTese>();
+        tiposTese.push(new TipoTese("CONTROVERSIA", "Controvérsia"));
+        tiposTese.push(new TipoTese("PRE_TEMA", "Pré-tema"));
+        tiposTese.push(new TipoTese("REPERCUSSAO_GERAL", "Repercussão Geral"));
+
+        return tiposTese;
     }    
 }
 
