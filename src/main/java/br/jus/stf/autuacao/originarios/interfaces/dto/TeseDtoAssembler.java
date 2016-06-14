@@ -19,7 +19,7 @@ public class TeseDtoAssembler {
 	
 	public TeseDto toDto(Tese tese) {
 		Validate.notNull(tese);
-		List<AssuntoDto> assuntos = tese.assuntos().stream().map(assunto -> assuntoDtoAssembler.toDto(assunto, 0)).collect(Collectors.toList()); 
+		List<AssuntoDto> assuntos = tese.assuntos().stream().map(assunto -> assuntoDtoAssembler.toDto(assunto)).collect(Collectors.toList()); 
 		
 		return new TeseDto(tese.identity().toLong(), tese.descricao(), tese.numero(), assuntos, tese.tipo().name());
 	}

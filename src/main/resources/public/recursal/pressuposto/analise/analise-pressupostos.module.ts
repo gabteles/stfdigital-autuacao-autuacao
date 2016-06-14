@@ -1,20 +1,20 @@
 import ITranslatePartialLoaderProvider = angular.translate.ITranslatePartialLoaderProvider;
 import IStateProvider = angular.ui.IStateProvider;
 import IModule = angular.IModule;
-import {AutuacaoService} from "../services/autuacao.service";
+import {AutuacaoService} from "../../../services/autuacao.service";
 
 /** @ngInject **/
 function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider,
                 $stateProvider: IStateProvider,
                 properties: any) {
 
-    $translatePartialLoaderProvider.addPart(properties.apiUrl + '/autuacao/analise');
+    $translatePartialLoaderProvider.addPart(properties.apiUrl + '/autuacao/recursal/pressuposto/analise');
 
     $stateProvider.state('app.novo-processo.analise-pressupostos', {
-        url : '/processo/analise',
+        url : '/processo/recursal/pressuposto/analise',
         views : {
             'content@app.autenticado' : {
-                templateUrl : properties.apiUrl + '/autuacao/analise/analise-pressupostos.tpl.html',
+                templateUrl : properties.apiUrl + '/autuacao/recursal/pressuposto/analise/analise-pressupostos.tpl.html',
                 controller : 'app.novo-processo.analise.AnalisePressupostosController',
                 controllerAs: 'analise'
             }

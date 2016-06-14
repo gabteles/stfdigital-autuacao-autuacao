@@ -1,11 +1,12 @@
-/**
- * @author Viniciusk
- */
 import {AnaliseCommand, AnalisePressupostosService} from "./analise-pressupostos.service";
 import IStateService = angular.ui.IStateService;
 import IStateParamService = angular.ui.IStateParamsService;
 import IPromise = angular.IPromise;
 import analise from "./analise-pressupostos.module";
+
+/**
+ * @author Viniciusk
+ */
 
 export class AnalisePressupostosController {
 	
@@ -21,9 +22,6 @@ export class AnalisePressupostosController {
     constructor(private $state: IStateService,
             private analisePressupostosService: AnalisePressupostosService,
             public motivos, private $stateParams : IStateParamService ) {
-    		
-    		//let resource = $stateParams['resources']
-    		//this.processo = autuacaoService.consultar(angular.isObject(resource) ? resource.processoId : resource);
     }
     
 	public registrarAnalise(): void {
@@ -37,11 +35,6 @@ export class AnalisePressupostosController {
 	    return new AnaliseCommand(1, this.apto, this.motivosSelecionados, this.observacao);
 	};
 	
-/*	public mockProcessoAutuacao () : Object {
-		let processoMock : Object = {processoId : 1, remessa : {classeSugerida : 'RE',  qtdVolumes : 2, qtdApensos : 3, formaRecebimento : 'SEDEX', numeroSedex : '2000'}} ;
-		return processoMock;
-	} 
-*/	
 }
 
 analise.controller('app.novo-processo.analise.AnalisePressupostosController', AnalisePressupostosController);

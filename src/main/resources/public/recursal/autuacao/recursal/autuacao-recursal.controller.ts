@@ -2,8 +2,8 @@ import IStateService = angular.ui.IStateService;
 import IStateParamService = angular.ui.IStateParamsService;
 import IDialogService = angular.material.IDialogService;
 import autuacaoRecursal from "./autuacao-recursal.module";
-import {Tese, Assunto, Processo} from "../../services/model";
-import {AutuacaoService} from "../../services/autuacao.service";
+import {Tese, Assunto, Processo} from "../../../services/model";
+import {AutuacaoService} from "../../../services/autuacao.service";
 
 export class AutuarProcessoRecursalCommand {
     public processoId: number;

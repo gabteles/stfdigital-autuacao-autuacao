@@ -1,8 +1,8 @@
 import IStateService = angular.ui.IStateService;
 import IStateParamService = angular.ui.IStateParamsService;
 import revisaoAnalisePressupostos from "./revisao-analise-pressupostos.module";
-import {Tese, Assunto, Processo, MotivoInaptidao} from "../services/model";
-import {AutuacaoService} from "../services/autuacao.service";
+import {Tese, Assunto, Processo, MotivoInaptidao} from "../../../services/model";
+import {AutuacaoService} from "../../../services/autuacao.service";
 
 export class RevisaoAnalisePressupostosController {
     

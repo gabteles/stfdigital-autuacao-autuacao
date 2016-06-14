@@ -6,10 +6,10 @@ import IModule = angular.IModule;
 function config($stateProvider: IStateProvider, properties: any) {
 
     $stateProvider.state("app.novo-processo.revisao-analise-pressupostos", {
-        url : "/recursal/revisao-analise-pressupostos",
+        url : "/autuacao/recursal/pressuposto/revisao",
         views : {
             "content@app.autenticado" : {
-                templateUrl : properties.apiUrl + "/autuacao/revisao-analise-pressupostos/revisao-analise-pressupostos.tpl.html",
+                templateUrl : properties.apiUrl + "/autuacao/recursal/pressuposto/revisao/revisao-analise-pressupostos.tpl.html",
                 controller : "app.novo-processo.revisao-analise-pressupostos.RevisaoAnalisePressupostosController",
                 controllerAs: "vm"
             }
@@ -21,7 +21,7 @@ function config($stateProvider: IStateProvider, properties: any) {
 function run($translatePartialLoader: ITranslatePartialLoaderProvider,
 			 properties: any) {
 	
-	$translatePartialLoader.addPart(properties.apiUrl + "/autuacao/autuacao/recursal");
+	$translatePartialLoader.addPart(properties.apiUrl + "/autuacao/recursal/pressuposto/revisao");
 }
 
 let revisaoAnalisePressupostos: IModule = angular.module("revisao-analise-pressupostos", 

@@ -6,10 +6,10 @@ import IModule = angular.IModule;
 function config($stateProvider: IStateProvider, properties: any) {
 
     $stateProvider.state("app.novo-processo.autuacao-recursal", {
-        url : "/autuacao/recursal",
+        url : "/autuacao/recursal/autuacao/recursal",
         views : {
             "content@app.autenticado" : {
-                templateUrl : properties.apiUrl + "/autuacao/autuacao/recursal/autuacao-recursal.tpl.html",
+                templateUrl : properties.apiUrl + "/autuacao/recursal/autuacao/recursal/autuacao-recursal.tpl.html",
                 controller : "app.novo-processo.autuacao-recursal.AutuacaoRecursalController",
                 controllerAs: "vm"
             }
@@ -21,7 +21,7 @@ function config($stateProvider: IStateProvider, properties: any) {
 function run($translatePartialLoader: ITranslatePartialLoaderProvider,
 			 properties: any) {
 	
-	$translatePartialLoader.addPart(properties.apiUrl + "/autuacao/autuacao/recursal");
+	$translatePartialLoader.addPart(properties.apiUrl + "/autuacao/recursal/autuacao/recursal");
 }
 
 let autuacaoRecursal: IModule = angular.module("app.novo-processo.autuacao-recursal", 

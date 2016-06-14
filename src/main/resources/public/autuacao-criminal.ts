@@ -1,5 +1,4 @@
-import autuacaoCriminal from "./autuacao/recursal/autuacao-criminal.module";
-//import "./autuacao/recursal/assunto.service";
-import "./autuacao/recursal/autuacao-criminal.controller";
+import autuacaoCriminal from "./recursal/autuacao/criminal/autuacao-criminal.module";
+import "./recursal/autuacao/criminal/autuacao-criminal.controller";
 
 export default autuacaoCriminal;

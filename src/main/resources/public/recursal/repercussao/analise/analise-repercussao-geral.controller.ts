@@ -1,12 +1,12 @@
-import {AnalisarRepercussaoGeralCommand, AutuacaoService} from "../services/autuacao.service";
+import {AnalisarRepercussaoGeralCommand, AutuacaoService} from "../../../services/autuacao.service";
 import IStateService = angular.ui.IStateService;
 import IScope = angular.IScope
 import IStateParamService = angular.ui.IStateParamsService;
 import IPromise = angular.IPromise;
 import IHttpService = angular.IHttpService;
-import {Assunto, TipoTese, Tese} from "../services/model";
-import {AssuntoDto, AssuntoService} from "../services/assunto.service";
-import "../services/assunto.service";
+import {Assunto, TipoTese, Tese} from "../../../services/model";
+import {AssuntoDto, AssuntoService} from "../../../services/assunto.service";
+import "../../../services/assunto.service";
 import analise from "./analise-repercussao-geral.module";
 
 /**

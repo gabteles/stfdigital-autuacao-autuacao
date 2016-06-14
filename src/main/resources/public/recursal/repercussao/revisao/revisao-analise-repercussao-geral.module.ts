@@ -6,10 +6,10 @@ import IModule = angular.IModule;
 function config($stateProvider: IStateProvider, properties: any) {
 
     $stateProvider.state("app.novo-processo.revisao-analise-repercussao-geral", {
-        url : "/recursal/revisao-analise-repercussao-geral",
+        url : "/recursal/repercussao/revisao",
         views : {
             "content@app.autenticado" : {
-                templateUrl : properties.apiUrl + "/autuacao/revisao-analise-repercussao-geral/revisao-analise-repercussao-geral.tpl.html",
+                templateUrl : properties.apiUrl + "/autuacao/recursal/repercussao/revisao/revisao-analise-repercussao-geral.tpl.html",
                 controller : "app.novo-processo.revisao-analise-repercussao-geral.RevisaoAnaliseRepercussaoGeralController",
                 controllerAs: "vm"
             }
@@ -21,7 +21,7 @@ function config($stateProvider: IStateProvider, properties: any) {
 function run($translatePartialLoader: ITranslatePartialLoaderProvider,
 			 properties: any) {
 	
-	$translatePartialLoader.addPart(properties.apiUrl + "/autuacao/autuacao/recursal");
+	$translatePartialLoader.addPart(properties.apiUrl + "/autuacao/recursal/repercussao/revisao");
 }
 
 let revisaoAnaliseRepercussaoGeral: IModule = angular.module("revisao-analise-repercussao-geral", 

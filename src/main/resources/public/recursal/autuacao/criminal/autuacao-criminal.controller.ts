@@ -1,12 +1,12 @@
-import {AutuarProcessoCriminalCommand, AutuacaoService} from "../../services/autuacao.service";
+import {AutuarProcessoCriminalCommand, AutuacaoService} from "../../../services/autuacao.service";
 import IStateService = angular.ui.IStateService;
 import IScope = angular.IScope
 import IStateParamService = angular.ui.IStateParamsService;
 import IPromise = angular.IPromise;
 import IHttpService = angular.IHttpService;
-import {Assunto} from "../../services/model";
-import {AssuntoDto, AssuntoService} from "../../services/assunto.service";
-import "../../services/assunto.service";
+import {Assunto} from "../../../services/model";
+import {AssuntoDto, AssuntoService} from "../../../services/assunto.service";
+import "../../../services/assunto.service";
 import analise from "./autuacao-criminal.module";
 
 /**

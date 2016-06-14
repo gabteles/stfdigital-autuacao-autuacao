@@ -35,6 +35,7 @@ import br.jus.stf.autuacao.domain.model.Status;
 import br.jus.stf.autuacao.domain.model.classe.Classe;
 import br.jus.stf.autuacao.domain.model.classe.ClasseRepository;
 import br.jus.stf.autuacao.domain.model.controletese.Assunto;
+import br.jus.stf.autuacao.domain.model.controletese.Tese;
 import br.jus.stf.autuacao.domain.model.controletese.TeseRepository;
 import br.jus.stf.autuacao.infra.RabbitConfiguration;
 import br.jus.stf.core.framework.component.command.Command;
