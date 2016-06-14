@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import br.jus.stf.autuacao.application.commands.AnalisarPressupostosCommand;
+import br.jus.stf.autuacao.application.commands.AnalisarRepercussaoGeralCommand;
 import br.jus.stf.autuacao.application.commands.AutuarProcessoCommand;
 import br.jus.stf.autuacao.application.commands.AutuarProcessoCriminalCommand;
 import br.jus.stf.autuacao.application.commands.AutuarProcessoRecursalCommand;

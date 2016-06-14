@@ -1,4 +1,4 @@
-package br.jus.stf.autuacao.originarios.interfaces.dto;
+package br.jus.stf.autuacao.interfaces.dto;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.autuacao.domain.model.controletese.Tese;
-import br.jus.stf.autuacao.interfaces.dto.AssuntoDto;
-import br.jus.stf.autuacao.interfaces.dto.AssuntoDtoAssembler;
 
 @Component
 public class TeseDtoAssembler {

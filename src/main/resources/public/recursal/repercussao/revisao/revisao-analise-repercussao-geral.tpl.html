@@ -19,7 +19,7 @@
                                         <label>Tipo de Tese</label>
                                         <md-select ng-model="vm.tipoTese" id="cboTipoTese">
                                             <md-option ng-repeat="tipoTese in vm.tiposTese" value="{{tipoTese.id}}">
-                                                {{tipoTese.descricao}}
+                                                {{tipoTese.nome}}
                                             </md-option>
                                         </md-select>
                                     </md-input-container>

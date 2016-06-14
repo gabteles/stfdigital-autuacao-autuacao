@@ -1,4 +1,4 @@
-package br.jus.stf.autuacao.originarios.interfaces.dto;
+package br.jus.stf.autuacao.interfaces.dto;
 
 public class TipoTeseDto {
 	

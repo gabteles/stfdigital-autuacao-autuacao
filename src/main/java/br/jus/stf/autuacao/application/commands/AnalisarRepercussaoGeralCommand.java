@@ -1,4 +1,4 @@
-package br.jus.stf.autuacao.originarios.application.commands;
+package br.jus.stf.autuacao.application.commands;
 
 import java.util.Set;
 

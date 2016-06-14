@@ -43,9 +43,9 @@ import br.jus.stf.autuacao.interfaces.dto.ParteDto;
 import br.jus.stf.autuacao.interfaces.dto.ParteDtoAssembler;
 import br.jus.stf.autuacao.interfaces.dto.ProcessoDto;
 import br.jus.stf.autuacao.interfaces.dto.ProcessoDtoAssembler;
-import br.jus.stf.autuacao.originarios.interfaces.dto.TeseDto;
-import br.jus.stf.autuacao.originarios.interfaces.dto.TeseDtoAssembler;
-import br.jus.stf.autuacao.originarios.interfaces.dto.TipoTeseDto;
+import br.jus.stf.autuacao.interfaces.dto.TeseDto;
+import br.jus.stf.autuacao.interfaces.dto.TeseDtoAssembler;
+import br.jus.stf.autuacao.interfaces.dto.TipoTeseDto;
 import br.jus.stf.core.shared.controletese.AssuntoId;
 import br.jus.stf.core.shared.processo.ProcessoId;
 
