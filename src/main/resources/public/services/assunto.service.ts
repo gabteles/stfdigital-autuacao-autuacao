@@ -2,7 +2,6 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 import autuacaoServices from "./services.module";
-import {Assunto} from "./model";
 
 export class AssuntoDto{
 	public codigo : string;

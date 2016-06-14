@@ -20,16 +20,28 @@ export class Classe {
     }
 }
 
+export class TipoTese {
+	public id: string;
+	public nome : string;
+
+	constructor(id: string, nome : string){
+		this.id = id;
+		this.nome = nome;
+	}
+}
+
 export class Tese {
     public codigo: number;
     public descricao: string;
     public numero: number;
+	public assuntos : Array<Assunto>;
     public tipo: string;
     
-    constructor(codigo: number, descricao: string, numero: number, tipo: string){
+    constructor(codigo: number, descricao: string, numero: number, assuntos: Array<Assunto>, tipo: string){
         this.codigo = codigo;
         this.descricao = descricao;
         this.numero = numero;
+        this.assuntos = assuntos;
         this. tipo = tipo;
     }
 }

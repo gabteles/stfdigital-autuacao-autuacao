@@ -1,4 +1,3 @@
-//import {AutuarRecursalCommand, AutuacaoCriminalService} from "./autuacao-criminal.service";
 import {AutuarProcessoCriminalCommand, AutuacaoService} from "../../services/autuacao.service";
 import IStateService = angular.ui.IStateService;
 import IScope = angular.IScope

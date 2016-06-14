@@ -1,0 +1,136 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+
+    <!-- CONTENT -->
+    <div class="content" layout="column">
+
+        <div class="md-title mt-10">Repercussão Geral</div>
+        <div class="pb-16">Informe a tese, assuntos e observação da análise</div>
+
+        <div layout="row">
+
+            <!-- BASIC FORM -->
+            <div class="form-wrapper md-whiteframe-1dp" flex="100">
+                <form name="basicForm">
+                    <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
+                        <md-input-container flex>
+	                        <label>Número do processo</label>
+	                        <input ng-model="analise.processo.numero" id="numeroProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+	                    </md-input-container>
+	                    <md-input-container flex>
+	                        <label>Classe Processual</label>
+	                        <input ng-model="analise.processo.classe" id="classeProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+	                    </md-input-container>
+                    </div>
+					<div class="form-title">Pesquisa de Assuntos</div>
+					<div  layout="row" layout-gt-xs="row">
+						<md-card flex layout="column">
+							<md-card-title>
+								<md-card-title-text>
+									<span class="md-headline">Tese</span>
+									<span class="md-subhead">Informe o tipo de tese e o seu número</span>
+								</md-card-title-text>
+							</md-card-title>
+							<md-card-content layout="column">
+								<div layout="row">
+									<md-input-container flex class="md-block">
+			                            <label>Classificação</label>
+			                            <md-select ng-model="analise.tipoTese" id="tipoTese">
+			                                <md-option></md-option>
+			                                <md-option ng-repeat="tipo in analise.tiposTese" value="{{tipo.id}}">
+			                                    {{tipo.nome}}
+			                                </md-option>
+			                            </md-select>
+		                        	</md-input-container>
+									<md-input-container flex class="md-block">
+										<label>Número da Tese</label>
+										<input class="md-input" id="numeroTese" ng-model="analise.numeroTese" 
+											ng-keypress="($event.charCode==13)?analise.consultarTese():return">                         	
+	                        		</md-input-container>
+                        		</div>
+								<div class="simple-table-container">
+									<table class="simple">
+										<thead>
+				                            <tr>
+				                                <th>Descrição</th>
+				                                <th>Ações</th>
+				                            </tr>
+				                        </thead>
+										<tbody>
+											<tr ng-repeat="tese in analise.teses">
+												<td>{{tese.descricao}}</td>
+												<td><span><a href="#" ng-click="analise.removerTese(tese)">Remover</a></span></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</md-card-content>
+						</md-card>
+						<md-card flex layout="column">
+							<md-card-title flex="nogrow">
+								<md-card-title-text>
+									<span class="md-headline">Pesquisa de Assuntos</span>
+									<span class="md-subhead">Selecione aqui os assuntos que serão anexados ao processo.</span>
+								</md-card-title-text>
+							</md-card-title>
+							<md-card-content layout="column">
+								<div flex layout-align="start center">
+									<ui-select ng-model="analise.assunto" on-select="analise.adicionarAssuntoNaLista($item)" theme="select2" ng-disabled="disabled" style="width: 100%;" id="assunto">
+										<ui-select-match placeholder="Selecione o códido ou a descrição do assunto" id="assuntoUiSelect">{{$select.selected.codigo + '-' + $select.selected.descricao}}</ui-select-match>
+										<ui-select-choices refresh="analise.pesquisaAssuntos($select.search)" minimum-input-length="3" repeat="codigo as assunto in analise.assuntos" id="assuntoUiChoice">
+								    		<div style="padding-left: {{15 * assunto.nivel}}px"> 
+								    			<div ng-bind-html="assunto.codigo +'-' + assunto.descricao"></div>
+								      		</div>
+								    	</ui-select-choices>
+									</ui-select>
+								</div>
+								<div layout>&nbsp;</div>
+								<div layout class="simple-table-container">
+									<table class="simple">
+										<thead>
+				                            <tr>
+				                                <th>Código</th>
+				                                <th>Descrição</th>
+				                                <th>Ações</th>
+				                            </tr>
+				                        </thead>
+										<tbody>
+											<tr ng-repeat="ass in analise.assuntosSelecionados">
+											    <td>{{ass.codigo}}</td>
+											    <td>{{ass.descricao}}</td>
+											    <td>
+                                                    <span>
+                                                        <a href="#" ng-click="analise.removerAssuntosSelecionados(ass)">Remover</a>
+                                                    </span>
+                                                </td>
+										    </tr>
+										</tbody>
+									</table>
+								</div>
+							</md-card-content>
+						</md-card>
+					</div>
+                    <div layout="row" layout-gt-xs="row">
+                    	<md-card flex layout="column">
+							<md-card-title>
+								<md-card-title-text>
+									<span class="md-headline">Observação da Análise</span>
+								</md-card-title-text>
+							</md-card-title>
+							<md-card-content layout="column">
+		                    	<md-input-container class="md-block">
+									<textarea ng-model="analise.observacao" placeholder="Informe uma observação da análise do processo." md-maxlength="150" rows="5" md-select-on-focus id="observacao"></textarea>
+								</md-input-container>								
+							</md-card-content>
+						</md-card>
+                    </div>
+                    <md-button type="button" class="md-raised md-accent" id="btnRegistrarAnalise" aria-label="Submit" 
+                    	ng-disabled="basicForm.$invalid || basicForm.$pristine" ng-click ="analise.analisarRepercussaoGeral()" >
+                        	Autuar
+                    </md-button>
+                </form>
+            </div>
+            <!-- / BASIC FORM -->
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

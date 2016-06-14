@@ -69,6 +69,14 @@ public class Tese extends EntitySupport<Tese, TeseId> {
 		return Collections.unmodifiableSet(assuntos);
 	}
 	
+	public String descricao() {
+		return descricao;
+	}
+	
+	public Long numero() {
+		return numero;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("%d - %s [%s]", numero, descricao, tipo.descricao());

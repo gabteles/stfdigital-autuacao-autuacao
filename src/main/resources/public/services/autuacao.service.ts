@@ -2,7 +2,7 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 import autuacaoServices from "./services.module";
-import {Tese, Assunto, Processo, MotivoInaptidao, Classe} from "./model";
+import {Tese, Assunto, Processo, MotivoInaptidao, Classe, TipoTese} from "./model";
 
 /*
  * Comando usado para autuar um processo originário.
@@ -59,6 +59,24 @@ export class AutuarProcessoCriminalCommand {
         this.poloPassivo = poloPassivo;
         this.assuntos = assuntos;
     }
+}
+
+/* Comando usado para analisar a repercussão geral.
+* @author viniciusk
+* @since 14/06/2016 
+*/
+export class AnalisarRepercussaoGeralCommand {
+   public processoId: number;
+   public assuntos: Array<string>;
+   public teses: Array<number>;
+   public observacao: string;
+   
+   constructor(processoId: number, assuntos: Array<string>, teses: Array<number>, observacao: string) {
+       this.processoId = processoId;
+       this.assuntos = assuntos;
+       this.teses = teses;
+       this.observacao = observacao;
+   }
 }
 
 /*
@@ -149,6 +167,31 @@ export class AutuacaoService {
         return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + "/revisao-analise-pressupostos", cmd);
     }
     
+    /*
+     * Realiza a atuação de um processo recursal criminal / eleitoral.
+     * @param processoId Id do processo.
+     * @param poloAtivo Partes do polo ativo do processo.
+     * @param poloPassivo Partes do polo passivo do processo.
+     * @param assuntos Assuntos relacionados ao processo.
+     */
+    public autuarProcessoCriminalEleitoral(autuarProcessoCriminalCommand : AutuarProcessoCriminalCommand): IPromise<any> {
+        let cmd = autuarProcessoCriminalCommand;
+        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + '/autuacao/criminal', cmd);
+    }
+    
+    /*
+     * Realiza a atuação de um processo recursal criminal / eleitoral.
+     * @param processoId Id do processo.
+     * @param assuntos Assuntos relacionados ao processo.
+     * @param teses lista dos códigos da teses selecionadas.
+     * @param observacao Observação da análise da repercussão geral.
+     */
+    public analisarRepercussaoGeral(analisarRepercussaoGeralCommand : AnalisarRepercussaoGeralCommand): IPromise<any> {
+        let cmd = analisarRepercussaoGeralCommand;
+        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + '/autuacao/recursal/repercussao/analise', cmd);
+    }  
+    
+    
     /**
      * Retorna a lista de Motivos de inaptidão de processos.
      * @return Lista de motivos de inaptidão de processos.
@@ -170,18 +213,29 @@ export class AutuacaoService {
                     return response.data; 
             });
     }
-        
-    /*
-     * Realiza a atuação de um processo recursal criminal / eleitoral.
-     * @param processoId Id do processo.
-     * @param poloAtivo Partes do polo ativo do processo.
-     * @param poloPassivo Partes do polo passivo do processo.
-     * @param assuntos Assuntos relacionados ao processo.
+    
+    /**
+     * Retorna os tipos de tese.
+     * @return Array de tipo de teses.
      */
-    public autuarProcessoCriminalEleitoral(autuarProcessoCriminalCommand : AutuarProcessoCriminalCommand): IPromise<any> {
-        let cmd = autuarProcessoCriminalCommand;
-        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + '/autuacao/criminal', cmd);
-    }    
+    public listarTiposTese() : IPromise<TipoTese[]> {
+        return this.$http.get(this.properties.url + ":" + this.properties.port + "/autuacao/api/processos/tipotese")
+            .then((response: IHttpPromiseCallbackArg<TipoTese[]>) => { 
+                    return response.data; 
+            });
+    }
+    
+    /**
+     * Retorna as teses.
+     * @return Array de teses.
+     */
+    public consultarTeses(tipoTese: string, numeroTese : string) : IPromise<Tese[]> {
+        return this.$http.get(this.properties.url + ":" + this.properties.port + "/autuacao/api/processos/teses", {params: {'tipo' : tipoTese, 'numero': numeroTese}})
+            .then((response: IHttpPromiseCallbackArg<Tese[]>) => { 
+                    return response.data; 
+            });
+    }
+        
 }
 
 autuacaoServices.service("app.novo-processo.autuacao-services.AutuacaoService", AutuacaoService);

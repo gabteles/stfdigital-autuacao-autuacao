@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.jus.stf.autuacao.originarios.application.commands.AnalisarProcessoCommand;
+import br.jus.stf.autuacao.originarios.application.commands.AnalisarRepercussaoGeralCommand;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoCommand;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoCriminalCommand;
 import br.jus.stf.autuacao.originarios.application.commands.AutuarProcessoRecursalCommand;
@@ -34,10 +35,12 @@ import br.jus.stf.autuacao.originarios.domain.model.Status;
 import br.jus.stf.autuacao.originarios.domain.model.classe.Classe;
 import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseRepository;
 import br.jus.stf.autuacao.originarios.domain.model.controletese.Assunto;
+import br.jus.stf.autuacao.originarios.domain.model.controletese.Tese;
 import br.jus.stf.autuacao.originarios.domain.model.controletese.TeseRepository;
 import br.jus.stf.autuacao.originarios.infra.RabbitConfiguration;
 import br.jus.stf.core.shared.classe.ClasseId;
 import br.jus.stf.core.shared.controletese.AssuntoId;
+import br.jus.stf.core.shared.controletese.TeseId;
 import br.jus.stf.core.shared.eventos.ProcessoAutuado;
 import br.jus.stf.core.shared.eventos.ProcessoRegistrado;
 import br.jus.stf.core.shared.identidade.PessoaId;
@@ -187,6 +190,24 @@ public class AutuacaoDeOriginariosApplicationService {
         // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
         rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processoRecursal.identity().toString(), processoRecursal.toString()));
         */
+    }
+    
+    public void handle(AnalisarRepercussaoGeralCommand command) {
+		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
+        Status status = statusAdapter.nextStatus(processo.identity(), "DISTRIBUIR");
+        //TODO: Alterar para pegar dados do autuador pelo usuário da sessão.
+        Autuador autuador = new Autuador("USUARIO_FALSO", new PessoaId(1L));
+
+        Set<Assunto> assuntos = new HashSet<Assunto>();
+        command.getAssuntos().forEach(assunto -> teseRepository.findOneAssunto(new AssuntoId(assunto)));
+        
+        Set<Tese> teses = new HashSet<Tese>();
+        command.getTeses().forEach(tese -> teseRepository.findOne(new TeseId(tese)));
+        
+        processo.analisarRepercussaoGeral(command.getObservacao(), teses, assuntos);
+        processoRepository.save(processo);
+        // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
+        rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processo.identity().toString(), processo.toString()));
     }
     
     @Transactional

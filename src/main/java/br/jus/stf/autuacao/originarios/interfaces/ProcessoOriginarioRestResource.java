@@ -34,6 +34,8 @@ import br.jus.stf.autuacao.originarios.domain.model.ProcessoOriginarioRepository
 import br.jus.stf.autuacao.originarios.domain.model.ProcessoRecursal;
 import br.jus.stf.autuacao.originarios.domain.model.classe.ClasseRepository;
 import br.jus.stf.autuacao.originarios.domain.model.controletese.Assunto;
+import br.jus.stf.autuacao.originarios.domain.model.controletese.TeseRepository;
+import br.jus.stf.autuacao.originarios.domain.model.controletese.TipoTese;
 import br.jus.stf.autuacao.originarios.interfaces.dto.AssuntoDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.AssuntoDtoAssembler;
 import br.jus.stf.autuacao.originarios.infra.RemessaDto;
@@ -45,6 +47,9 @@ import br.jus.stf.autuacao.originarios.interfaces.dto.ParteDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ParteDtoAssembler;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ProcessoDto;
 import br.jus.stf.autuacao.originarios.interfaces.dto.ProcessoDtoAssembler;
+import br.jus.stf.autuacao.originarios.interfaces.dto.TeseDto;
+import br.jus.stf.autuacao.originarios.interfaces.dto.TeseDtoAssembler;
+import br.jus.stf.autuacao.originarios.interfaces.dto.TipoTeseDto;
 import br.jus.stf.core.shared.controletese.AssuntoId;
 import br.jus.stf.core.shared.processo.ProcessoId;
 
@@ -68,6 +73,9 @@ public class ProcessoOriginarioRestResource {
     private ProcessoOriginarioRepository processoOriginarioRepository;
     
     @Autowired
+    private TeseRepository teseRepository;
+    
+    @Autowired
     private ClasseDtoAssembler classeDtoAssembler;
     
     @Autowired
@@ -87,6 +95,9 @@ public class ProcessoOriginarioRestResource {
     
     @Autowired
     private AssuntoDtoAssembler assuntoDtoAssembler;
+    
+    @Autowired
+    private TeseDtoAssembler teseDtoAssembler;
 
     @RequestMapping(value = "/autuacao", method = RequestMethod.POST)
     public void autuar(@RequestBody @Valid AutuarProcessoCommand command, BindingResult binding) {
@@ -177,6 +188,22 @@ public class ProcessoOriginarioRestResource {
     public List<MotivoInaptidaoDto> listarMotivos(){
     	return processoOriginarioRepository.findAllMotivoInaptidao().stream()
     			.map(motivo -> motivoInaptidaoDtoAssembler.toDto(motivo)).collect(Collectors.toList());
+    }
+	
+	@RequestMapping(value="/tipotese", method = RequestMethod.GET)
+    public List<TipoTeseDto> listarTiposTese(){
+		List<TipoTeseDto> listaTipo = new ArrayList<>();
+		listaTipo.add(new TipoTeseDto("CONTROVERSIA", TipoTese.CONTROVERSIA.descricao()));
+		listaTipo.add(new TipoTeseDto("PRE_TEMA", TipoTese.PRE_TEMA.descricao()));
+		listaTipo.add(new TipoTeseDto("REPERCUSSAO_GERAL", TipoTese.REPERCUSSAO_GERAL.descricao()));
+    	return listaTipo;
+    }
+	
+	@RequestMapping(value="/teses", method = RequestMethod.GET)
+    public List<TeseDto> listarTeses(@RequestParam("tipo")String tipo, @RequestParam("numero") Long numero){
+		TipoTese tipoTese = TipoTese.valueOf(tipo.toUpperCase());
+    	return teseRepository.findTeseByTipo(tipoTese, numero).stream()
+    			.map(tese -> teseDtoAssembler.toDto(tese)).collect(Collectors.toList());
     }
 	
 	@RequestMapping(value="/assuntos", method = RequestMethod.GET)
