@@ -236,6 +236,19 @@ export class AutuacaoService {
             });
     }
         
+
+    /**
+     * Retorna os tipos de tese.
+     * @return Array de tipos de tese.
+     */
+    public listarTiposTeses() : Array<TipoTese> {
+        let tiposTese = new Array<TipoTese>();
+        tiposTese.push(new TipoTese("CONTROVERSIA", "Controvérsia"));
+        tiposTese.push(new TipoTese("PRE_TEMA", "Pré-tema"));
+        tiposTese.push(new TipoTese("REPERCUSSAO_GERAL", "Repercussão Geral"));
+
+        return tiposTese;
+    }    
 }
 
 autuacaoServices.service("app.novo-processo.autuacao-services.AutuacaoService", AutuacaoService);

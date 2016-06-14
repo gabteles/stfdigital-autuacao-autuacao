@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.web.servlet.ResultActions;
 
+import br.jus.stf.autuacao.ApplicationContextInitializer;
 import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
 
 /**

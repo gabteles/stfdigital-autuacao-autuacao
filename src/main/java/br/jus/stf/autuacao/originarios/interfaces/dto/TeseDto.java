@@ -2,6 +2,8 @@ package br.jus.stf.autuacao.originarios.interfaces.dto;
 
 import java.util.List;
 
+import br.jus.stf.autuacao.interfaces.dto.AssuntoDto;
+
 /**
  * 
  * @author viniciusk

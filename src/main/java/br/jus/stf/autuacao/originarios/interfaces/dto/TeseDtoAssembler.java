@@ -7,7 +7,9 @@ import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.autuacao.originarios.domain.model.controletese.Tese;
+import br.jus.stf.autuacao.domain.model.controletese.Tese;
+import br.jus.stf.autuacao.interfaces.dto.AssuntoDto;
+import br.jus.stf.autuacao.interfaces.dto.AssuntoDtoAssembler;
 
 @Component
 public class TeseDtoAssembler {
