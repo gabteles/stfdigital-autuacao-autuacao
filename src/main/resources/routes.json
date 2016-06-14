@@ -31,7 +31,6 @@
         "id": "revisar-analise-repercussao-geral",
         "stateName": "app.novo-processo.revisao-analise-repercussao-geral",
         "urlPrefix": "/novo-processo/recursal/revisao-analise-repercussao-geral",
-        "type": "load",
         "src": "autuacao/revisao-analise-repercussao-geral"
     },
      
