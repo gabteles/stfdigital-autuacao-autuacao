@@ -1,10 +1,10 @@
 import IStateService = angular.ui.IStateService;
 import IStateParamService = angular.ui.IStateParamsService;
-import revisaoAnaliseRepercussaoGeral from "./revisao-analise-repercussao-geral.module";
+import revisaoRepercussaoGeral from "./revisao-repercussao-geral.module";
 import {TipoTese} from "../../../services/model";
 import {AutuacaoService} from "../../../services/autuacao.service";
 
-export class RevisaoAnaliseRepercussaoGeralController {
+export class RevisaoRepercussaoGeralController {
     
 	public basicForm: Object = {};
     public processoId: number;
@@ -26,7 +26,7 @@ export class RevisaoAnaliseRepercussaoGeralController {
     /**
 	 * Realiza a revisão da análise de pressupostos formais realizada. 
 	 */
-    public revisarAnaliseRepercussaoGeral(): void {
+    public revisarRepercussaoGeral(): void {
 		/*
 	    this.autuacaoService.revisarAnalisePressupostos(this.processoId, this.apto, this.motivosInaptidaoSelecionados, 
 			this.observacao).then(() => { 
@@ -36,7 +36,7 @@ export class RevisaoAnaliseRepercussaoGeralController {
     
 }
 
-revisaoAnaliseRepercussaoGeral.controller("app.novo-processo.revisao-analise-repercussao-geral.RevisaoAnaliseRepercussaoGeralController", 
-    RevisaoAnaliseRepercussaoGeralController);
-export default revisaoAnaliseRepercussaoGeral;
+revisaoRepercussaoGeral.controller("app.novo-processo.revisao-repercussao-geral.RevisaoRepercussaoGeralController", 
+    RevisaoRepercussaoGeralController);
+export default revisaoRepercussaoGeral;
 

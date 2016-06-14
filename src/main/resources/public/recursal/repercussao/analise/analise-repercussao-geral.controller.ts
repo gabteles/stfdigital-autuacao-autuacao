@@ -24,12 +24,16 @@ export class AnaliseRepercussaoGeralController {
 	public tipoTese : string;
 	public numeroTese : string;
 	public teses : Array<Tese> = [];
+	public numeroProcesso : number;
+	public classeProcesso : string;
 
 	static $inject = ['$state', 'app.novo-processo.autuacao-services.AutuacaoService', 
 	                  'app.novo-processo.autuacao-services.AssuntoService', 'tiposTese', '$stateParams', 'properties', '$scope', '$http'];
 	
     constructor(private $state: IStateService, private autuacaoService: AutuacaoService, private assuntoService : AssuntoService, public tiposTese,
     		private $stateParams : IStateParamService, private properties, private $scope : IScope, private $http : IHttpService ) {
+    	this.numeroProcesso = 100;
+    	this.classeProcesso = 'ADI';
     }
     
     public pesquisaAssuntos(assunto : string) : void{

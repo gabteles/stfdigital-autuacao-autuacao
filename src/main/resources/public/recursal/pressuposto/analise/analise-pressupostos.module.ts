@@ -11,7 +11,7 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
     $translatePartialLoaderProvider.addPart(properties.apiUrl + '/autuacao/recursal/pressuposto/analise');
 
     $stateProvider.state('app.novo-processo.analise-pressupostos', {
-        url : '/processo/recursal/pressuposto/analise',
+        url : '/autuacao/recursal/pressuposto/analise',
         views : {
             'content@app.autenticado' : {
                 templateUrl : properties.apiUrl + '/autuacao/recursal/pressuposto/analise/analise-pressupostos.tpl.html',
