@@ -1,82 +1,136 @@
 <div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+
+    <!-- CONTENT -->
     <div class="content" layout="column">
-        <div class="md-title mt-10">Revisão de Análise de Repercussão geral</div>
-        <div class="pb-16"></div>
+
+        <div class="md-title mt-10">Revisão da Repercussão Geral</div>
+        <div class="pb-16">Informe a tese, assuntos, observação do motivo e observação da análise</div>
+
         <div layout="row">
+
+            <!-- BASIC FORM -->
             <div class="form-wrapper md-whiteframe-1dp" flex="100">
-                <form name="basicForm" class="md-inline-form">
+                <form name="basicForm">
                     <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
-                        <md-input-container flex="40" >
-                       		<label>Número do Processo</label>
-                            <input ng-model="revisao.numeroProcesso" id="txtNumero" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
-                        </md-input-container>
+	                    <md-input-container flex>
+	                        <label>Classe Processual</label>
+	                        <input ng-model="revisao.classeProcesso" id="classeProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+	                    </md-input-container>
+                        <md-input-container flex>
+	                        <label>Número do processo</label>
+	                        <input ng-model="revisao.numeroProcesso" id="numeroProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+	                    </md-input-container>
                     </div>
-                    <div layout="row" layout-gt-xs="row" class="layout-gt-xs-row">
-                        <div flex="50">
-                            <div layout="row" layout-gt-xs="row" class="layout-gt-xs-row">
-                                <div>
-                                    <md-input-container flex>
-                                        <label>Tipo de Tese</label>
-                                        <md-select ng-model="vm.tipoTese" id="cboTipoTese">
-                                            <md-option ng-repeat="tipoTese in revisao.tiposTese" value="{{tipoTese.id}}">
-                                                {{tipoTese.nome}}
-                                            </md-option>
-                                        </md-select>
-                                    </md-input-container>
-                                </div>
-                                <div>
-                                    <md-input-container flex>
-                                        <input type="text" id="txtNumeroControversia" ng-model="revisao.numeroControversia" class="ng-pristine" 
-                                            aria-label="" aria-invalid="true" placeholder="Nº da Tese" />
-                                        <!--
-                                        <input type="text" id="txtNumeroControversia" ng-model="vm.numeroControversia" class="ng-pristine" aria-label="" aria-invalid="true" 
-                                            ng-keydown="$event.which === 13 && vm.adicionarPartePoloAtivo()" ng-click= "$event.stopPropagation()"> -->
-                                    </md-input-container>
-                                </div>
-                            </div>
-                        </div>
-                        <div flex="50">
-                            <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
-                                <div>
-                                    <md-input-container flex>
-                                        <label>Tipo de Tese</label>
-                                        <input type="text" id="txtAssunto" ng-model="" class="ng-pristine" 
-                                            aria-label="" aria-invalid="true" placeholder="Código ou descrição" />
-                                    </md-input-container>
-                                </div>
-                                <div>
-                                    <div class="simple-table-container md-whiteframe-4dp">
-                                        <div class="ms-responsive-table-wrapper">
-                                            <table class="simple" ms-responsive-table>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Polo Passivo</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr ng-repeat="assunto in revisao.assuntos">
-                                                        <td>xxxxxx</td>
-                                                        <td align="right">
-                                                            <span class="hint-text small">
-                                                                <a href="#" id="lnkRemoverEnvolvidoPoloPassivo-{{$index}}" ng-click="">Remover</a>
-                                                            </span>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>                    
-                    <md-button type="button" class="md-raised md-accent" id="btnRevisarAnaliseRepercussaoGeral" aria-label="Submit" 
-                    	ng-click ="revisao.revisarAnalisePressupostos()" >
-                        	Revisar Análise de Repercussão Geral
+					<div class="form-title">Pesquisa de Assuntos</div>
+					<div  layout="row" layout-gt-xs="row">
+						<md-card flex layout="column">
+							<md-card-title>
+								<md-card-title-text>
+									<span class="md-headline">Tese</span>
+									<span class="md-subhead">Informe o tipo de tese e o seu número</span>
+								</md-card-title-text>
+							</md-card-title>
+							<md-card-content layout="column">
+								<div layout="row">
+									<md-input-container flex class="md-block">
+			                            <label>Classificação</label>
+			                            <md-select ng-model="revisao.tipoTese" id="tipoTese" class="md-teal-200-bg">
+			                                <md-option></md-option>
+			                                <md-option ng-repeat="tipo in revisao.tiposTese" value="{{tipo.id}}">
+			                                    {{tipo.nome}}
+			                                </md-option>
+			                            </md-select>
+		                        	</md-input-container>
+									<md-input-container flex class="md-block">
+										<label>Número da Tese</label>
+										<input class="md-input" id="numeroTese" ng-model="revisao.numeroTese" 
+											ng-keypress="($event.charCode==13)?revisao.consultarTese():return">                         	
+	                        		</md-input-container>
+                        		</div>
+								<div class="simple-table-container">
+									<table class="simple" ng-show="revisao.teses.length > 0">
+										<thead>
+				                            <tr>
+				                                <th>Descrição</th>
+				                                <th>Ações</th>
+				                            </tr>
+				                        </thead>
+										<tbody>
+											<tr ng-repeat="tese in revisao.teses">
+												<td>{{tese.descricao}}</td>
+												<td><span><a href="#" ng-click="revisao.removerTese(tese)">Remover</a></span></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</md-card-content>
+						</md-card>
+						<md-card flex layout="column">
+							<md-card-title flex="nogrow">
+								<md-card-title-text>
+									<span class="md-headline">Pesquisa de Assuntos</span>
+									<span class="md-subhead">Selecione aqui os assuntos que serão anexados ao processo.</span>
+								</md-card-title-text>
+							</md-card-title>
+							<md-card-content layout="column">
+								<div flex layout-align="start center">
+									<ui-select ng-model="revisao.assunto" on-select="revisao.adicionarAssuntoNaLista($item)" theme="select2" ng-disabled="disabled" style="width: 100%;" id="assunto">
+										<ui-select-match placeholder="Selecione o códido ou a descrição do assunto" id="assuntoUiSelect">{{$select.selected.codigo + '-' + $select.selected.descricao}}</ui-select-match>
+										<ui-select-choices refresh="revisao.pesquisaAssuntos($select.search)" minimum-input-length="3" repeat="codigo as assunto in revisao.assuntos" id="assuntoUiChoice">
+								    		<div style="padding-left: {{15 * assunto.nivel}}px"> 
+								    			<div ng-bind-html="assunto.codigo +'-' + assunto.descricao"></div>
+								      		</div>
+								    	</ui-select-choices>
+									</ui-select>
+								</div>
+								<div layout>&nbsp;</div>
+								<div layout class="simple-table-container">
+									<table class="simple" ng-show="revisao.assuntosSelecionados.length > 0">
+										<thead>
+				                            <tr>
+				                                <th>Código</th>
+				                                <th>Descrição</th>
+				                                <th>Ações</th>
+				                            </tr>
+				                        </thead>
+										<tbody>
+											<tr ng-repeat="ass in revisao.assuntosSelecionados">
+											    <td>{{ass.codigo}}</td>
+											    <td>{{ass.descricao}}</td>
+											    <td>
+                                                    <span>
+                                                        <a href="#" ng-click="revisao.removerAssuntosSelecionados(ass)">Remover</a>
+                                                    </span>
+                                                </td>
+										    </tr>
+										</tbody>
+									</table>
+								</div>
+							</md-card-content>
+						</md-card>
+					</div>
+                     <div layout="row" layout-gt-xs="row">
+                    	<md-card flex layout="column">
+							<md-card-title>
+								<md-card-title-text>
+									<span class="md-headline">Observação da Análise</span>
+								</md-card-title-text>
+							</md-card-title>
+							<md-card-content layout="column">
+		                    	<md-input-container class="md-block">
+									<textarea ng-model="revisao.observacao" placeholder="Informe uma observação da análise do processo." md-maxlength="150" rows="5" md-select-on-focus id="observacao"></textarea>
+								</md-input-container>								
+							</md-card-content>
+						</md-card>
+                    </div>
+                    <md-button type="button" class="md-raised md-accent" id="btnRegistrarrevisao" aria-label="Submit" 
+                    	ng-disabled="basicForm.$invalid || basicForm.$pristine" ng-click ="revisao.analisarRepercussaoGeral()" >
+                        	Autuar
                     </md-button>
                 </form>
             </div>
+            <!-- / BASIC FORM -->
         </div>
     </div>
+    <!-- / CONTENT -->
 </div>

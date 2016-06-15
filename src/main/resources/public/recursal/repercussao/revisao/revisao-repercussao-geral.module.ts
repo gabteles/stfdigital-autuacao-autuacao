@@ -1,6 +1,8 @@
 import ITranslatePartialLoaderProvider = angular.translate.ITranslatePartialLoaderProvider;
 import IStateProvider = angular.ui.IStateProvider;
 import IModule = angular.IModule;
+import {AutuacaoService} from "../../../services/autuacao.service";
+import "../../../services/autuacao.service";
 
 /** @ngInject **/
 function config($stateProvider: IStateProvider, properties: any) {
@@ -13,6 +15,11 @@ function config($stateProvider: IStateProvider, properties: any) {
                 controller : "app.novo-processo.revisao-repercussao-geral.RevisaoRepercussaoGeralController",
                 controllerAs: "revisao"
             }
+        },
+        resolve : {
+            tiposTese : ['app.novo-processo.autuacao-services.AutuacaoService', (autuacaoService: AutuacaoService) => {
+                return autuacaoService.listarTiposTese();
+            }]
         }
     });
 }

@@ -20,7 +20,7 @@ import br.jus.stf.autuacao.application.commands.AutuarProcessoRecursalCommand;
 import br.jus.stf.autuacao.application.commands.IniciarAutuacaoCommand;
 import br.jus.stf.autuacao.application.commands.RejeitarProcessoCommand;
 import br.jus.stf.autuacao.application.commands.RevisarAnalisePressupostosCommand;
-import br.jus.stf.autuacao.application.commands.RevisarAnaliseRepercussaoGeralCommand;
+import br.jus.stf.autuacao.application.commands.RevisarRepercussaoGeralCommand;
 import br.jus.stf.autuacao.domain.NumeroProcessoAdapter;
 import br.jus.stf.autuacao.domain.PessoaAdapter;
 import br.jus.stf.autuacao.domain.ProcessoFactory;
@@ -172,8 +172,6 @@ public class AutuacaoApplicationService {
 				.get();
         processoRecursal.analisarPressupostosFormais(command.isAptidao(), command.getObservacao(), motivos);
         processoRepository.save(processoRecursal);
-        // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
-        rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processoRecursal.identity().toString(), processoRecursal.toString()));
     }
     
     @Command(description = "Revisão de Análise de Pressupostos")
@@ -193,8 +191,6 @@ public class AutuacaoApplicationService {
         //Falta implementar no model o método de revisão.
         //processoRecursal.analisarPressupostosFormais(command.isAptidao(), command.getObservacao(), motivos);
         processoRepository.save(processoRecursal);
-        // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
-        rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processoRecursal.identity().toString(), processoRecursal.toString()));
         */
     }
     
@@ -213,14 +209,26 @@ public class AutuacaoApplicationService {
         
         processo.analisarRepercussaoGeral(command.getObservacao(), teses, assuntos);
         processoRepository.save(processo);
-        // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
-        rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processo.identity().toString(), processo.toString()));
     }
     
 
-    @Command(description = "Revisão de Análise de Repercussão Geral")
-    public void handle(RevisarAnaliseRepercussaoGeralCommand command) {
-    	
+    @Command(description = "Revisão da Repercussão Geral")
+    public void handle(RevisarRepercussaoGeralCommand command) {
+    	ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
+        Status status = statusAdapter.nextStatus(processo.identity(), "DISTRIBUIR");
+        //TODO: Alterar para pegar dados do autuador pelo usuário da sessão.
+        Autuador autuador = new Autuador("USUARIO_FALSO", new PessoaId(1L));
+
+        Set<Assunto> assuntos = new HashSet<Assunto>();
+        command.getAssuntos().forEach(assunto -> teseRepository.findOneAssunto(new AssuntoId(assunto)));
+        
+        Set<Tese> teses = new HashSet<Tese>();
+        command.getTeses().forEach(tese -> teseRepository.findOne(new TeseId(tese)));
+        
+        processo.analisarRepercussaoGeral(command.getObservacao(), teses, assuntos);
+        processoRepository.save(processo);
+        // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
+        rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processo.identity().toString(), processo.toString()));
     }
     
     @Command(description = "Rejeitar Processo")

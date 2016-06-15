@@ -3,7 +3,7 @@ import IPromise = angular.IPromise;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 import autuacao from "./autuacao.module";
 
-export class AutuacaoCommand {
+export class AutuacaoOriginarioCommand {
     
     constructor(public processoId: number, 
                 public classeId: String,
@@ -16,19 +16,19 @@ export class Processo{
 	constructor (public processoId : number, public remessa : Object){}
 }
 
-export class AutuacaoService {
+export class AutuacaoOriginarioService {
 
     private static apiProcesso: string = '/autuacao/api/processos';
 
     /** @ngInject **/
     constructor(private $http: IHttpService, private properties) { }
 
-    public autuar(processo: AutuacaoCommand): IPromise<any> {
-        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.apiProcesso + '/autuacao', processo);
+    public autuar(processo: AutuacaoOriginarioCommand): IPromise<any> {
+        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoOriginarioService.apiProcesso + '/autuacao', processo);
     }
     
     public consultar(processoId : number) : IPromise<Processo> {
-        return this.$http.get(this.properties.url + ":" + this.properties.port + AutuacaoService.apiProcesso + '/processo/' + processoId)
+        return this.$http.get(this.properties.url + ":" + this.properties.port + AutuacaoOriginarioService.apiProcesso + '/processo/' + processoId)
                 .then((response: IHttpPromiseCallbackArg<Processo>) => { 
                     return response.data; 
                 });
@@ -36,6 +36,6 @@ export class AutuacaoService {
     
 }
 
-autuacao.service('app.novo-processo.autuacao.AutuacaoService', AutuacaoService);
+autuacao.service('app.novo-processo.autuacao.AutuacaoOriginarioService', AutuacaoOriginarioService);
 
 export default autuacao;

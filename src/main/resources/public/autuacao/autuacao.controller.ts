@@ -1,7 +1,7 @@
 /**
  * @author Viniciusk
  */
-import {AutuacaoCommand, AutuacaoService} from "./autuacao.service";
+import {AutuacaoOriginarioCommand, AutuacaoOriginarioService} from "./autuacao.originario.service";
 import IStateService = angular.ui.IStateService;
 import IStateParamService = angular.ui.IStateParamsService;
 import IPromise = angular.IPromise;
@@ -34,7 +34,7 @@ export class AutuacaoController {
 	static $inject = ['$state', 'app.novo-processo.autuacao.AutuacaoService', 'classes', '$stateParams'];
 	
     constructor(private $state: IStateService,
-            private autuacaoService: AutuacaoService,
+            private autuacaoOriginarioService: AutuacaoOriginarioService,
             public classes, private $stateParams : IStateParamService ) {
     		
     		//let resource = $stateParams['resources']
@@ -83,14 +83,14 @@ export class AutuacaoController {
     
 
 	public registrarAutuacao(): void {
-	    this.autuacaoService.autuar(this.commandAutuacao())
+	    this.autuacaoOriginarioService.autuar(this.commandAutuacao())
 	        .then(() => {
 	            this.$state.go('app.tarefas.minhas-tarefas', {}, { reload: true });
 	    });
 	};
 
-	private commandAutuacao(): AutuacaoCommand {
-	    return new AutuacaoCommand(1, this.classe, this.partesPoloPassivo, this.partesPoloPassivo);
+	private commandAutuacao(): AutuacaoOriginarioCommand {
+	    return new AutuacaoOriginarioCommand(1, this.classe, this.partesPoloPassivo, this.partesPoloPassivo);
 	};
 	
 	public mockProcessoAutuacao () : Object {

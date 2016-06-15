@@ -79,6 +79,25 @@ export class AnalisarRepercussaoGeralCommand {
    }
 }
 
+/* Comando usado para revisar a repercussão geral.
+* @author viniciusk
+* @since 15/06/2016 
+*/
+export class RevisarRepercussaoGeralCommand {
+   public processoId: number;
+   public assuntos: Array<string>;
+   public teses: Array<number>;
+   public observacao: string;
+   public motivo : string;
+   
+   constructor(processoId: number, assuntos: Array<string>, teses: Array<number>, observacao: string) {
+       this.processoId = processoId;
+       this.assuntos = assuntos;
+       this.teses = teses;
+       this.observacao = observacao;
+   }
+}
+
 /*
  * Comando usado para revisar uma análise de pressupostos formais.
  * @author anderson.araujo
@@ -180,7 +199,7 @@ export class AutuacaoService {
     }
     
     /*
-     * Realiza a atuação de um processo recursal criminal / eleitoral.
+     * Realiza a análise da repercussão geral
      * @param processoId Id do processo.
      * @param assuntos Assuntos relacionados ao processo.
      * @param teses lista dos códigos da teses selecionadas.
@@ -191,6 +210,18 @@ export class AutuacaoService {
         return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + '/autuacao/recursal/repercussao/analise', cmd);
     }  
     
+    /*
+     * Realiza a revisão da repercussão geral.
+     * @param processoId Id do processo.
+     * @param assuntos Assuntos relacionados ao processo.
+     * @param teses lista dos códigos da teses selecionadas.
+     * @param motivo Observação do motivo da repercussão geral.
+     * @param observacao Observação da análise da repercussão geral.
+     */
+    public revisarRepercussaoGeral(revisarRepercussaoGeralCommand : RevisarRepercussaoGeralCommand): IPromise<any> {
+        let cmd = revisarRepercussaoGeralCommand;
+        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + '/autuacao/recursal/repercussao/revisao', cmd);
+    }  
     
     /**
      * Retorna a lista de Motivos de inaptidão de processos.

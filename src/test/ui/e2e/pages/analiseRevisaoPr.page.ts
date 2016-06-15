@@ -1,8 +1,8 @@
 import ElementFinder = protractor.ElementFinder;
 
-export class AnalisePage {
+export class AnaliseRevisaoPrPage {
 	
-	public classificarInaptidao() : void {
+	public classificar() : void {
 		element(by.id('classificacao')).click();
 		browser.driver.sleep(200);
 	};
