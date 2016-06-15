@@ -9,35 +9,43 @@
     {
         "id": "autuar-processo-recursal",
         "stateName": "app.novo-processo.autuacao-recursal",
-        "urlPrefix": "/novo-processo/autuacao/recursal",
+        "urlPrefix": "/novo-processo/autuacao/recursal/autuacao/recursal",
         "src": "autuacao/autuacao-recursal"
     },
     
     {
-        "id": "analisar-processo",
+        "id": "autuar-processo-criminal",
+        "stateName": "app.novo-processo.autuacao-criminal",
+        "urlPrefix": "/novo-processo/autuacao/recursal/autuacao/criminal",
+        "src": "autuacao/autuacao-criminal"
+    },
+    
+    {
+        "id": "analisar-pressupostos",
         "stateName": "app.novo-processo.analise-pressupostos",
-        "urlPrefix": "/novo-processo/autuacao/analise",
+        "urlPrefix": "/novo-processo/autuacao/recursal/pressuposto/analise",
         "src": "autuacao/analise-pressupostos"
 	},
 	
 	{
         "id": "revisar-analise-pressupostos",
         "stateName": "app.novo-processo.revisao-analise-pressupostos",
-        "urlPrefix": "/novo-processo/recursal/revisao-analise-pressupostos",
+        "urlPrefix": "/novo-processo/autuacao/recursal/pressuposto/revisao",
         "src": "autuacao/revisao-analise-pressupostos"
     },
     
     {
-        "id": "revisar-analise-repercussao-geral",
-        "stateName": "app.novo-processo.revisao-analise-repercussao-geral",
-        "urlPrefix": "/novo-processo/recursal/revisao-analise-repercussao-geral",
-        "src": "autuacao/revisao-analise-repercussao-geral"
+        "id": "analisar-repercussao-geral",
+        "stateName": "app.novo-processo.analise",
+        "urlPrefix": "/novo-processo/autuacao/recursal/repercussao/analise",
+        "src": "autuacao/analise-repercussao-geral"
     },
-     
+    
     {
-        "id": "autuar-processo-criminal",
-        "stateName": "app.novo-processo.autuacao-criminal",
-        "urlPrefix": "/novo-processo/autuacao/criminal",
-        "src": "autuacao/autuacao-criminal"
+        "id": "revisar-repercussao-geral",
+        "stateName": "app.novo-processo.revisao-repercussao-geral",
+        "urlPrefix": "/novo-processo/recursal/repercussao/revisao",
+        "src": "autuacao/revisao-repercussao-geral"
     }
+     
 ]

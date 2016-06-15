@@ -28,6 +28,6 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
 }
 
 let autuacao: IModule = angular.module('app.novo-processo.autuacao', 
-    ['app.novo-processo.autuacao-services', 'app.novo-processo', 'app.constants']);
+    ['app.novo-processo.autuacao-services', 'app.novo-processo', 'app.support']);
 autuacao.config(config);
 export default autuacao;

@@ -11,7 +11,7 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
     $translatePartialLoaderProvider.addPart(properties.apiUrl + '/autuacao/recursal/pressuposto/analise');
 
     $stateProvider.state('app.novo-processo.analise-pressupostos', {
-        url : '/processo/recursal/pressuposto/analise',
+        url : '/autuacao/recursal/pressuposto/analise',
         views : {
             'content@app.autenticado' : {
                 templateUrl : properties.apiUrl + '/autuacao/recursal/pressuposto/analise/analise-pressupostos.tpl.html',
@@ -28,6 +28,6 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
 }
 
 let analisePressupostos: IModule = angular.module('app.novo-processo.analise', 
-    ['app.novo-processo.autuacao-services', 'app.novo-processo', 'app.constants']);
+    ['app.novo-processo.autuacao-services', 'app.novo-processo', 'app.support']);
 analisePressupostos.config(config);
 export default analisePressupostos;

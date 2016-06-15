@@ -12,13 +12,13 @@
             <div class="form-wrapper md-whiteframe-1dp" flex="100">
                 <form name="basicForm">
                     <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
-                        <md-input-container flex>
-	                        <label>Número do processo</label>
-	                        <input ng-model="analise.processo.numero" id="numeroProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
-	                    </md-input-container>
 	                    <md-input-container flex>
 	                        <label>Classe Processual</label>
-	                        <input ng-model="analise.processo.classe" id="classeProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+	                        <input ng-model="analise.classeProcesso" id="classeProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+	                    </md-input-container>
+                        <md-input-container flex>
+	                        <label>Número do processo</label>
+	                        <input ng-model="analise.numeroProcesso" id="numeroProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
 	                    </md-input-container>
                     </div>
 					<div class="form-title">Pesquisa de Assuntos</div>
@@ -48,7 +48,7 @@
 	                        		</md-input-container>
                         		</div>
 								<div class="simple-table-container">
-									<table class="simple">
+									<table class="simple" ng-show="analise.teses.length > 0">
 										<thead>
 				                            <tr>
 				                                <th>Descrição</th>
@@ -85,7 +85,7 @@
 								</div>
 								<div layout>&nbsp;</div>
 								<div layout class="simple-table-container">
-									<table class="simple">
+									<table class="simple" ng-show="analise.assuntosSelecionados.length > 0">
 										<thead>
 				                            <tr>
 				                                <th>Código</th>

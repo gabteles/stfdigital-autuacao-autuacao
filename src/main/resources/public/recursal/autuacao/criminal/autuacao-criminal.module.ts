@@ -22,6 +22,6 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
     });
 }
 
-let autuacao: IModule = angular.module('app.novo-processo.criminal', ['app.novo-processo.autuacao-services', 'app.novo-processo', 'app.constants']);
+let autuacao: IModule = angular.module('app.novo-processo.autuacao-criminal', ['app.novo-processo.autuacao-services', 'app.novo-processo', 'app.support']);
 autuacao.config(config);
 export default autuacao;

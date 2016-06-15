@@ -25,6 +25,6 @@ function run($translatePartialLoader: ITranslatePartialLoaderProvider,
 }
 
 let revisaoAnalisePressupostos: IModule = angular.module("revisao-analise-pressupostos", 
-    ["app.novo-processo.autuacao-services", "app.novo-processo", "app.constants"]);
+    ["app.novo-processo.autuacao-services", "app.novo-processo", "app.support"]);
 revisaoAnalisePressupostos.config(config).run(run);
 export default revisaoAnalisePressupostos;

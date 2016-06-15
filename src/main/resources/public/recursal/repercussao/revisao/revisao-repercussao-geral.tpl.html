@@ -8,7 +8,7 @@
                     <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
                         <md-input-container flex="40" >
                        		<label>Número do Processo</label>
-                            <input ng-model="vm.numeroProcesso" id="txtNumero" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+                            <input ng-model="revisao.numeroProcesso" id="txtNumero" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
                         </md-input-container>
                     </div>
                     <div layout="row" layout-gt-xs="row" class="layout-gt-xs-row">
@@ -18,7 +18,7 @@
                                     <md-input-container flex>
                                         <label>Tipo de Tese</label>
                                         <md-select ng-model="vm.tipoTese" id="cboTipoTese">
-                                            <md-option ng-repeat="tipoTese in vm.tiposTese" value="{{tipoTese.id}}">
+                                            <md-option ng-repeat="tipoTese in revisao.tiposTese" value="{{tipoTese.id}}">
                                                 {{tipoTese.nome}}
                                             </md-option>
                                         </md-select>
@@ -26,7 +26,7 @@
                                 </div>
                                 <div>
                                     <md-input-container flex>
-                                        <input type="text" id="txtNumeroControversia" ng-model="vm.numeroControversia" class="ng-pristine" 
+                                        <input type="text" id="txtNumeroControversia" ng-model="revisao.numeroControversia" class="ng-pristine" 
                                             aria-label="" aria-invalid="true" placeholder="Nº da Tese" />
                                         <!--
                                         <input type="text" id="txtNumeroControversia" ng-model="vm.numeroControversia" class="ng-pristine" aria-label="" aria-invalid="true" 
@@ -55,7 +55,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr ng-repeat="assunto in vm.assuntos">
+                                                    <tr ng-repeat="assunto in revisao.assuntos">
                                                         <td>xxxxxx</td>
                                                         <td align="right">
                                                             <span class="hint-text small">
@@ -72,7 +72,7 @@
                         </div>
                     </div>                    
                     <md-button type="button" class="md-raised md-accent" id="btnRevisarAnaliseRepercussaoGeral" aria-label="Submit" 
-                    	ng-click ="vm.revisarAnalisePressupostos()" >
+                    	ng-click ="revisao.revisarAnalisePressupostos()" >
                         	Revisar Análise de Repercussão Geral
                     </md-button>
                 </form>

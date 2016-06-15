@@ -5,13 +5,13 @@ import IModule = angular.IModule;
 /** @ngInject **/
 function config($stateProvider: IStateProvider, properties: any) {
 
-    $stateProvider.state("app.novo-processo.revisao-analise-repercussao-geral", {
+    $stateProvider.state("app.novo-processo.revisao-repercussao-geral", {
         url : "/recursal/repercussao/revisao",
         views : {
             "content@app.autenticado" : {
-                templateUrl : properties.apiUrl + "/autuacao/recursal/repercussao/revisao/revisao-analise-repercussao-geral.tpl.html",
-                controller : "app.novo-processo.revisao-analise-repercussao-geral.RevisaoAnaliseRepercussaoGeralController",
-                controllerAs: "vm"
+                templateUrl : properties.apiUrl + "/autuacao/recursal/repercussao/revisao/revisao-repercussao-geral.tpl.html",
+                controller : "app.novo-processo.revisao-repercussao-geral.RevisaoRepercussaoGeralController",
+                controllerAs: "revisao"
             }
         }
     });
@@ -24,8 +24,8 @@ function run($translatePartialLoader: ITranslatePartialLoaderProvider,
 	$translatePartialLoader.addPart(properties.apiUrl + "/autuacao/recursal/repercussao/revisao");
 }
 
-let revisaoAnaliseRepercussaoGeral: IModule = angular.module("revisao-analise-repercussao-geral", 
-    ["app.novo-processo.autuacao-services", "app.novo-processo", "app.constants"]);
+let revisaoAnaliseRepercussaoGeral: IModule = angular.module("revisao-repercussao-geral", 
+    ["app.novo-processo.autuacao-services", "app.novo-processo", "app.support"]);
 
 revisaoAnaliseRepercussaoGeral.config(config).run(run);
 export default revisaoAnaliseRepercussaoGeral;
