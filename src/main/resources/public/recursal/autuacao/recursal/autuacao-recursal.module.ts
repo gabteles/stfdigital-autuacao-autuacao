@@ -25,6 +25,6 @@ function run($translatePartialLoader: ITranslatePartialLoaderProvider,
 }
 
 let autuacaoRecursal: IModule = angular.module("app.novo-processo.autuacao-recursal", 
-    ["app.novo-processo.autuacao-services", "app.novo-processo", "app.constants"]);
+    ["app.novo-processo.autuacao-services", "app.novo-processo", "app.support"]);
 autuacaoRecursal.config(config).run(run);
 export default autuacaoRecursal;

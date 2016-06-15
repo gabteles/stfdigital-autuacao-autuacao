@@ -28,6 +28,6 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
 }
 
 let analisePressupostos: IModule = angular.module('app.novo-processo.analise', 
-    ['app.novo-processo.autuacao-services', 'app.novo-processo', 'app.constants']);
+    ['app.novo-processo.autuacao-services', 'app.novo-processo', 'app.support']);
 analisePressupostos.config(config);
 export default analisePressupostos;

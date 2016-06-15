@@ -32,7 +32,7 @@ function run($translatePartialLoader: ITranslatePartialLoaderProvider,
 }
 
 let revisaoAnaliseRepercussaoGeral: IModule = angular.module("revisao-repercussao-geral", 
-    ["app.novo-processo.autuacao-services", "app.novo-processo", "app.constants"]);
+    ["app.novo-processo.autuacao-services", "app.novo-processo", "app.support"]);
 
 revisaoAnaliseRepercussaoGeral.config(config).run(run);
 export default revisaoAnaliseRepercussaoGeral;

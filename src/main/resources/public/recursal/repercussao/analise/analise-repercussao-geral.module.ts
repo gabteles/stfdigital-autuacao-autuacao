@@ -29,6 +29,6 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
     });
 }
 
-let analise: IModule = angular.module('app.novo-processo.analise', ['app.novo-processo.autuacao-services', 'app.novo-processo', 'app.constants']);
+let analise: IModule = angular.module('app.novo-processo.analise', ['app.novo-processo.autuacao-services', 'app.novo-processo', 'app.support']);
 analise.config(config);
 export default analise;
