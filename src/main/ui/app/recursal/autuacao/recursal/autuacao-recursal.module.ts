@@ -9,7 +9,7 @@ function config($stateProvider: IStateProvider, properties: any) {
         url : "/autuacao/recursal/autuacao/recursal",
         views : {
             "content@app.autenticado" : {
-                templateUrl : properties.apiUrl + "/autuacao/recursal/autuacao/recursal/autuacao-recursal.tpl.html",
+                templateUrl : "./autuacao-recursal.tpl.html",
                 controller : "app.novo-processo.autuacao-recursal.AutuacaoRecursalController",
                 controllerAs: "vm"
             }

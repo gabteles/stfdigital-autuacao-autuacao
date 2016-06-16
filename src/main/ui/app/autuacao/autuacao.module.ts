@@ -14,7 +14,7 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
         url : '/autuacao/autuar',
         views : {
             'content@app.autenticado' : {
-                templateUrl : properties.apiUrl + '/autuacao/autuacao/autuacao.tpl.html',
+                templateUrl : './autuacao.tpl.html',
                 controller : 'app.novo-processo.autuacao.AutuacaoController',
                 controllerAs: 'autuacao'
             }

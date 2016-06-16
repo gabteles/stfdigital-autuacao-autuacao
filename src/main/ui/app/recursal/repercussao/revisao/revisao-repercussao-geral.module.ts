@@ -11,7 +11,7 @@ function config($stateProvider: IStateProvider, properties: any) {
         url : "/recursal/repercussao/revisao",
         views : {
             "content@app.autenticado" : {
-                templateUrl : properties.apiUrl + "/autuacao/recursal/repercussao/revisao/revisao-repercussao-geral.tpl.html",
+                templateUrl : "./revisao-repercussao-geral.tpl.html",
                 controller : "app.novo-processo.revisao-repercussao-geral.RevisaoRepercussaoGeralController",
                 controllerAs: "revisao"
             }

@@ -16,7 +16,7 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
         url : '/autuacao/recursal/repercussao/analise',
         views : {
             'content@app.autenticado' : {
-                templateUrl : properties.apiUrl + '/autuacao/recursal/repercussao/analise/analise-repercussao-geral.tpl.html',
+                templateUrl : './analise-repercussao-geral.tpl.html',
                 controller : 'app.novo-processo.analise.AnaliseRepercussaoGeralController',
                 controllerAs: 'analise'
             }
