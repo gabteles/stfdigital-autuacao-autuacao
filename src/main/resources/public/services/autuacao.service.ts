@@ -282,6 +282,6 @@ export class AutuacaoService {
     }    
 }
 
-autuacaoServices.service("app.novo-processo.autuacao-services.AutuacaoService", AutuacaoService);
+autuacaoServices.service("app.autuacao.autuacao-services.AutuacaoService", AutuacaoService);
 
 export default autuacaoServices;

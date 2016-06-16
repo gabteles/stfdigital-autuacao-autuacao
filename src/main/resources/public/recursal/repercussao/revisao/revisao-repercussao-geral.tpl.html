@@ -99,7 +99,7 @@
 											    <td>{{ass.descricao}}</td>
 											    <td>
                                                     <span>
-                                                        <a href="#" ng-click="revisao.removerAssuntosSelecionados(ass)">Remover</a>
+                                                        <a href="#" ng-click="revisao.removerAssuntosSelecionados(ass)" id="btnRemoverAssunto">Remover</a>
                                                     </span>
                                                 </td>
 										    </tr>
@@ -123,7 +123,7 @@
 							</md-card-content>
 						</md-card>
                     </div>
-                    <md-button type="button" class="md-raised md-accent" id="btnRegistrarrevisao" aria-label="Submit" 
+                    <md-button type="button" class="md-raised md-accent" id="btnRegistrarRevisao" aria-label="Submit" 
                     	ng-disabled="basicForm.$invalid || basicForm.$pristine" ng-click ="revisao.analisarRepercussaoGeral()" >
                         	Autuar
                     </md-button>

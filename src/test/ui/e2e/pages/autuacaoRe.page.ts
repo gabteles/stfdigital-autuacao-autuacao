@@ -19,8 +19,9 @@ export class AutuacaoRePage {
 		element.all(by.repeater('codigo as assunto in autuacao.assuntos')).get(1).click();
 	};
 	
-	public registrarAutuacaoCriminalEleitoral() : void {
-		let select = element(by.id("btnRegistrarAutuacao" ));
+	public registrarAutuacao(botaoId: string) : void {
+		let select = element(by.id(botaoId));
+		//para que a tela desça e o botão de autuar fique visível no momento do teste
 	    browser.executeScript("arguments[0].scrollIntoView();", select.getWebElement());
 	    select.click();
 	};

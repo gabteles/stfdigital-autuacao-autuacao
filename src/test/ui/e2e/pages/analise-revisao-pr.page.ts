@@ -1,6 +1,6 @@
 import ElementFinder = protractor.ElementFinder;
 
-export class AnaliseRevisaoPrPage {
+export class AnaliseRevisaoPressupostosPage {
 	
 	public classificar() : void {
 		element(by.id('classificacao')).click();
@@ -21,6 +21,10 @@ export class AnaliseRevisaoPrPage {
 	
 	public registrarAnalise() : void {
 		element(by.id('btnRegistrarAnalise')).click();
+	};
+	
+	public registrarRevisao() : void {
+		element(by.id('btnRevisarAnalisePressupostos')).click();
 	};
 	
 }

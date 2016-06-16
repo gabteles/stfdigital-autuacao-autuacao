@@ -36,6 +36,6 @@ export class AutuacaoOriginarioService {
     
 }
 
-autuacao.service('app.novo-processo.autuacao.AutuacaoOriginarioService', AutuacaoOriginarioService);
+autuacao.service('app.autuacao.autuacao.AutuacaoOriginarioService', AutuacaoOriginarioService);
 
 export default autuacao;

@@ -44,7 +44,7 @@
     {
         "id": "revisar-repercussao-geral",
         "stateName": "app.novo-processo.revisao-repercussao-geral",
-        "urlPrefix": "/novo-processo/recursal/repercussao/revisao",
+        "urlPrefix": "/novo-processo/autuacao/recursal/repercussao/revisao",
         "src": "autuacao/revisao-repercussao-geral"
     }
      

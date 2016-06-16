@@ -31,7 +31,7 @@ export class AutuacaoController {
 	public valida : boolean;
 	public processoId : number;
 
-	static $inject = ['$state', 'app.novo-processo.autuacao.AutuacaoService', 'classes', '$stateParams'];
+	static $inject = ['$state', 'app.autuacao.autuacao.AutuacaoOriginarioService', 'classes', '$stateParams'];
 	
     constructor(private $state: IStateService,
             private autuacaoOriginarioService: AutuacaoOriginarioService,
@@ -100,5 +100,5 @@ export class AutuacaoController {
 	
 }
 
-autuacao.controller('app.novo-processo.autuacao.AutuacaoController', AutuacaoController);
+autuacao.controller('app.autuacao.autuacao.AutuacaoController', AutuacaoController);
 export default autuacao;

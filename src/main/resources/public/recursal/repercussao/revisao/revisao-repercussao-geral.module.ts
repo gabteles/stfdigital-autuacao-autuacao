@@ -8,7 +8,7 @@ import "../../../services/autuacao.service";
 function config($stateProvider: IStateProvider, properties: any) {
 
     $stateProvider.state("app.novo-processo.revisao-repercussao-geral", {
-        url : "/recursal/repercussao/revisao",
+        url : "/autuacao/recursal/repercussao/revisao",
         views : {
             "content@app.autenticado" : {
                 templateUrl : properties.apiUrl + "/autuacao/recursal/repercussao/revisao/revisao-repercussao-geral.tpl.html",

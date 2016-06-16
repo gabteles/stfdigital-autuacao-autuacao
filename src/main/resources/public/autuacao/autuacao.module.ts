@@ -15,19 +15,19 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
         views : {
             'content@app.autenticado' : {
                 templateUrl : properties.apiUrl + '/autuacao/autuacao/autuacao.tpl.html',
-                controller : 'app.novo-processo.autuacao.AutuacaoController',
+                controller : 'app.autuacao.autuacao.AutuacaoController',
                 controllerAs: 'autuacao'
             }
         },
         resolve : {
-            classes : ['app.novo-processo.autuacao-services.AutuacaoService', (autuacaoService: AutuacaoService) => {
+            classes : ['app.autuacao.autuacao-services.AutuacaoService', (autuacaoService: AutuacaoService) => {
                 return autuacaoService.listarClasses();
             }]
         }
     });
 }
 
-let autuacao: IModule = angular.module('app.novo-processo.autuacao', 
-    ['app.novo-processo.autuacao-services', 'app.novo-processo', 'app.support']);
+let autuacao: IModule = angular.module('app.autuacao.autuacao', 
+    ['app.autuacao.autuacao-services', 'app.novo-processo', 'app.support']);
 autuacao.config(config);
 export default autuacao;

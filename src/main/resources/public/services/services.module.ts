@@ -2,5 +2,5 @@ import ITranslatePartialLoaderService = angular.translate.ITranslatePartialLoade
 import IStateProvider = angular.ui.IStateProvider;
 import IModule = angular.IModule;
 
-let autuacaoServices: IModule = angular.module("app.novo-processo.autuacao-services", ["app.support"]);
+let autuacaoServices: IModule = angular.module("app.autuacao.autuacao-services", ["app.support"]);
 export default autuacaoServices;

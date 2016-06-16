@@ -22,7 +22,7 @@ describe('Autuação de Processos Recursais criminal e eleitoral', () => {
     	autuacaoRe.cadastrarPoloAtivo('Maria');
     	autuacaoRe.cadastrarPoloPassivo('Telmo');
     	autuacaoRe.selecionarAssuntos('DIREITO');
-    	autuacaoRe.registrarAutuacaoCriminalEleitoral();
+    	autuacaoRe.registrarAutuacao('btnRegistrarAutuacao');
     });
     
 });

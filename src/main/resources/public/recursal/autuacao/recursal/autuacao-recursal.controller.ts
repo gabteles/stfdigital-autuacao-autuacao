@@ -22,10 +22,10 @@ export class AutuacaoRecursalController {
     
     public processoId: number;
     public numeroProcesso: string;
-    public teses: Array<Tese>;
-    public assuntos: Array<Assunto>;
-    public poloAtivo: Array<string>;
-    public poloPassivo: Array<string>;
+    public teses: Array<Tese> = [];
+    public assuntos: Array<Assunto> = [];
+    public poloAtivo: Array<string> = [];
+    public poloPassivo: Array<string> = [];
     public partePoloAtivo: string;
     public partePoloPassivo: string;
     
@@ -34,6 +34,11 @@ export class AutuacaoRecursalController {
     
     constructor(private $state: IStateService, private $mdDialog: IDialogService, private autuacaoService: AutuacaoService){
         
+    	
+		this.assuntos.push(new Assunto('4291', 'Jurisdição e Competência', null));
+		this.assuntos.push(new Assunto('10912', 'Medidas Assecuratórias', null));
+		this.teses.push(new Tese(170, 'Recurso extraordinário em que se discute', 1, null, 'REPERCUSSAO_GERAL'));
+    	
         autuacaoService.consultarProcesso(1).then((processo: Processo) => {
 			this.numeroProcesso = processo.numero;
             this.teses = processo.teses;
