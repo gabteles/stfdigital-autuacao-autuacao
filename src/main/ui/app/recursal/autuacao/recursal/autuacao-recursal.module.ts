@@ -10,7 +10,7 @@ function config($stateProvider: IStateProvider, properties: any) {
         views : {
             "content@app.autenticado" : {
                 templateUrl : "./autuacao-recursal.tpl.html",
-                controller : "app.novo-processo.autuacao-recursal.AutuacaoRecursalController",
+                controller : "app.autuacao.autuacao-recursal.AutuacaoRecursalController",
                 controllerAs: "vm"
             }
         }
@@ -24,7 +24,7 @@ function run($translatePartialLoader: ITranslatePartialLoaderProvider,
 	$translatePartialLoader.addPart(properties.apiUrl + "/autuacao/recursal/autuacao/recursal");
 }
 
-let autuacaoRecursal: IModule = angular.module("app.novo-processo.autuacao-recursal", 
-    ["app.novo-processo.autuacao-services", "app.novo-processo", "app.support"]);
+let autuacaoRecursal: IModule = angular.module("app.autuacao.autuacao-recursal", 
+    ["app.autuacao.autuacao-services", "app.novo-processo", "app.support"]);
 autuacaoRecursal.config(config).run(run);
 export default autuacaoRecursal;

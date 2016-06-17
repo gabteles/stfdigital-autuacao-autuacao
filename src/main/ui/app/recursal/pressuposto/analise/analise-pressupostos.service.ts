@@ -25,6 +25,6 @@ export class AnalisePressupostosService {
     
 }
 
-analise.service('app.novo-processo.analise.AnalisePressupostosService', AnalisePressupostosService);
+analise.service('app.autuacao.analise.AnalisePressupostosService', AnalisePressupostosService);
 
 export default analise;

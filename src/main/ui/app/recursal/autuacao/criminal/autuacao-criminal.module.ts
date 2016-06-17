@@ -15,13 +15,13 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
         views : {
             'content@app.autenticado' : {
                 templateUrl : './autuacao-criminal.tpl.html',
-                controller : 'app.novo-processo.criminal.AutuacaoCriminalController',
+                controller : 'app.autuacao.criminal.AutuacaoCriminalController',
                 controllerAs: 'autuacao'
             }
         },
     });
 }
 
-let autuacao: IModule = angular.module('app.novo-processo.autuacao-criminal', ['app.novo-processo.autuacao-services', 'app.novo-processo', 'app.support']);
+let autuacao: IModule = angular.module('app.autuacao.autuacao-criminal', ['app.autuacao.autuacao-services', 'app.novo-processo', 'app.support']);
 autuacao.config(config);
 export default autuacao;

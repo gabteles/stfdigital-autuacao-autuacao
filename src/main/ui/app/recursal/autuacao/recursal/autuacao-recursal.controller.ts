@@ -30,7 +30,7 @@ export class AutuacaoRecursalController {
     public partePoloPassivo: string;
     
     /** @ngInject **/
-    static $inject = ["$state", "$mdDialog", "app.novo-processo.autuacao-services.AutuacaoService"];
+    static $inject = ["$state", "$mdDialog", "app.autuacao.autuacao-services.AutuacaoService"];
     
     constructor(private $state: IStateService, private $mdDialog: IDialogService, private autuacaoService: AutuacaoService){
         
@@ -123,5 +123,5 @@ export class AutuacaoRecursalController {
     }
 }
 
-autuacaoRecursal.controller("app.novo-processo.autuacao-recursal.AutuacaoRecursalController", AutuacaoRecursalController);
+autuacaoRecursal.controller("app.autuacao.autuacao-recursal.AutuacaoRecursalController", AutuacaoRecursalController);
 export default autuacaoRecursal;

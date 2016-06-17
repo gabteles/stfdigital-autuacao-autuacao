@@ -27,8 +27,8 @@ export class AnaliseRepercussaoGeralController {
 	public numeroProcesso : number;
 	public classeProcesso : string;
 
-	static $inject = ['$state', 'app.novo-processo.autuacao-services.AutuacaoService', 
-	                  'app.novo-processo.autuacao-services.AssuntoService', 'tiposTese', '$stateParams', 'properties', '$scope', '$http'];
+	static $inject = ['$state', 'app.autuacao.autuacao-services.AutuacaoService', 
+	                  'app.autuacao.autuacao-services.AssuntoService', 'tiposTese', '$stateParams', 'properties', '$scope', '$http'];
 	
     constructor(private $state: IStateService, private autuacaoService: AutuacaoService, private assuntoService : AssuntoService, public tiposTese,
     		private $stateParams : IStateParamService, private properties, private $scope : IScope, private $http : IHttpService ) {
@@ -133,5 +133,5 @@ export class AnaliseRepercussaoGeralController {
 	
 }
 
-analise.controller('app.novo-processo.analise.AnaliseRepercussaoGeralController', AnaliseRepercussaoGeralController);
+analise.controller('app.autuacao.analise.AnaliseRepercussaoGeralController', AnaliseRepercussaoGeralController);
 export default analise;

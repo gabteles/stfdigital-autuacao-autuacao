@@ -25,6 +25,6 @@ export class AutuacaoCriminalService {
     
 }
 
-autuacao.service('app.novo-processo.criminal.AutuacaoCriminalService', AutuacaoCriminalService);
+autuacao.service('app.autuacao.criminal.AutuacaoCriminalService', AutuacaoCriminalService);
 
 export default autuacao;

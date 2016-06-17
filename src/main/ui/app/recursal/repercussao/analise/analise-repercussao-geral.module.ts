@@ -17,18 +17,18 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
         views : {
             'content@app.autenticado' : {
                 templateUrl : './analise-repercussao-geral.tpl.html',
-                controller : 'app.novo-processo.analise.AnaliseRepercussaoGeralController',
+                controller : 'app.autuacao.analise.AnaliseRepercussaoGeralController',
                 controllerAs: 'analise'
             }
         },
         resolve : {
-            tiposTese : ['app.novo-processo.autuacao-services.AutuacaoService', (autuacaoService: AutuacaoService) => {
+            tiposTese : ['app.autuacao.autuacao-services.AutuacaoService', (autuacaoService: AutuacaoService) => {
                 return autuacaoService.listarTiposTese();
             }]
         }
     });
 }
 
-let analise: IModule = angular.module('app.novo-processo.analise', ['app.novo-processo.autuacao-services', 'app.novo-processo', 'app.support']);
+let analise: IModule = angular.module('app.autuacao.analise', ['app.autuacao.autuacao-services', 'app.novo-processo', 'app.support']);
 analise.config(config);
 export default analise;

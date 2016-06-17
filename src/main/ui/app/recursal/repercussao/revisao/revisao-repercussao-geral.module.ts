@@ -12,12 +12,12 @@ function config($stateProvider: IStateProvider, properties: any) {
         views : {
             "content@app.autenticado" : {
                 templateUrl : "./revisao-repercussao-geral.tpl.html",
-                controller : "app.novo-processo.revisao-repercussao-geral.RevisaoRepercussaoGeralController",
+                controller : "app.autuacao.revisao-repercussao-geral.RevisaoRepercussaoGeralController",
                 controllerAs: "revisao"
             }
         },
         resolve : {
-            tiposTese : ['app.novo-processo.autuacao-services.AutuacaoService', (autuacaoService: AutuacaoService) => {
+            tiposTese : ['app.autuacao.autuacao-services.AutuacaoService', (autuacaoService: AutuacaoService) => {
                 return autuacaoService.listarTiposTese();
             }]
         }
@@ -32,7 +32,7 @@ function run($translatePartialLoader: ITranslatePartialLoaderProvider,
 }
 
 let revisaoAnaliseRepercussaoGeral: IModule = angular.module("revisao-repercussao-geral", 
-    ["app.novo-processo.autuacao-services", "app.novo-processo", "app.support"]);
+    ["app.autuacao.autuacao-services", "app.novo-processo", "app.support"]);
 
 revisaoAnaliseRepercussaoGeral.config(config).run(run);
 export default revisaoAnaliseRepercussaoGeral;

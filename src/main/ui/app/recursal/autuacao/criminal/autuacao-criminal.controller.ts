@@ -39,8 +39,8 @@ export class AutuacaoCriminalController {
 	public assunto : Assunto;
 	public assuntos : Array<AssuntoDto> = [];
 
-	static $inject = ['$state', 'app.novo-processo.autuacao-services.AutuacaoService', 
-	                  'app.novo-processo.autuacao-services.AssuntoService', '$stateParams', 'properties', '$scope', '$http'];
+	static $inject = ['$state', 'app.autuacao.autuacao-services.AutuacaoService', 
+	                  'app.autuacao.autuacao-services.AssuntoService', '$stateParams', 'properties', '$scope', '$http'];
 	
     constructor(private $state: IStateService, private autuacaoService: AutuacaoService, private assuntoService : AssuntoService,
     		private $stateParams : IStateParamService, private properties, private $scope : IScope, private $http : IHttpService ) {
@@ -132,5 +132,5 @@ export class AutuacaoCriminalController {
 	
 }
 
-analise.controller('app.novo-processo.criminal.AutuacaoCriminalController', AutuacaoCriminalController);
+analise.controller('app.autuacao.criminal.AutuacaoCriminalController', AutuacaoCriminalController);
 export default analise;

@@ -17,7 +17,7 @@ export class AnalisePressupostosController {
 	public observacao : string;
 	public peticao : Object = {};
 
-	static $inject = ['$state', 'app.novo-processo.analise.AnalisePressupostosService', 'motivos', '$stateParams'];
+	static $inject = ['$state', 'app.autuacao.analise.AnalisePressupostosService', 'motivos', '$stateParams'];
 	
     constructor(private $state: IStateService,
             private analisePressupostosService: AnalisePressupostosService,
@@ -37,5 +37,5 @@ export class AnalisePressupostosController {
 	
 }
 
-analise.controller('app.novo-processo.analise.AnalisePressupostosController', AnalisePressupostosController);
+analise.controller('app.autuacao.analise.AnalisePressupostosController', AnalisePressupostosController);
 export default analise;

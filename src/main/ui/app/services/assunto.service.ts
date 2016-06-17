@@ -30,6 +30,6 @@ export class AssuntoService {
     }
 }
 
-autuacaoServices.service('app.novo-processo.autuacao-services.AssuntoService', AssuntoService);
+autuacaoServices.service('app.autuacao.autuacao-services.AssuntoService', AssuntoService);
 
 export default autuacaoServices;

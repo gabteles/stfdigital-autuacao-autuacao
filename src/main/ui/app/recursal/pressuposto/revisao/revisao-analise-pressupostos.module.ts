@@ -10,7 +10,7 @@ function config($stateProvider: IStateProvider, properties: any) {
         views : {
             "content@app.autenticado" : {
                 templateUrl : "./revisao-analise-pressupostos.tpl.html",
-                controller : "app.novo-processo.revisao-analise-pressupostos.RevisaoAnalisePressupostosController",
+                controller : "app.autuacao.revisao-analise-pressupostos.RevisaoAnalisePressupostosController",
                 controllerAs: "vm"
             }
         }
@@ -25,6 +25,6 @@ function run($translatePartialLoader: ITranslatePartialLoaderProvider,
 }
 
 let revisaoAnalisePressupostos: IModule = angular.module("revisao-analise-pressupostos", 
-    ["app.novo-processo.autuacao-services", "app.novo-processo", "app.support"]);
+    ["app.autuacao.autuacao-services", "app.novo-processo", "app.support"]);
 revisaoAnalisePressupostos.config(config).run(run);
 export default revisaoAnalisePressupostos;

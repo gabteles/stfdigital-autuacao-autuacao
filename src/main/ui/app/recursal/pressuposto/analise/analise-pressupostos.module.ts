@@ -15,19 +15,19 @@ function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider
         views : {
             'content@app.autenticado' : {
                 templateUrl : './analise-pressupostos.tpl.html',
-                controller : 'app.novo-processo.analise.AnalisePressupostosController',
+                controller : 'app.autuacao.analise.AnalisePressupostosController',
                 controllerAs: 'analise'
             }
         },
         resolve : {
-            motivos : ['app.novo-processo.autuacao-services.AutuacaoService', (autuacaoService: AutuacaoService) => {
+            motivos : ['app.autuacao.autuacao-services.AutuacaoService', (autuacaoService: AutuacaoService) => {
                 return autuacaoService.listarMotivosInaptidao();
             }]
         }
     });
 }
 
-let analisePressupostos: IModule = angular.module('app.novo-processo.analise', 
-    ['app.novo-processo.autuacao-services', 'app.novo-processo', 'app.support']);
+let analisePressupostos: IModule = angular.module('app.autuacao.analise', 
+    ['app.autuacao.autuacao-services', 'app.novo-processo', 'app.support']);
 analisePressupostos.config(config);
 export default analisePressupostos;

@@ -15,7 +15,7 @@ export class RevisaoAnalisePressupostosController {
 	public observacao: string;
     
     /** @ngInject **/
-    static $inject = ["$state", "app.novo-processo.autuacao-services.AutuacaoService"];
+    static $inject = ["$state", "app.autuacao.autuacao-services.AutuacaoService"];
     
     constructor(private $state: IStateService, private autuacaoService: AutuacaoService){
         //Mock
@@ -41,6 +41,6 @@ export class RevisaoAnalisePressupostosController {
 	};
 }
 
-revisaoAnalisePressupostos.controller("app.novo-processo.revisao-analise-pressupostos.RevisaoAnalisePressupostosController", 
+revisaoAnalisePressupostos.controller("app.autuacao.revisao-analise-pressupostos.RevisaoAnalisePressupostosController", 
     RevisaoAnalisePressupostosController);
 export default revisaoAnalisePressupostos;
