@@ -25,12 +25,12 @@ public class ProcessoOriginarioEventHandler {
     
     @RabbitListener(queues = RabbitConfiguration.REMESSA_RECEBIDA_QUEUE)
     public void handle(RecebimentoFinalizado event) {
-        originariosApplicationService.handle(new IniciarAutuacaoCommand(event.getProtocoloId(), event.getClasseId(), event.getTipoProcesso(), MeioTramitacao.FISICO.toString(), event.getSigilo()));
+        originariosApplicationService.handle(new IniciarAutuacaoCommand(event.getProtocoloId(), event.getClasseId(), event.getTipoProcesso(), MeioTramitacao.FISICO.toString(), event.getSigilo(), event.isCriminalEleitoral()));
     }
 
     @RabbitListener(queues = RabbitConfiguration.PETICAO_ORIGINARIO_QUEUE)
     public void handle(PeticaoRegistrada event) {
-        originariosApplicationService.handle(new IniciarAutuacaoCommand(event.getProtocoloId(), event.getClasseId(), event.getTipoProcesso(), MeioTramitacao.ELETRONICO.toString(), event.getSigilo()));
+        originariosApplicationService.handle(new IniciarAutuacaoCommand(event.getProtocoloId(), event.getClasseId(), event.getTipoProcesso(), MeioTramitacao.ELETRONICO.toString(), event.getSigilo(), event.isCriminalEleitoral()));
     }
 
 }

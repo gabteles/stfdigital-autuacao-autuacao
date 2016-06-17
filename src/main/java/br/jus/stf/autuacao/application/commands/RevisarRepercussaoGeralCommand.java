@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
@@ -19,10 +21,12 @@ public class RevisarRepercussaoGeralCommand {
     @ApiModelProperty(value = "O identificador do processo originário criado ao iniciar o fluxo de autuação.", required=true)
     private Long processoId;
     
-	@ApiModelProperty(value = "Lista com os código das teses adicionadas")
+	@NotEmpty
+	@ApiModelProperty(value = "Lista com os código das teses adicionadas", required = true)
 	private Set<Long> teses;
 	
-	@ApiModelProperty(value = "Lista de assuntos")
+	@NotEmpty
+	@ApiModelProperty(value = "Lista de assuntos", required = true)
 	private Set<String> assuntos;
 	
 	@ApiModelProperty(value = "Observação da analise")

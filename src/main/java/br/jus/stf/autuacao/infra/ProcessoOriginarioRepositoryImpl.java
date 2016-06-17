@@ -15,8 +15,6 @@ import br.jus.stf.autuacao.domain.model.MotivoInaptidao;
 import br.jus.stf.autuacao.domain.model.Parte;
 import br.jus.stf.autuacao.domain.model.Processo;
 import br.jus.stf.autuacao.domain.model.ProcessoOriginarioRepository;
-import br.jus.stf.autuacao.domain.model.controletese.Assunto;
-import br.jus.stf.core.shared.controletese.AssuntoId;
 import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
@@ -72,15 +70,6 @@ public class ProcessoOriginarioRepositoryImpl extends SimpleJpaRepository<Proces
 	}
 	
 	@Override
-	public List<Assunto> listarAssuntos(String descricao) {
-		TypedQuery<Assunto> query = entityManager.createQuery("FROM Assunto assunto LEFT JOIN FETCH assunto.assuntoPai as assuntoPai "
-				+ "WHERE UPPER(assunto.descricao) LIKE UPPER(:descricao)) ", Assunto.class);
-		
-		query.setParameter("descricao", "%" + descricao + "%");
-		return query.getResultList();
-	}
-	
-	@Override
 	public <M extends MotivoInaptidao> M saveMotivoInaptidao(M motivoInaptidao) {
 		return entityManager.merge(motivoInaptidao);
 	}
@@ -88,13 +77,6 @@ public class ProcessoOriginarioRepositoryImpl extends SimpleJpaRepository<Proces
 	@Override
 	public void deleteMotivoInaptidao(MotivoInaptidao motivoInaptidao) {
 		entityManager.remove(motivoInaptidao);
-	}
-
-	@Override
-	public Assunto findOneAssunto(AssuntoId id) {
-		TypedQuery<Assunto> query = entityManager.createQuery("FROM Assunto assunto WHERE assunto.codigo.codigo. = :id", Assunto.class);
-		query.setParameter("id", id);
-		return query.getSingleResult();
 	}
 
 }

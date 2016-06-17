@@ -32,12 +32,17 @@ public class IniciarAutuacaoCommand {
     @ApiModelProperty(value = "O grau de sigilo do processo.", required=true)
     private String sigilo;
     
-    public IniciarAutuacaoCommand(Long protocoloId, String classeId, String tipoProcesso, String meioTramitacao, String sigilo) {
+    @NotNull
+    @ApiModelProperty(value = "Sinaliza se o processo é ou não criminal/eleitoral.", required=true)
+    private Boolean criminalEleitoral;
+    
+    public IniciarAutuacaoCommand(Long protocoloId, String classeId, String tipoProcesso, String meioTramitacao, String sigilo, Boolean criminalEleitoral) {
         this.protocoloId = protocoloId;
         this.classeId = classeId;
         this.tipoProcesso = tipoProcesso;
         this.meioTramitacao = meioTramitacao;
         this.sigilo = sigilo;
+        this.criminalEleitoral = criminalEleitoral;
     }
 
     public Long getProtocoloId() {
@@ -58,6 +63,10 @@ public class IniciarAutuacaoCommand {
     
     public String getSigilo() {
     	return sigilo;
+    }
+    
+    public Boolean isCriminalEleitoral() {
+    	return criminalEleitoral;
     }
 
 }

@@ -10,6 +10,10 @@ public enum Status {
     
     AUTUACAO(),
     AUTUADO(),
-    REJEITADO();
+    REJEITADO(),
+    ANALISAR_PRESSUPOSTO(),
+    REVISAR_PRESSUPOSTO(),
+    ANALISAR_RG(),
+    REVISAR_RG();
 
 }

@@ -3,7 +3,6 @@ package br.jus.stf.autuacao.domain.model;
 import static javax.persistence.CascadeType.ALL;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -40,11 +39,10 @@ public class AnaliseRepercussaoGeral extends ValueObjectSupport<AnaliseRepercuss
 	}
 	
 	public AnaliseRepercussaoGeral(String observacao, Set<Tese> teses) {
-		Validate.notBlank(observacao, "Observação requerida.");
 		Validate.notEmpty(teses, "Teses requeridas.");
 		
 		this.observacao = observacao;
-		this.teses = Optional.ofNullable(teses).orElse(new HashSet<>(0));
+		this.teses.addAll(teses);
 	}
 	
 	public boolean revisarRepercussaoGeral() {

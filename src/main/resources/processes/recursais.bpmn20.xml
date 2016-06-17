@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="Examples" xmlns:modeler="http://activiti.com/modeler" modeler:version="1.0ev" modeler:exportDateTime="20160617190840" modeler:modelId="980468" modeler:modelVersion="1" modeler:modelLastUpdated="1466186908071">
+  <message id="peticionamentoOrgao" name="peticionamentoOrgao"/>
+  <process id="recursais" name="recursais" isExecutable="true">
+    <startEvent id="inicio" name="Enviar Processo Recursal"/>
+    <userTask id="autua-recursal" name="Autuar Processo Recursal" default="sid-80AD634C-6C1E-4990-86E0-BD7ED3528348" activiti:candidateGroups="autuador-recursal">
+      <documentation>AUTUACAO</documentation>
+      <extensionElements>
+        <modeler:allow-send-email>false</modeler:allow-send-email>
+      </extensionElements>
+    </userTask>
+    <endEvent id="distribuicao" name="Distribuir">
+      <documentation>AUTUADO</documentation>
+      <extensionElements>
+        <activiti:executionListener event="end" expression="${autuacaoFinalizadaListener.handle(execution)}"/>
+      </extensionElements>
+    </endEvent>
+    <exclusiveGateway id="sid-4BDF6938-D253-40AE-B368-1522E305C8BB" name="Preferência Criminal /Eleitoral?" default="sid-1F78FB11-9ED4-4526-988E-1523342FB9F0"/>
+    <userTask id="autuar-recursal-criminal-eleitoral" name="Autuar Processo Recursal Criminal/Eleitoral" default="sid-19072160-1B94-4430-9B75-43EDCA9879AD" activiti:candidateGroups="autuador-recursal-criminal-eleitoral">
+      <documentation>AUTUACAO</documentation>
+      <extensionElements>
+        <modeler:allow-send-email>false</modeler:allow-send-email>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="sid-BBAA0B35-D356-4F7A-95A9-7E5D2BE1D8A7" default="sid-076A44A5-7DAF-4499-9D11-CFC5EA99595D"/>
+    <userTask id="analisar-pressupostos-formais" name="Analisar Pressupostos Formais" default="sid-93D752E7-1812-4F09-8FE5-EA9B3B9D2099" activiti:candidateGroups="analista-pressupostos-formais">
+      <documentation>ANALISAR_PRESSUPOSTO</documentation>
+      <extensionElements>
+        <modeler:allow-send-email>false</modeler:allow-send-email>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="sid-469129D2-3734-4C9F-9E22-FE2902D2DEE0" name="Classificação?" default="sid-F4C1D286-5897-41A6-A179-95A4E61FC3FD"/>
+    <userTask id="revisar-processo-inapto" name="Revisar Processo Inapto" default="sid-A4FFDC6F-556F-478D-B36F-1004B558E729" activiti:candidateGroups="revisor-processo-inapto">
+      <documentation>REVISAR_PRESSUPOSTO</documentation>
+      <extensionElements>
+        <modeler:allow-send-email>false</modeler:allow-send-email>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="sid-DA5FD9D1-4768-40DB-BDF2-CA49091A6E78" name="Classificação?" default="sid-6F5DB9C0-DF4A-432E-B336-C164B91C7E44"/>
+    <userTask id="analisar-repercussao-geral" name="Analisar Assunto/RG" default="sid-C8441E73-F085-4F36-8184-3610816425BA" activiti:candidateGroups="analista-repercussao-geral">
+      <documentation>ANALISAR_RG</documentation>
+      <extensionElements>
+        <modeler:allow-send-email>false</modeler:allow-send-email>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="sid-B2252064-1193-44DD-8FBE-4BA9FC3BC5B5" name="Tema de RG?" default="sid-DF30884C-7FDC-40F9-AF50-9B45856157C5"/>
+    <userTask id="revisar-repercussao-geral" name="Revisar Repercussão Geral" default="sid-10204039-DEF2-4D34-A90D-D17E641B7DB6" activiti:candidateGroups="revisor-repercussao-geral">
+      <documentation>REVISAR_RG</documentation>
+      <extensionElements>
+        <modeler:allow-send-email>false</modeler:allow-send-email>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="sid-6D322D87-C524-4EF2-8FBE-3504EB3C7CC0" default="sid-2B205D9F-12E7-4F26-909C-C59D10F16F4E"/>
+    <sequenceFlow id="sid-076A44A5-7DAF-4499-9D11-CFC5EA99595D" sourceRef="sid-BBAA0B35-D356-4F7A-95A9-7E5D2BE1D8A7" targetRef="distribuicao"/>
+    <sequenceFlow id="sid-93D752E7-1812-4F09-8FE5-EA9B3B9D2099" sourceRef="analisar-pressupostos-formais" targetRef="sid-469129D2-3734-4C9F-9E22-FE2902D2DEE0"/>
+    <sequenceFlow id="sid-C8441E73-F085-4F36-8184-3610816425BA" sourceRef="analisar-repercussao-geral" targetRef="sid-B2252064-1193-44DD-8FBE-4BA9FC3BC5B5"/>
+    <sequenceFlow id="sid-A4FFDC6F-556F-478D-B36F-1004B558E729" sourceRef="revisar-processo-inapto" targetRef="sid-DA5FD9D1-4768-40DB-BDF2-CA49091A6E78"/>
+    <sequenceFlow id="sid-2B205D9F-12E7-4F26-909C-C59D10F16F4E" sourceRef="sid-6D322D87-C524-4EF2-8FBE-3504EB3C7CC0" targetRef="autua-recursal"/>
+    <sequenceFlow id="sid-10204039-DEF2-4D34-A90D-D17E641B7DB6" sourceRef="revisar-repercussao-geral" targetRef="sid-6D322D87-C524-4EF2-8FBE-3504EB3C7CC0"/>
+    <sequenceFlow id="sid-80AD634C-6C1E-4990-86E0-BD7ED3528348" sourceRef="autua-recursal" targetRef="sid-BBAA0B35-D356-4F7A-95A9-7E5D2BE1D8A7"/>
+    <sequenceFlow id="sid-CE1E1066-6DD9-4599-A6C9-225093385D26" sourceRef="inicio" targetRef="sid-4BDF6938-D253-40AE-B368-1522E305C8BB"/>
+    <sequenceFlow id="sid-1F78FB11-9ED4-4526-988E-1523342FB9F0" name="Não" sourceRef="sid-4BDF6938-D253-40AE-B368-1522E305C8BB" targetRef="analisar-pressupostos-formais"/>
+    <sequenceFlow id="sid-745E9726-73EF-4715-BB84-9C48E2F64D58" name="Sim" sourceRef="sid-4BDF6938-D253-40AE-B368-1522E305C8BB" targetRef="autuar-recursal-criminal-eleitoral">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${transition == 'CRIMINAL_ELEITORAL'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-DB3563AE-4E53-4669-B50A-39774D0040D4" name="Inapto" sourceRef="sid-DA5FD9D1-4768-40DB-BDF2-CA49091A6E78" targetRef="sid-6D322D87-C524-4EF2-8FBE-3504EB3C7CC0">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${transition == 'INAPTO'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-6F5DB9C0-DF4A-432E-B336-C164B91C7E44" name="Apto" sourceRef="sid-DA5FD9D1-4768-40DB-BDF2-CA49091A6E78" targetRef="analisar-repercussao-geral"/>
+    <sequenceFlow id="sid-F4C1D286-5897-41A6-A179-95A4E61FC3FD" name="Apto" sourceRef="sid-469129D2-3734-4C9F-9E22-FE2902D2DEE0" targetRef="analisar-repercussao-geral"/>
+    <sequenceFlow id="sid-19072160-1B94-4430-9B75-43EDCA9879AD" sourceRef="autuar-recursal-criminal-eleitoral" targetRef="sid-BBAA0B35-D356-4F7A-95A9-7E5D2BE1D8A7"/>
+    <sequenceFlow id="sid-DF30884C-7FDC-40F9-AF50-9B45856157C5" name="Não" sourceRef="sid-B2252064-1193-44DD-8FBE-4BA9FC3BC5B5" targetRef="sid-6D322D87-C524-4EF2-8FBE-3504EB3C7CC0"/>
+    <sequenceFlow id="sid-EA06B69B-90AB-4827-9FA3-9178CCB939DC" name="Sim" sourceRef="sid-B2252064-1193-44DD-8FBE-4BA9FC3BC5B5" targetRef="revisar-repercussao-geral">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${transition == 'REVISAR_RG'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-64560468-8E70-49A9-B7AE-5D87547B2677" name="Inapto" sourceRef="sid-469129D2-3734-4C9F-9E22-FE2902D2DEE0" targetRef="revisar-processo-inapto">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${transition == 'REVISAR_ANALISE'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+
+</definitions>

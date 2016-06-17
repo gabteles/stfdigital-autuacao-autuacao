@@ -22,8 +22,8 @@ public class RevisarAnalisePressupostosCommand {
     private Long processoId;
     
     @NotNull
-    @ApiModelProperty(value = "Sinaliza se o processo é apto ou inapto para autução")
-    private boolean aptidao;
+    @ApiModelProperty(value = "Sinaliza se o processo é apto ou inapto para autução", required = true)
+    private Boolean analiseApta;
     
     @ApiModelProperty(value = "O identificador do motivo de inaptidao da análise do processo")
     private Set<Long> motivos;
@@ -36,8 +36,8 @@ public class RevisarAnalisePressupostosCommand {
 		return processoId;
 	}
 
-	public boolean isAptidao() {
-		return aptidao;
+	public boolean isAnaliseApta() {
+		return analiseApta;
 	}
 
 	public Set<Long> getMotivos() {

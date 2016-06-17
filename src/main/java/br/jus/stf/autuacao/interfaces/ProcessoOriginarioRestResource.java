@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.autuacao.application.AutuacaoApplicationService;
 import br.jus.stf.autuacao.application.commands.AnalisarPressupostosCommand;
+import br.jus.stf.autuacao.application.commands.AnalisarRepercussaoGeralCommand;
 import br.jus.stf.autuacao.application.commands.AutuarProcessoCommand;
 import br.jus.stf.autuacao.application.commands.AutuarProcessoCriminalCommand;
 import br.jus.stf.autuacao.application.commands.AutuarProcessoRecursalCommand;
 import br.jus.stf.autuacao.application.commands.RejeitarProcessoCommand;
 import br.jus.stf.autuacao.application.commands.RevisarAnalisePressupostosCommand;
+import br.jus.stf.autuacao.application.commands.RevisarRepercussaoGeralCommand;
 import br.jus.stf.autuacao.domain.ParteAdapter;
 import br.jus.stf.autuacao.domain.RemessaAdapter;
 import br.jus.stf.autuacao.domain.model.Processo;
@@ -140,6 +142,24 @@ public class ProcessoOriginarioRestResource {
         autuarProcessoCommandHandler.handle(command);
     }
     
+    @RequestMapping(value = "/analise-repercussao-geral", method = RequestMethod.POST)
+    public void analisarRepercussao(@RequestBody @Valid AnalisarRepercussaoGeralCommand command, BindingResult binding) {
+        if (binding.hasErrors()) {
+            throw new IllegalArgumentException("Processo Inválido: " + binding.getAllErrors());
+        }
+        
+        autuarProcessoCommandHandler.handle(command);
+    }
+    
+    @RequestMapping(value = "/revisao-repercussao-geral", method = RequestMethod.POST)
+    public void revisarAnaliseRepercussao(@RequestBody @Valid RevisarRepercussaoGeralCommand command, BindingResult binding) {
+        if (binding.hasErrors()) {
+            throw new IllegalArgumentException("Processo Inválido: " + binding.getAllErrors());
+        }
+        
+        autuarProcessoCommandHandler.handle(command);
+    }
+    
     @RequestMapping(value = "/rejeicao", method = RequestMethod.POST)
     public void rejeitar(@RequestBody @Valid RejeitarProcessoCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
@@ -207,11 +227,11 @@ public class ProcessoOriginarioRestResource {
 		List<AssuntoDto> assuntosDto = new ArrayList<AssuntoDto>();
 		
 		if(NumberUtils.isNumber(termo)){
-			Optional.ofNullable(processoOriginarioRepository.findOneAssunto(new AssuntoId(termo)))
+			Optional.ofNullable(teseRepository.findOneAssunto(new AssuntoId(termo)))
 				.ifPresent(assunto -> assuntosDto.add((assuntoDtoAssembler.toDto(assunto))));
 		} else {
 			assuntosDto.addAll(
-				assuntoDtoAssembler.toDto(processoOriginarioRepository.listarAssuntos(termo.toUpperCase())));
+				assuntoDtoAssembler.toDto(teseRepository.findAssuntoByDescricao(termo.toUpperCase())));
 		}
 		return assuntosDto;
 	}

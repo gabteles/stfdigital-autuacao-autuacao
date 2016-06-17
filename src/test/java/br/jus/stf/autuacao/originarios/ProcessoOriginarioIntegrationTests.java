@@ -6,10 +6,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.web.servlet.ResultActions;
 
 import br.jus.stf.autuacao.ApplicationContextInitializer;
+import br.jus.stf.autuacao.application.AutuacaoApplicationService;
+import br.jus.stf.autuacao.application.commands.IniciarAutuacaoCommand;
 import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
 
 /**
@@ -24,6 +27,31 @@ import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
 @SpringApplicationConfiguration(ApplicationContextInitializer.class)
 public class ProcessoOriginarioIntegrationTests extends IntegrationTestsSupport {
 	
+	@Autowired
+	private AutuacaoApplicationService appService;
+	
+	@Ignore
+	@Test
+	public void criarCenariosProcessoRecursal() throws Exception {
+		IniciarAutuacaoCommand iniciar = new IniciarAutuacaoCommand(500L, "RE", "RECURSAL", "ELETRONICO", "PUBLICO", false);
+		
+		appService.handle(iniciar);
+
+		String processo = "{\"processoId\":@processoId,\"analiseApta\":true}";
+		String processoId = "1";
+		ResultActions result = mockMvc.perform(post("/api/processos/analise-pressupostos").contentType(APPLICATION_JSON).content(processo.replace("@processoId", processoId)));
+		
+		processo = "{\"processoId\":@processoId,\"teses\":[170],\"assuntos\":[\"10912\",\"4291\"], \"repercussaoGeral\":true}";
+		result = mockMvc.perform(post("/api/processos/analise-repercussao-geral").contentType(APPLICATION_JSON).content(processo.replace("@processoId", processoId)));
+		
+		processo = "{\"processoId\":@processoId,\"teses\":[170],\"assuntos\":[\"10912\",\"4291\"]}";
+		result = mockMvc.perform(post("/api/processos/revisao-repercussao-geral").contentType(APPLICATION_JSON).content(processo.replace("@processoId", processoId)));
+		
+		processo = "{\"processoId\":@processoId,\"poloAtivo\":[\"Maria\"],\"poloPassivo\":[\"João\"],\"assuntos\":[\"10912\"]}";
+		result = mockMvc.perform(post("/api/processos/autuacao/recursal").contentType(APPLICATION_JSON).content(processo.replace("@processoId", processoId)));
+		result.andExpect(status().isOk());
+	}
+	
 	@Test
 	public void autuarRemessa() throws Exception {
 		loadDataTests("autuarRemessaOriginario.sql");
@@ -34,7 +62,7 @@ public class ProcessoOriginarioIntegrationTests extends IntegrationTestsSupport 
 		
 		result.andExpect(status().isOk());
 	}
-	
+
 	@Test
 	public void rejeitarRemessa() throws Exception {
 		loadDataTests("rejeitarRemessaOriginario.sql");
@@ -45,7 +73,7 @@ public class ProcessoOriginarioIntegrationTests extends IntegrationTestsSupport 
 		
 		result.andExpect(status().isOk());
 	}
-	
+
 	@Test
 	public void autuarPeticao() throws Exception {
 		loadDataTests("autuarPeticaoOriginario.sql");
@@ -56,7 +84,7 @@ public class ProcessoOriginarioIntegrationTests extends IntegrationTestsSupport 
 		
 		result.andExpect(status().isOk());
 	}
-	
+
 	@Test
 	public void rejeitarPeticao() throws Exception {
 		loadDataTests("rejeitarPeticaoOriginario.sql");
@@ -75,7 +103,7 @@ public class ProcessoOriginarioIntegrationTests extends IntegrationTestsSupport 
         
         result.andExpect(status().isBadRequest());
     }
-	
+
 	@Test
     public void naoDeveRejeitarUmProcessoInvalido() throws Exception {
         String processo = "{}";

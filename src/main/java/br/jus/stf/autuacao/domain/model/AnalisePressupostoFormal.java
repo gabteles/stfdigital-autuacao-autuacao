@@ -28,7 +28,7 @@ public class AnalisePressupostoFormal extends ValueObjectSupport<AnalisePressupo
 	
 	@Column(name = "FLG_ANALISE_APTA")
 	@Type(type = "yes_no")
-	private boolean analiseApta;
+	private Boolean analiseApta;
 	
 	@Column(name = "TXT_ANALISE_PRESSUPOSTO_FORMAL")
 	private String observacao;
@@ -42,9 +42,7 @@ public class AnalisePressupostoFormal extends ValueObjectSupport<AnalisePressupo
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
-	public AnalisePressupostoFormal(boolean analiseApta, String observacao, Set<MotivoInaptidao> motivacaoInaptidao) {
-		Validate.notBlank(observacao, "Observação requerida.");
-		Validate.notEmpty(motivacaoInaptidao, "Motivação da inaptidão requerida.");
+	public AnalisePressupostoFormal(Boolean analiseApta, String observacao, Set<MotivoInaptidao> motivacaoInaptidao) {
 		Validate.isTrue(analiseApta || !motivacaoInaptidao.isEmpty(), "Motivação de inaptidão requedida.");
 		
 		this.analiseApta = analiseApta;

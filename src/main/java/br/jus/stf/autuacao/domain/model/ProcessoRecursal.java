@@ -71,17 +71,19 @@ public class ProcessoRecursal extends Processo {
     	this.quantidadeRecurso = quantidadeRecurso;
     }
     
-    public void analisarPressupostosFormais(boolean analiseApta, String observacao, Set<MotivoInaptidao> motivacaoInaptidao) {
+    public void analisarPressupostosFormais(boolean analiseApta, String observacao, Set<MotivoInaptidao> motivacaoInaptidao, Status status) {
     	analisePressupostoFormal = new AnalisePressupostoFormal(analiseApta, observacao, motivacaoInaptidao);
+    	super.alterarStatus(status);
 	}
     
-    public void analisarRepercussaoGeral(String observacao, Set<Tese> teses, Set<Assunto> assuntos) {
+    public void analisarRepercussaoGeral(String observacao, Set<Tese> teses, Set<Assunto> assuntos, Status status) {
     	Validate.notEmpty(assuntos, "Assuntos requeridos.");
     	Validate.isTrue(teses.stream().allMatch(tese -> assuntos.containsAll(tese.assuntos())),
 				"Assuntos devem conter ao menos os que pertencem às teses selecionadas.");
     	
     	analiseRepercussaoGeral = new AnaliseRepercussaoGeral(observacao, teses);
     	this.assuntos.addAll(assuntos);
+    	super.alterarStatus(status);
 	}
     
     public void atribuirAssuntos(Set<Assunto> assuntos) {
@@ -107,6 +109,10 @@ public class ProcessoRecursal extends Processo {
     
     public Set<MotivoInaptidao> motivosInaptidao(){
     	return this.analisePressupostoFormal.motivosInaptidao();
+    }
+    
+    public boolean isRepercursaoGeral() {
+    	return analiseRepercussaoGeral.revisarRepercussaoGeral();
     }
     
     @Override
