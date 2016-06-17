@@ -7,6 +7,5 @@ System.config({
 	},
 	bundles: {
 		'autuacao/analise-pressupostoso': ['autuacao/recursal/pressuposto/analise/*']
-	},
-	strictImportSequence: true
+	}
 });
