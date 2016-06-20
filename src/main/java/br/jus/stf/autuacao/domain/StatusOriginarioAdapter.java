@@ -12,8 +12,8 @@ import br.jus.stf.core.shared.processo.ProcessoId;
  * @since 1.0.0
  * @since 07.02.2016
  */
-@Component("statusProcessoAdapter")
-public class StatusAdapter extends StatusAdapterSupport<ProcessoId, Status> {
+@Component("statusProcessoOriginarioAdapter")
+public class StatusOriginarioAdapter extends StatusAdapterSupport<ProcessoId, Status> {
 
     private static final String ORIGINARIOS_PROCESS_KEY = "originarios";
     

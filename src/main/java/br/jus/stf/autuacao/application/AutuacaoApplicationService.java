@@ -24,7 +24,7 @@ import br.jus.stf.autuacao.application.commands.RevisarRepercussaoGeralCommand;
 import br.jus.stf.autuacao.domain.NumeroProcessoAdapter;
 import br.jus.stf.autuacao.domain.PessoaAdapter;
 import br.jus.stf.autuacao.domain.ProcessoFactory;
-import br.jus.stf.autuacao.domain.StatusAdapter;
+import br.jus.stf.autuacao.domain.StatusOriginarioAdapter;
 import br.jus.stf.autuacao.domain.StatusRecursalAdapter;
 import br.jus.stf.autuacao.domain.model.Autuador;
 import br.jus.stf.autuacao.domain.model.MotivoInaptidao;
@@ -79,8 +79,8 @@ public class AutuacaoApplicationService {
     private ProcessoFactory processoFactory;
     
     @Autowired
-    @Qualifier("statusProcessoAdapter")
-    private StatusAdapter statusAdapter;
+    @Qualifier("statusProcessoOriginarioAdapter")
+    private StatusOriginarioAdapter statusOriginarioAdapter;
     
     @Autowired
     @Qualifier("statusProcessoRecursalAdapter")
@@ -100,7 +100,7 @@ public class AutuacaoApplicationService {
         ProcessoId processoId = processoRepository.nextProcessoId();
         Classe classe = classeRepository.findOne(new ClasseId(command.getClasseId()));
         TipoProcesso tipoProcesso = TipoProcesso.valueOf(command.getTipoProcesso());
-		Status status = TipoProcesso.ORIGINARIO.equals(tipoProcesso) ? statusAdapter.nextStatus(processoId)
+		Status status = TipoProcesso.ORIGINARIO.equals(tipoProcesso) ? statusOriginarioAdapter.nextStatus(processoId)
 				: command.isCriminalEleitoral() ? statusRecursalAdapter.nextStatus(processoId, "CRIMINAL_ELEITORAL")
 						: statusRecursalAdapter.nextStatus(processoId);
         MeioTramitacao meioTramitacao = MeioTramitacao.valueOf(command.getMeioTramitacao());
@@ -115,7 +115,7 @@ public class AutuacaoApplicationService {
     @Command(description = "Autuação de Originários")
     public void handle(AutuarProcessoCommand command) {
         ProcessoOriginario processo = (ProcessoOriginario) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
-        Status status = statusAdapter.nextStatus(processo.identity(), "DISTRIBUIR");
+        Status status = statusOriginarioAdapter.nextStatus(processo.identity(), "DISTRIBUIR");
         Identificacao numero = numeroProcessoAdapter.novoNumeroProcesso(command.getClasseId());
         Classe classe = classeRepository.findOne(new ClasseId(command.getClasseId()));
         //TODO: Alterar para pegar dados do autuador pelo usuário da sessão.
@@ -141,11 +141,8 @@ public class AutuacaoApplicationService {
         pessoaAdapter.criarPessoas(command.getPoloAtivo()).forEach(p1 -> partes.add(new Parte(p1.getApresentacao(), Polo.ATIVO, new PessoaId(p1.getPessoaId()))));
         pessoaAdapter.criarPessoas(command.getPoloPassivo()).forEach(p2 -> partes.add(new Parte(p2.getApresentacao(), Polo.PASSIVO, new PessoaId(p2.getPessoaId()))));
 
-        Set<Assunto> assuntos = Optional.ofNullable(command.getAssuntos())
-				.map(assuntosCmd -> assuntosCmd.stream()
-						.map(assunto -> teseRepository.findOneAssunto(new AssuntoId(assunto)))
-						.collect(Collectors.toSet()))
-				.orElse(new HashSet<>(0));
+		Set<Assunto> assuntos = command.getAssuntos().stream()
+				.map(assunto -> teseRepository.findOneAssunto(new AssuntoId(assunto))).collect(Collectors.toSet());
         
         processo.autuar(assuntos, partes, autuador, status);
         processoRepository.save(processo);
@@ -163,11 +160,8 @@ public class AutuacaoApplicationService {
         pessoaAdapter.criarPessoas(command.getPoloAtivo()).forEach(p1 -> partes.add(new Parte(p1.getApresentacao(), Polo.ATIVO, new PessoaId(p1.getPessoaId()))));
         pessoaAdapter.criarPessoas(command.getPoloPassivo()).forEach(p2 -> partes.add(new Parte(p2.getApresentacao(), Polo.PASSIVO, new PessoaId(p2.getPessoaId()))));
 
-		Set<Assunto> assuntos = Optional.ofNullable(command.getAssuntos())
-				.map(assuntosCmd -> assuntosCmd.stream()
-						.map(assunto -> teseRepository.findOneAssunto(new AssuntoId(assunto)))
-						.collect(Collectors.toSet()))
-				.orElse(new HashSet<>(0));
+		Set<Assunto> assuntos = command.getAssuntos().stream()
+				.map(assunto -> teseRepository.findOneAssunto(new AssuntoId(assunto))).collect(Collectors.toSet());
         
         processo.autuar(assuntos, partes, autuador, status);
         processoRepository.save(processo);
@@ -209,15 +203,10 @@ public class AutuacaoApplicationService {
     public void handle(AnalisarRepercussaoGeralCommand command) {
 		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
 		Status status = command.isRepercussaoGeral() ? statusRecursalAdapter.nextStatus(processo.identity(), "REVISAR_RG") : statusRecursalAdapter.nextStatus(processo.identity());
-		Set<Assunto> assuntos = Optional.ofNullable(command.getAssuntos())
-				.map(assuntosCmd -> assuntosCmd.stream()
-						.map(assunto -> teseRepository.findOneAssunto(new AssuntoId(assunto)))
-						.collect(Collectors.toSet()))
-				.orElse(new HashSet<>(0));
-		Set<Tese> teses = Optional.ofNullable(command.getTeses())
-				.map(tesesCmd -> tesesCmd.stream()
-						.map(tese -> teseRepository.findOne(new TeseId(tese))).collect(Collectors.toSet()))
-				.orElse(new HashSet<>(0));
+		Set<Assunto> assuntos = command.getAssuntos().stream()
+				.map(assunto -> teseRepository.findOneAssunto(new AssuntoId(assunto))).collect(Collectors.toSet());
+		Set<Tese> teses = command.getTeses().stream().map(tese -> teseRepository.findOne(new TeseId(tese)))
+				.collect(Collectors.toSet());
         
         processo.analisarRepercussaoGeral(command.getObservacao(), teses, assuntos, status);
         processoRepository.save(processo);
@@ -227,15 +216,10 @@ public class AutuacaoApplicationService {
     public void handle(RevisarRepercussaoGeralCommand command) {
     	ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
     	Status status = statusRecursalAdapter.nextStatus(processo.identity());
-    	Set<Assunto> assuntos = Optional.ofNullable(command.getAssuntos())
-				.map(assuntosCmd -> assuntosCmd.stream()
-						.map(assunto -> teseRepository.findOneAssunto(new AssuntoId(assunto)))
-						.collect(Collectors.toSet()))
-				.orElse(new HashSet<>(0));
-		Set<Tese> teses = Optional.ofNullable(command.getTeses())
-				.map(tesesCmd -> tesesCmd.stream()
-						.map(tese -> teseRepository.findOne(new TeseId(tese))).collect(Collectors.toSet()))
-				.orElse(new HashSet<>(0));
+		Set<Assunto> assuntos = command.getAssuntos().stream()
+				.map(assunto -> teseRepository.findOneAssunto(new AssuntoId(assunto))).collect(Collectors.toSet());
+		Set<Tese> teses = command.getTeses().stream().map(tese -> teseRepository.findOne(new TeseId(tese)))
+				.collect(Collectors.toSet());
 		
         processo.analisarRepercussaoGeral(command.getObservacao(), teses, assuntos, status);
         processoRepository.save(processo);
@@ -244,7 +228,7 @@ public class AutuacaoApplicationService {
     @Command(description = "Rejeitar Processo")
     public void handle(RejeitarProcessoCommand command) {
         ProcessoOriginario processo = (ProcessoOriginario) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
-        Status status = statusAdapter.nextStatus(processo.identity(), "REJEITAR");
+        Status status = statusOriginarioAdapter.nextStatus(processo.identity(), "REJEITAR");
 
         processo.rejeitar(command.getMotivo(), status);
         processoRepository.save(processo);
