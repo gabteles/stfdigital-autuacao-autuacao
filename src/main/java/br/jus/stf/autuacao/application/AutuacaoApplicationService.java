@@ -17,6 +17,7 @@ import br.jus.stf.autuacao.application.commands.AnalisarRepercussaoGeralCommand;
 import br.jus.stf.autuacao.application.commands.AutuarProcessoCommand;
 import br.jus.stf.autuacao.application.commands.AutuarProcessoCriminalCommand;
 import br.jus.stf.autuacao.application.commands.AutuarProcessoRecursalCommand;
+import br.jus.stf.autuacao.application.commands.EnviarProcessoCommand;
 import br.jus.stf.autuacao.application.commands.IniciarAutuacaoCommand;
 import br.jus.stf.autuacao.application.commands.RejeitarProcessoCommand;
 import br.jus.stf.autuacao.application.commands.RevisarAnalisePressupostosCommand;
@@ -28,6 +29,7 @@ import br.jus.stf.autuacao.domain.StatusOriginarioAdapter;
 import br.jus.stf.autuacao.domain.StatusRecursalAdapter;
 import br.jus.stf.autuacao.domain.model.Autuador;
 import br.jus.stf.autuacao.domain.model.MotivoInaptidao;
+import br.jus.stf.autuacao.domain.model.Origem;
 import br.jus.stf.autuacao.domain.model.Parte;
 import br.jus.stf.autuacao.domain.model.Processo;
 import br.jus.stf.autuacao.domain.model.ProcessoOriginario;
@@ -39,6 +41,12 @@ import br.jus.stf.autuacao.domain.model.classe.ClasseRepository;
 import br.jus.stf.autuacao.domain.model.controletese.Assunto;
 import br.jus.stf.autuacao.domain.model.controletese.Tese;
 import br.jus.stf.autuacao.domain.model.controletese.TeseRepository;
+import br.jus.stf.autuacao.domain.model.identidade.TribunalJuizo;
+import br.jus.stf.autuacao.domain.model.identidade.TribunalJuizoRepository;
+import br.jus.stf.autuacao.domain.model.preferencia.Preferencia;
+import br.jus.stf.autuacao.domain.model.preferencia.PreferenciaRepository;
+import br.jus.stf.autuacao.domain.model.procedenciageografica.UnidadeFederacao;
+import br.jus.stf.autuacao.domain.model.procedenciageografica.UnidadeFederacaoRepository;
 import br.jus.stf.autuacao.infra.RabbitConfiguration;
 import br.jus.stf.core.framework.component.command.Command;
 import br.jus.stf.core.framework.domaindrivendesign.ApplicationService;
@@ -48,6 +56,7 @@ import br.jus.stf.core.shared.controletese.TeseId;
 import br.jus.stf.core.shared.eventos.ProcessoAutuado;
 import br.jus.stf.core.shared.eventos.ProcessoRegistrado;
 import br.jus.stf.core.shared.identidade.PessoaId;
+import br.jus.stf.core.shared.preferencia.PreferenciaId;
 import br.jus.stf.core.shared.processo.Identificacao;
 import br.jus.stf.core.shared.processo.MeioTramitacao;
 import br.jus.stf.core.shared.processo.Polo;
@@ -95,6 +104,15 @@ public class AutuacaoApplicationService {
     @Autowired
     private TeseRepository teseRepository;
     
+    @Autowired
+    private PreferenciaRepository preferenciaRepository;
+    
+    @Autowired
+    private UnidadeFederacaoRepository unidadeFederacaoRepository;
+    
+    @Autowired
+    private TribunalJuizoRepository tribunalJuizoRepository;
+    
     @Transactional(propagation = REQUIRES_NEW)
     public void handle(IniciarAutuacaoCommand command) {
         ProcessoId processoId = processoRepository.nextProcessoId();
@@ -105,7 +123,9 @@ public class AutuacaoApplicationService {
 						: statusRecursalAdapter.nextStatus(processoId);
         MeioTramitacao meioTramitacao = MeioTramitacao.valueOf(command.getMeioTramitacao());
         Sigilo sigilo = Sigilo.valueOf(command.getSigilo());
-        Processo processo = processoFactory.novoProcesso(processoId, new ProtocoloId(command.getProtocoloId()), classe, tipoProcesso, meioTramitacao, sigilo, status);
+        Long numero = TipoProcesso.ORIGINARIO.equals(tipoProcesso) ? null : numeroProcessoAdapter.novoNumeroProcesso(command.getClasseId()).numero();
+		Processo processo = processoFactory.novoProcesso(processoId, new ProtocoloId(command.getProtocoloId()), classe,
+				numero, tipoProcesso, meioTramitacao, sigilo, status);
         
         processoRepository.save(processo);
         // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
@@ -233,5 +253,34 @@ public class AutuacaoApplicationService {
         processo.rejeitar(command.getMotivo(), status);
         processoRepository.save(processo);
     }
+    
+    @Command(description = "Enviar um Processo Recursal")
+	public void handle(EnviarProcessoCommand command){
+    	ProcessoId processoId = processoRepository.nextProcessoId();
+    	Classe classe = classeRepository.findOne(new ClasseId(command.getClasseId()));
+    	Set<Preferencia> preferencias = Optional.ofNullable(command.getPreferencias()).isPresent()
+				? command.getPreferencias().stream().map(pref -> preferenciaRepository.findOne(new PreferenciaId(pref)))
+						.collect(Collectors.toSet()) : null;
+		Sigilo sigilo = Sigilo.valueOf(command.getSigilo());
+		Status status = command.isCriminalEleitoral() ? statusRecursalAdapter.nextStatus(processoId, "CRIMINAL_ELEITORAL")
+						: statusRecursalAdapter.nextStatus(processoId);
+		Set<Assunto> assuntos = command.getAssuntos().stream()
+				.map(assunto -> teseRepository.findOneAssunto(new AssuntoId(assunto))).collect(Collectors.toSet());
+		Set<Parte> partes = new HashSet<>(0);
+        
+		command.getPartesPoloAtivo().forEach(parteDto -> partes.add(new Parte(parteDto.getApresentacao(), Polo.ATIVO, new PessoaId(parteDto.getPessoa()))));
+        command.getPartesPoloPassivo().forEach(parteDto -> partes.add(new Parte(parteDto.getApresentacao(), Polo.PASSIVO, new PessoaId(parteDto.getPessoa()))));
+        
+        Set<Origem> origens = command.getOrigens().stream().map(origem -> {
+        	UnidadeFederacao uf = unidadeFederacaoRepository.findOne(origem.getUnidadeFederacaoId());
+			TribunalJuizo tribunal = tribunalJuizoRepository.findOne(origem.getCodigoJuizoOrigem());
+			
+			return new Origem(uf, tribunal, origem.getNumeroProcesso(), origem.getIsPrincipal());
+        }).collect(Collectors.toSet());
+        Identificacao numero = numeroProcessoAdapter.novoNumeroProcesso(command.getClasseId());
+		ProcessoRecursal processo = processoFactory.novoEnvio(processoId, classe, numero.numero(), preferencias, command.getNumeroRecursos(), sigilo, origens, assuntos, partes, status);
+		
+		processoRepository.save(processo);
+	}
 
 }

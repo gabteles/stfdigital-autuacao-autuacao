@@ -57,14 +57,17 @@ public class ProcessoRecursal extends Processo {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
 
-	public ProcessoRecursal(ProcessoId id, ProtocoloId protocoloId, Classe classe, MeioTramitacao meioTramitacao,
+	public ProcessoRecursal(ProcessoId id, ProtocoloId protocoloId, Classe classe, Long numero, MeioTramitacao meioTramitacao,
 			Sigilo sigilo, Status status) {
     	super(id, protocoloId, classe, meioTramitacao, sigilo, status);
+    	super.identificar(classe, numero);
     }
     
-	public ProcessoRecursal(ProcessoId id, ProtocoloId protocoloId, Classe classe, Set<Preferencia> preferencias,
-			MeioTramitacao meioTramitacao, Integer quantidadeRecurso, Sigilo sigilo, Status status) {
+	public ProcessoRecursal(ProcessoId id, ProtocoloId protocoloId, Classe classe, Long numero,
+			Set<Preferencia> preferencias, MeioTramitacao meioTramitacao, Integer quantidadeRecurso, Sigilo sigilo,
+			Status status) {
     	super(id, protocoloId, classe, preferencias, meioTramitacao, sigilo, status);
+    	super.identificar(classe, numero);
     	
     	Validate.isTrue(quantidadeRecurso >= 0, "Quantidade de recurso deve ser maior ou igual a zero.");
     	

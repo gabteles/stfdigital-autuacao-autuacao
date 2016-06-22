@@ -149,6 +149,7 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
     protected void identificar(Classe classe, Long numero) {
     	Validate.notNull(classe, "Classe requerida.");
 		Validate.notNull(numero, "Número requerido.");
+		Validate.isTrue(numero > 0, "Número deve ser maior que zero.");
 		
 		this.classe = classe;
 		this.numero = numero;
@@ -162,6 +163,10 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
 
 	public ProtocoloId protocoloId() {
 		return protocoloId;
+	}
+	
+	public boolean isCriminalEleitoral() {
+		return preferencias.stream().anyMatch(preferencia -> preferencia.isCriminalEleitoral());
 	}
 
 }

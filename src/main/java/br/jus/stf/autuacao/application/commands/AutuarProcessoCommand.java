@@ -29,11 +29,11 @@ public class AutuarProcessoCommand {
     
     @NotEmpty
 	@ApiModelProperty(value = "Lista com as partes do polo ativo", required=true)
-	private List<AutuarParteCommand> poloAtivo;
+	private List<CadastrarParteCommand> poloAtivo;
 	
 	@NotEmpty
 	@ApiModelProperty(value = "Lista com as partes do polo passivo", required=true)
-	private List<AutuarParteCommand> poloPassivo;
+	private List<CadastrarParteCommand> poloPassivo;
     
 	public Long getProcessoId() {
 	    return processoId;
@@ -43,11 +43,11 @@ public class AutuarProcessoCommand {
 		return classeId;
 	}
 	
-	public List<AutuarParteCommand> getPoloAtivo() {
+	public List<CadastrarParteCommand> getPoloAtivo() {
 		return poloAtivo;
 	}
 	
-	public List<AutuarParteCommand> getPoloPassivo() {
+	public List<CadastrarParteCommand> getPoloPassivo() {
 		return poloPassivo;
 	}
 

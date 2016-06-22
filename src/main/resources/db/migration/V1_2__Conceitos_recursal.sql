@@ -9,7 +9,7 @@ alter table autuacao.unidade_federacao add constraint fk_pais_unfe foreign key (
 create table autuacao.assunto (cod_assunto varchar2(9) not null, dsc_assunto varchar2(255) not null, cod_assunto_pai varchar2(9), constraint pk_assunto primary key (cod_assunto));
 alter table autuacao.assunto add constraint fk_assunto_assu foreign key (cod_assunto_pai) references autuacao.assunto(cod_assunto);
 
-create table autuacao.tese (seq_tese number not null, dsc_tese varchar2(4000) not null, tip_tese varchar2(17) not null, num_tese bigint not null, constraint pk_tese primary key (seq_tese));
+create table autuacao.tese (seq_tese number not null, dsc_tese varchar2(4000) not null, tip_tese varchar2(17) not null, num_tese number not null, constraint pk_tese primary key (seq_tese));
 alter table autuacao.tese add constraint ck_tese_tip_tese check (tip_tese in ('CONTROVERSIA', 'PRE_TEMA', 'REPERCUSSAO_GERAL'));
 
 create table autuacao.tese_assunto (seq_tese number not null, cod_assunto varchar2(9), constraint pk_tese_assunto primary key (seq_tese, cod_assunto));

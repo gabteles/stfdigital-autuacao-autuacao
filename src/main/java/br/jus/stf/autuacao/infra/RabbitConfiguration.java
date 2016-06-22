@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import br.jus.stf.autuacao.interfaces.ProcessoOriginarioEventHandler;
+import br.jus.stf.autuacao.interfaces.ProcessoEventHandler;
 import br.jus.stf.core.shared.eventos.PeticaoRegistrada;
 
 /**
@@ -101,7 +101,7 @@ public class RabbitConfiguration {
 	/**
 	 * Os binding são necessários para viabilizar a implementação do Pattern Publish-Subscriber, com um publisher e 
 	 * múltiplos subscribers. Veja, por exemplo, o evento {@link PeticaoRegistrada}. Ele tem um publisher, 
-	 * {@link RabbitEventPublisher}, mas múltimplos subcribers, {@link ProcessoOriginarioEventHandler} e
+	 * {@link RabbitEventPublisher}, mas múltimplos subcribers, {@link ProcessoEventHandler} e
 	 * {@link ProcessoEventHandler}. 
 	 * 
 	 * <p>Nesse caso é necessário criar uma fila de saída (para o publisher) e múltiplas filas de chegada (uma

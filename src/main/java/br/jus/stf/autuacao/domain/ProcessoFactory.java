@@ -28,7 +28,7 @@ import br.jus.stf.core.shared.protocolo.ProtocoloId;
 @Component
 public class ProcessoFactory {
 
-	public Processo novoProcesso(ProcessoId processoId, ProtocoloId protocoloId, Classe classe,
+	public Processo novoProcesso(ProcessoId processoId, ProtocoloId protocoloId, Classe classe, Long numero,
 			TipoProcesso tipoProcesso, MeioTramitacao meioTramitacao, Sigilo sigilo, Status status) {
     	Processo processo;
         
@@ -37,7 +37,7 @@ public class ProcessoFactory {
 			processo = new ProcessoOriginario(processoId, protocoloId, classe, meioTramitacao, sigilo, status);
 			break;
 		case RECURSAL:
-			processo = new ProcessoRecursal(processoId, protocoloId, classe, meioTramitacao, sigilo, status);
+			processo = new ProcessoRecursal(processoId, protocoloId, classe, numero, meioTramitacao, sigilo, status);
 			break;
 		default:
 			throw new IllegalArgumentException(String.format("Tipo de processo não localizado: %s.", tipoProcesso));
@@ -45,9 +45,10 @@ public class ProcessoFactory {
     	return processo;
     }
     
-    public ProcessoRecursal novoEnvio(ProcessoId processoId, Classe classe, Set<Preferencia> preferencias, Integer quantidadeRecurso, Sigilo sigilo,
-    		Set<Origem> origens, Set<Assunto> assuntos, Set<Parte> partes, Status status) {
-		ProcessoRecursal processo = new ProcessoRecursal(processoId, null, classe, preferencias,
+	public ProcessoRecursal novoEnvio(ProcessoId processoId, Classe classe, Long numero, Set<Preferencia> preferencias,
+			Integer quantidadeRecurso, Sigilo sigilo, Set<Origem> origens, Set<Assunto> assuntos, Set<Parte> partes,
+			Status status) {
+		ProcessoRecursal processo = new ProcessoRecursal(processoId, null, classe, numero, preferencias,
 				MeioTramitacao.ELETRONICO, quantidadeRecurso, sigilo, status);
     	
     	processo.atribuirOrigens(origens);

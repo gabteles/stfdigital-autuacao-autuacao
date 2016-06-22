@@ -6,17 +6,17 @@ package br.jus.stf.autuacao.application.commands;
  * @since 1.0.0
  * @since 29.04.2016
  */
-public class AutuarParteCommand {
+public class CadastrarParteCommand {
 	
 	private String apresentacao;
 	
 	private Long pessoa;
 	
-	public AutuarParteCommand() {
+	public CadastrarParteCommand() {
 		
 	}
 	
-	public AutuarParteCommand(String apresentacao, Long pessoa) {
+	public CadastrarParteCommand(String apresentacao, Long pessoa) {
 		this.apresentacao = apresentacao;
 		this.pessoa = pessoa;
 	}

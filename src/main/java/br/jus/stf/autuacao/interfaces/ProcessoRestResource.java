@@ -1,6 +1,7 @@
 package br.jus.stf.autuacao.interfaces;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,6 +24,7 @@ import br.jus.stf.autuacao.application.commands.AnalisarRepercussaoGeralCommand;
 import br.jus.stf.autuacao.application.commands.AutuarProcessoCommand;
 import br.jus.stf.autuacao.application.commands.AutuarProcessoCriminalCommand;
 import br.jus.stf.autuacao.application.commands.AutuarProcessoRecursalCommand;
+import br.jus.stf.autuacao.application.commands.EnviarProcessoCommand;
 import br.jus.stf.autuacao.application.commands.RejeitarProcessoCommand;
 import br.jus.stf.autuacao.application.commands.RevisarAnalisePressupostosCommand;
 import br.jus.stf.autuacao.application.commands.RevisarRepercussaoGeralCommand;
@@ -59,7 +61,7 @@ import br.jus.stf.core.shared.processo.ProcessoId;
  */
 @RestController
 @RequestMapping("/api/processos")
-public class ProcessoOriginarioRestResource {
+public class ProcessoRestResource {
     
     @Autowired
     private AutuacaoApplicationService autuarProcessoCommandHandler;
@@ -208,11 +210,8 @@ public class ProcessoOriginarioRestResource {
 	
 	@RequestMapping(value="/tipotese", method = RequestMethod.GET)
     public List<TipoTeseDto> listarTiposTese(){
-		List<TipoTeseDto> listaTipo = new ArrayList<>();
-		listaTipo.add(new TipoTeseDto("CONTROVERSIA", TipoTese.CONTROVERSIA.descricao()));
-		listaTipo.add(new TipoTeseDto("PRE_TEMA", TipoTese.PRE_TEMA.descricao()));
-		listaTipo.add(new TipoTeseDto("REPERCUSSAO_GERAL", TipoTese.REPERCUSSAO_GERAL.descricao()));
-    	return listaTipo;
+		return Arrays.asList(TipoTese.values()).stream().map(tipo -> new TipoTeseDto(tipo.name(), tipo.descricao()))
+				.collect(Collectors.toList());
     }
 	
 	@RequestMapping(value="/teses", method = RequestMethod.GET)
@@ -235,5 +234,14 @@ public class ProcessoOriginarioRestResource {
 		}
 		return assuntosDto;
 	}
+	
+	@RequestMapping(value = "/enviar-processo", method = RequestMethod.POST)
+    public void enviarProcesso(@RequestBody @Valid EnviarProcessoCommand command, BindingResult binding) {
+        if (binding.hasErrors()) {
+            throw new IllegalArgumentException("Processo Inválido: " + binding.getAllErrors());
+        }
+        
+        autuarProcessoCommandHandler.handle(command);
+    }
 
 }

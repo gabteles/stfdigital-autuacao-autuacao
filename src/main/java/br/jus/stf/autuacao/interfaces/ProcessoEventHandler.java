@@ -18,7 +18,7 @@ import br.jus.stf.core.shared.processo.MeioTramitacao;
  * @since 26.12.2015
  */
 @Component
-public class ProcessoOriginarioEventHandler {
+public class ProcessoEventHandler {
     
     @Autowired
     private AutuacaoApplicationService originariosApplicationService;
