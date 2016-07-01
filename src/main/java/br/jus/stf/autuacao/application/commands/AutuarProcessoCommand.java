@@ -34,6 +34,13 @@ public class AutuarProcessoCommand {
 	@NotEmpty
 	@ApiModelProperty(value = "Lista com as partes do polo passivo", required=true)
 	private List<CadastrarParteCommand> poloPassivo;
+	
+	@ApiModelProperty(value = "Motivo da invalidação do processo na autuação", required=true)
+	private String motivo;
+	
+	@ApiModelProperty(value = "Indica se a autuacao do processo é válida ou inválida", required=true)
+	private boolean valida;
+	
     
 	public Long getProcessoId() {
 	    return processoId;
@@ -50,5 +57,15 @@ public class AutuarProcessoCommand {
 	public List<CadastrarParteCommand> getPoloPassivo() {
 		return poloPassivo;
 	}
+
+	public String getMotivo() {
+		return motivo;
+	}
+
+	public boolean isValida() {
+		return valida;
+	}
+	
+	
 
 }

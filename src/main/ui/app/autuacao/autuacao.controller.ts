@@ -1,103 +1,85 @@
 /**
  * @author Viniciusk
  */
-import {AutuacaoOriginarioCommand, AutuacaoOriginarioService} from "./autuacao.originario.service";
+import {AutuacaoOriginarioCommand, AutuacaoOriginarioService, ParteDto} from "./autuacao.originario.service";
 import IStateService = angular.ui.IStateService;
 import IStateParamService = angular.ui.IStateParamsService;
 import IPromise = angular.IPromise;
 import autuacao from "./autuacao.module";
 
-export class ParteDto{
-	
-	public apresentacao : string;
-	public pessoa : number;
-
-	constructor (apresentacao : string , pessoa? : number) {
-		this.apresentacao = apresentacao;
-		this.pessoa = pessoa;
-	}
-
-}
 
 export class AutuacaoController {
 	
 	public basicForm: Object = {};
 	public partePoloAtivo: string;
 	public partePoloPassivo: string;
-	public partesPoloAtivo: Array<ParteDto> = new Array<ParteDto>();
-	public partesPoloPassivo: Array<ParteDto> = new Array<ParteDto>();
 	public processo : Object = {};
-	public classe : String = "";
-	public valida : boolean;
+	public valida : boolean = true;
 	public processoId : number;
 
+	public cmdAutuar : AutuacaoOriginarioCommand = new AutuacaoOriginarioCommand();
+	
 	static $inject = ['$state', 'app.autuacao.autuacao.AutuacaoOriginarioService', 'classes', '$stateParams'];
 	
     constructor(private $state: IStateService,
             private autuacaoOriginarioService: AutuacaoOriginarioService,
             public classes, private $stateParams : IStateParamService ) {
     		
-    		//let resource = $stateParams['resources']
-    		//this.processo = autuacaoService.consultar(angular.isObject(resource) ? resource.processoId : resource);
-    		this.processo = this.mockProcessoAutuacao();
-    		
     		let parteAtiva = new ParteDto('JOSÉ DE SOUZA', 2);
-    		this.partesPoloAtivo.push(parteAtiva);
+    		this.cmdAutuar.poloAtivo.push(parteAtiva);
     		
     		let partePassiva = new ParteDto('ALINE PEREIRA', 3);
-    		this.partesPoloPassivo.push(partePassiva);
+    		this.cmdAutuar.poloPassivo.push(partePassiva);
+    		
+    		this.valida = true;
     }
     
     public adicionarPartePoloAtivo(): void {
-        for (let i = 0; i < this.partesPoloAtivo.length; i++){
-            if (this.partesPoloAtivo[i].apresentacao == this.partePoloAtivo.toUpperCase()){
+        for (let i = 0; i < this.cmdAutuar.poloAtivo.length; i++){
+            if (this.cmdAutuar.poloAtivo[i].apresentacao == this.partePoloAtivo.toUpperCase()){
                 this.partePoloAtivo = "";
                 return;
             }
         }
         let parte = new ParteDto(this.partePoloAtivo.toUpperCase());
-        this.partesPoloAtivo.push(parte);
+        this.cmdAutuar.poloAtivo.push(parte);
         this.partePoloAtivo = "";
     }
     
     public removerPartePoloAtivo(indice: number): void {
-        this.partesPoloAtivo.splice(indice);
+    	this.cmdAutuar.poloAtivo.splice(indice);
     }
     
     public adicionarPartePoloPassivo(): void {
-        for (let i = 0; i < this.partesPoloPassivo.length; i++){
-            if (this.partesPoloPassivo[i].apresentacao == this.partePoloPassivo.toUpperCase()){
+        for (let i = 0; i < this.cmdAutuar.poloPassivo.length; i++){
+            if (this.cmdAutuar.poloPassivo[i].apresentacao == this.partePoloPassivo.toUpperCase()){
                 this.partePoloPassivo = "";        
                 return;
             }
         }
         
         let parte = new ParteDto(this.partePoloPassivo.toUpperCase())
-        this.partesPoloPassivo.push(parte);
+        this.cmdAutuar.poloPassivo.push(parte);
         this.partePoloPassivo = "";
     }
     
     public removerPartePoloPassivo(indice: number): void {
-        this.partesPoloPassivo.splice(indice);
+    	this.cmdAutuar.poloPassivo.splice(indice);
     }
-    
 
 	public registrarAutuacao(): void {
-	    this.autuacaoOriginarioService.autuar(this.commandAutuacao())
+		
+	    this.autuacaoOriginarioService.autuar(this.cmdAutuar)
 	        .then(() => {
 	            this.$state.go('app.tarefas.minhas-tarefas', {}, { reload: true });
 	    });
 	};
-
-	private commandAutuacao(): AutuacaoOriginarioCommand {
-	    return new AutuacaoOriginarioCommand(1, this.classe, this.partesPoloPassivo, this.partesPoloPassivo);
-	};
 	
-	public mockProcessoAutuacao () : Object {
+/*	public mockProcessoAutuacao () : Object {
 		let processoMock : Object = {processoId : 1, remessa : {classeSugerida : 'RE',  qtdVolumes : 2, qtdApensos : 3, formaRecebimento : 'SEDEX', numeroSedex : '2000'}} ;
 		return processoMock;
 	} 
-	
+*/	
 }
 
 autuacao.controller('app.autuacao.autuacao.AutuacaoController', AutuacaoController);

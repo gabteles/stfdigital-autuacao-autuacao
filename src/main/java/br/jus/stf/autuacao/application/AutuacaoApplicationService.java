@@ -132,10 +132,9 @@ public class AutuacaoApplicationService {
         rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_REGISTRADO_QUEUE, new ProcessoRegistrado(command.getProtocoloId(), processoId.toString()));
     }
 
-    @Command(description = "Autuação de Originários")
+    @Command(description = "Autuação ou Rejeição de Originários ")
     public void handle(AutuarProcessoCommand command) {
         ProcessoOriginario processo = (ProcessoOriginario) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
-        Status status = statusOriginarioAdapter.nextStatus(processo.identity(), "DISTRIBUIR");
         Identificacao numero = numeroProcessoAdapter.novoNumeroProcesso(command.getClasseId());
         Classe classe = classeRepository.findOne(new ClasseId(command.getClasseId()));
         //TODO: Alterar para pegar dados do autuador pelo usuário da sessão.
@@ -144,8 +143,15 @@ public class AutuacaoApplicationService {
         Set<Parte> partes = new HashSet<>(0);
         command.getPoloAtivo().forEach(parteDto -> partes.add(new Parte(parteDto.getApresentacao(), Polo.ATIVO, new PessoaId(parteDto.getPessoa()))));
         command.getPoloPassivo().forEach(parteDto -> partes.add(new Parte(parteDto.getApresentacao(), Polo.PASSIVO, new PessoaId(parteDto.getPessoa()))));
-        
-        processo.autuar(classe, numero.numero(), partes, autuador, status);
+       
+        if (command.isValida()){
+        	Status status = statusOriginarioAdapter.nextStatus(processo.identity(), "DISTRIBUIR");
+        	processo.autuar(classe, numero.numero(), partes, autuador, status);
+        }else{
+        	Status status = statusOriginarioAdapter.nextStatus(processo.identity(), "REJEITAR");
+        	processo.rejeitar(command.getMotivo(), status);        	
+        }
+
         processoRepository.save(processo);
         // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
         rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processo.identity().toString(), numero.toString()));
@@ -242,15 +248,6 @@ public class AutuacaoApplicationService {
 				.collect(Collectors.toSet());
 		
         processo.analisarRepercussaoGeral(command.getObservacao(), teses, assuntos, status);
-        processoRepository.save(processo);
-    }
-    
-    @Command(description = "Rejeitar Processo")
-    public void handle(RejeitarProcessoCommand command) {
-        ProcessoOriginario processo = (ProcessoOriginario) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
-        Status status = statusOriginarioAdapter.nextStatus(processo.identity(), "REJEITAR");
-
-        processo.rejeitar(command.getMotivo(), status);
         processoRepository.save(processo);
     }
     

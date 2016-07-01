@@ -2,11 +2,13 @@ import ITranslatePartialLoaderProvider = angular.translate.ITranslatePartialLoad
 import IStateProvider = angular.ui.IStateProvider;
 import IModule = angular.IModule;
 import {AutuacaoService} from "../services/autuacao.service";
+import Properties = app.support.constants.Properties;
+import cmd = app.support.command;
 
 /** @ngInject **/
 function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider,
                 $stateProvider: IStateProvider,
-                properties: any) {
+                properties: Properties) {
 
     $translatePartialLoaderProvider.addPart(properties.apiUrl + '/autuacao/autuacao');
 

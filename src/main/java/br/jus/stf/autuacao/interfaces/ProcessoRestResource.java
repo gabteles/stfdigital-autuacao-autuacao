@@ -162,15 +162,6 @@ public class ProcessoRestResource {
         autuarProcessoCommandHandler.handle(command);
     }
     
-    @RequestMapping(value = "/rejeicao", method = RequestMethod.POST)
-    public void rejeitar(@RequestBody @Valid RejeitarProcessoCommand command, BindingResult binding) {
-        if (binding.hasErrors()) {
-            throw new IllegalArgumentException("Processo Inválido: " + binding.getAllErrors());
-        }
-        
-        autuarProcessoCommandHandler.handle(command);
-    }
-    
 	@RequestMapping(value="/classe", method = RequestMethod.GET)
     public List<ClasseDto> listar(){
     	return classeOriginariaRepository.findAll().stream()
