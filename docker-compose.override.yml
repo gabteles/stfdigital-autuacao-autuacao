@@ -26,6 +26,19 @@ services:
     environment:
      - spring.profiles.active=${JAVA_SERVICE_SPRING_PROFILES}
      - JAVA_OPTS=${JAVA_DEBUG_OPTS} ${JAVA_SERVICE_OPTS}
+  mongo:
+    ports:
+     - "27017:27017"
+  documents:
+    ports:
+     - "8094:8094"
+     - "8194:8194"
+     - "47994:${JAVA_DEBUG_PORT}"
+    environment:
+     - spring.profiles.active=${JAVA_SERVICE_SPRING_PROFILES}
+     - JAVA_OPTS=${JAVA_DEBUG_OPTS} ${JAVA_SERVICE_OPTS}
+     - onlyoffice.documentserver.host=gateway
+     - onlyoffice.server.address=https://docker:443
   ui:
     ports:
      - "8443:8443"
