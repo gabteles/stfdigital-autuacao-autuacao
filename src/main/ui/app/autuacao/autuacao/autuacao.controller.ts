@@ -14,24 +14,23 @@ export class AutuacaoController {
 	public partePoloAtivo: string;
 	public partePoloPassivo: string;
 	public processo : Object = {};
-	public valida : boolean = true;
+	public valida : boolean;
 	public processoId : number;
 
 	public cmdAutuar : AutuacaoOriginarioCommand = new AutuacaoOriginarioCommand();
 	
-	static $inject = ['$state', 'app.autuacao.autuacao.AutuacaoOriginarioService', 'classes', '$stateParams'];
+	static $inject = ['$state', 'app.autuacao.autuacao.AutuacaoOriginarioService', 'classes',  'messagesService'];
 	
-    constructor(private $state: IStateService,
-            private autuacaoOriginarioService: AutuacaoOriginarioService,
-            public classes, private $stateParams : IStateParamService ) {
+    constructor(private $state: IStateService, private autuacaoOriginarioService: AutuacaoOriginarioService,
+            public classes, private messagesService: app.support.messaging.MessagesService ) {
     		
     		let parteAtiva = new ParteDto('JOSÉ DE SOUZA', 2);
     		this.cmdAutuar.poloAtivo.push(parteAtiva);
-    		
     		let partePassiva = new ParteDto('ALINE PEREIRA', 3);
     		this.cmdAutuar.poloPassivo.push(partePassiva);
-    		
     		this.valida = true;
+    		
+    		//consulta o processo aqui!!!
     }
     
     public adicionarPartePoloAtivo(): void {
@@ -70,9 +69,12 @@ export class AutuacaoController {
 	public registrarAutuacao(): void {
 		
 	    this.autuacaoOriginarioService.autuar(this.cmdAutuar)
-	        .then(() => {
-	            this.$state.go('app.tarefas.minhas-tarefas', {}, { reload: true });
-	    });
+	    .then(() => {
+            this.$state.go('app.tarefas.minhas-tarefas');
+			this.messagesService.success('Processo autuado com sucesso.');
+    	}, () => {
+			this.messagesService.error('Erro ao autuar o processo.');
+		});
 	};
 	
 /*	public mockProcessoAutuacao () : Object {

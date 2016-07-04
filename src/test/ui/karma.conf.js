@@ -90,7 +90,7 @@ module.exports = function(config) {
     },
 
     proxies: {
-      '/base/recebimento/': '/base/src/main/resources/public/'
+      '/base/autuacao/': '/base/src/main/resources/public/'
     }
   };
 

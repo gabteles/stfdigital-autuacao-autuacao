@@ -6,6 +6,6 @@ System.config({
 		'system-polyfills': './node_modules/systemjs/dist/system-polyfills.src.js'
 	},
 	bundles: {
-		'autuacao/analise-pressupostoso': ['autuacao/recursal/pressuposto/analise/*']
+		'autuacao/bundle': ['autuacao/autuacao/*', 'autuacao/recursal/autuacao/recursal/*', 'autuacao/services/*']
 	}
 });
