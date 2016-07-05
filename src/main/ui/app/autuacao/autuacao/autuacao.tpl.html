@@ -40,7 +40,7 @@
                     </div>
                     
                     <div layout="row">
-                        <md-input-container flex="50" class="md-icon-float flex md-default-theme md-input-invalid" ng-show="autuacao.partesPoloAtivo.length > 0">
+                        <md-input-container flex="50" class="md-icon-float flex md-default-theme md-input-invalid" ng-show="autuacao.cmdAutuar.poloAtivo.length > 0">
                             <div class="simple-table-container md-whiteframe-4dp">
                                 <div class="ms-responsive-table-wrapper">
                                     <table class="simple" ms-responsive-table>
@@ -51,7 +51,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="parte in autuacao.partesPoloAtivo">
+                                            <tr ng-repeat="parte in autuacao.cmdAutuar.poloAtivo">
 											    <td>{{parte.apresentacao | uppercase}}</td>
 											    <td align="right">
                                                     <span class="hint-text small">
@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                         </md-input-container>
-                        <md-input-container flex="50" class="md-icon-float flex md-default-theme md-input-invalid" ng-show="autuacao.partesPoloPassivo.length > 0">
+                        <md-input-container flex="50" class="md-icon-float flex md-default-theme md-input-invalid" ng-show="autuacao.cmdAutuar.poloPassivo.length > 0">
                             <div class="simple-table-container md-whiteframe-4dp">
                                 <div class="ms-responsive-table-wrapper">
                                     <table class="simple" ms-responsive-table>
@@ -75,7 +75,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="parte in autuacao.partesPoloPassivo">
+                                            <tr ng-repeat="parte in autuacao.cmdAutuar.poloPassivo">
 											    <td>{{parte.apresentacao | uppercase}}</td>
 											    <td align="right">
                                                     <span class="hint-text small">
@@ -138,7 +138,7 @@
           					<textarea ng-model="autuacao.cmdRejeitar.motivo" md-maxlength="150" rows="5" md-select-on-focus id="txtMotivo"></textarea>
 						 </md-input-container>
 					</div>
-                    <md-button type="button" class="md-raised md-accent" id="btnRegistrarAutuacao" aria-label="Submit" 
+                    <md-button type="button" class="md-raised md-accent" id="autuar-processo" aria-label="Submit" 
                     	ng-click ="autuacao.registrarAutuacao()" command="autuacao.cmdAutuar">
                         	Autuar
                     </md-button>

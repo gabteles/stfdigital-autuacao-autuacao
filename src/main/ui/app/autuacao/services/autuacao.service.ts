@@ -7,25 +7,6 @@ import {Tese, Assunto, Processo, MotivoInaptidao, Classe, TipoTese} from "./mode
 
 
 /*
- * Comando usado para autuar um processo recursal.
- * @author anderson.araujo
- * @since 31/05/2016 
- */
-export class AutuarProcessoRecursalCommand {
-    public processoId: number;
-    public assuntos: Array<string>;
-    public poloAtivo: Array<string>;
-    public poloPassivo: Array<string>;
-    
-    constructor(processoId: number, assuntos: Array<string>, poloAtivo: Array<string>, poloPassivo: Array<string>) {
-        this.processoId = processoId;
-        this.assuntos = assuntos;
-        this.poloAtivo = poloAtivo;
-        this.poloPassivo = poloPassivo;
-    }
-}
-
-/*
  * Comando usado para autuar um processo recursal criminal e eleitoral.
  * @author viniciusk
  * @since 07/06/2016 
@@ -119,25 +100,6 @@ export class AutuacaoService {
                 });
     }
     
-    /*
-     * Realiza a atuação de um processo recursal.
-     * @param processoId Id do processo.
-     * @param poloAtivo Partes do polo ativo do processo.
-     * @param poloPassivo Partes do polo passivo do processo.
-     * @param assuntos Assuntos relacionados ao processo.
-     */
-    public autuarProcessoRecursal(processoId: number, poloAtivo: Array<string>, poloPassivo: Array<string>, 
-        assuntos: Array<Assunto>): IPromise<any> {
-        let listaAssuntos = new Array<string>();    
-        
-        assuntos.forEach((assunto) => {
-            listaAssuntos.push(assunto.codigo);
-        });
-        
-        let cmd = new AutuarProcessoRecursalCommand(processoId, listaAssuntos, poloAtivo, poloPassivo);
-        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoService.url + 
-            "/autuacao/recursal", cmd);
-    }
     
     /*
      * Envia para o back-end um comando para a realização de uma revisão de uma dada análise de pressupostos formais.

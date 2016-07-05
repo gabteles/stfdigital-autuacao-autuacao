@@ -1,9 +1,11 @@
 import ITranslatePartialLoaderProvider = angular.translate.ITranslatePartialLoaderProvider;
 import IStateProvider = angular.ui.IStateProvider;
 import IModule = angular.IModule;
+import Properties = app.support.constants.Properties;
+
 
 /** @ngInject **/
-function config($stateProvider: IStateProvider, properties: any) {
+function config($stateProvider: IStateProvider, properties: Properties) {
 
     $stateProvider.state("app.novo-processo.autuacao-recursal", {
         url : "/autuacao/recursal/autuacao/recursal",
@@ -11,7 +13,7 @@ function config($stateProvider: IStateProvider, properties: any) {
             "content@app.autenticado" : {
                 templateUrl : "./autuacao-recursal.tpl.html",
                 controller : "app.autuacao.autuacao-recursal.AutuacaoRecursalController",
-                controllerAs: "vm"
+                controllerAs: "autuacao"
             }
         }
     });

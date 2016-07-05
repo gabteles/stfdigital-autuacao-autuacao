@@ -7,8 +7,7 @@
                 <form name="basicForm" class="md-inline-form">
                     <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
                         <md-input-container flex>
-                            <label>Processo Nº</label>
-                            <input ng-model="vm.numeroProcesso" id="txtNumero" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+                            <label>Processo Nº  {{autuacao.processoId}}</label>
                         </md-input-container>
                     </div>
                     <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
@@ -24,7 +23,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="tese in vm.teses">
+                                            <tr ng-repeat="tese in autuacao.teses">
 											    <td>{{tese.codigo}}</td>
 											    <td>{{tese.descricao}}</td>
 										    </tr>
@@ -47,7 +46,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="assunto in vm.assuntos">
+                                            <tr ng-repeat="assunto in autuacao.assuntos">
 											    <td>{{assunto.codigo}}</td>
 											    <td>{{assunto.descricao}}</td>
 										    </tr>
@@ -57,19 +56,23 @@
                             </div>
                         </md-input-container>
                     </div>
+                    <div class="form-title">Partes</div>
                     <div layout="column" layout-gt-sm="row" class="layout-gt-sm-row layout-column">
                         <md-input-container flex="" class="md-icon-float flex md-default-theme md-input-invalid">
-                            <label>Informe o nome da parte do polo ativo</label>
-                            <input type="text" name="txtPartePoloAtivo" id="txtPartePoloAtivo" ng-model="vm.partePoloAtivo" class="ng-pristine" aria-label="" aria-invalid="true" ng-keydown="$event.which === 13 && vm.adicionarPartePoloAtivo()" ng-click= "$event.stopPropagation()">
+                            <label>Informe o nome da parte do polo ativos</label>
+                            <input type="text" name="txtPartePoloAtivo" id="txtPoloAtivo" ng-model="autuacao.partePoloAtivo" class="ng-pristine" aria-label="" 
+                            	aria-invalid="true" ng-keydown="$event.which === 13 && autuacao.adicionarPartePoloAtivo()" ng-click= "$event.stopPropagation()">
+                             
                         </md-input-container>
                         <md-input-container flex="" class="md-icon-float flex md-default-theme md-input-invalid">    
                             <label>Informe o nome da parte do polo passivo</label>
-                            <input type="text" name="txtPartePoloPassivo" id="txtPartePoloPassivo" ng-model="vm.partePoloPassivo" class="ng-pristine ng-empty ng-invalid ng-invalid-required 
-                            ng-touched" aria-label="" aria-invalid="true"  ng-keydown="$event.which === 13 && vm.adicionarPartePoloPassivo()" ng-click= "$event.stopPropagation()">
+                            <input type="text" name="txtPartePoloPassivo" id="txtPoloPassivo" ng-model="autuacao.partePoloPassivo" class="ng-pristine ng-empty ng-invalid ng-invalid-required 
+                            ng-touched" aria-label="" aria-invalid="true"  ng-keydown="$event.which === 13 && autuacao.adicionarPartePoloPassivo()" ng-click= "$event.stopPropagation()">
                         </md-input-container>
                     </div>
+                    
                     <div layout="row">
-                        <md-input-container flex="50" class="md-icon-float flex md-default-theme md-input-invalid" ng-show="vm.poloAtivo.length > 0">
+                        <md-input-container flex="50" class="md-icon-float flex md-default-theme md-input-invalid" ng-show="autuacao.cmdAutuar.poloAtivo.length > 0">
                             <div class="simple-table-container md-whiteframe-4dp">
                                 <div class="ms-responsive-table-wrapper">
                                     <table class="simple" ms-responsive-table>
@@ -80,11 +83,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="parte in vm.poloAtivo">
-											    <td>{{parte}}</td>
+                                            <tr ng-repeat="parte in autuacao.cmdAutuar.poloAtivo">
+											    <td>{{parte.apresentacao | uppercase}}</td>
 											    <td align="right">
                                                     <span class="hint-text small">
-                                                        <a href="#" id="lnkRemoverEnvolvidoPoloAtivo-{{$index}}" ng-click="vm.removerPartePoloAtivo(parte)">Remover</a>
+                                                        <a href="#" ng-click="autuacao.removerPartePoloAtivo(parte)">Remover</a>
                                                     </span>
                                                 </td>
 										    </tr>
@@ -93,7 +96,7 @@
                                 </div>
                             </div>
                         </md-input-container>
-                        <md-input-container flex="50" class="md-icon-float flex md-default-theme md-input-invalid" ng-show="vm.poloPassivo.length > 0">
+                        <md-input-container flex="50" class="md-icon-float flex md-default-theme md-input-invalid" ng-show="autuacao.cmdAutuar.poloPassivo.length > 0">
                             <div class="simple-table-container md-whiteframe-4dp">
                                 <div class="ms-responsive-table-wrapper">
                                     <table class="simple" ms-responsive-table>
@@ -104,11 +107,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="parte in vm.poloPassivo">
-											    <td>{{parte}}</td>
+                                            <tr ng-repeat="parte in autuacao.cmdAutuar.poloPassivo">
+											    <td>{{parte.apresentacao | uppercase}}</td>
 											    <td align="right">
                                                     <span class="hint-text small">
-                                                        <a href="#" id="lnkRemoverEnvolvidoPoloPassivo-{{$index}}" ng-click="vm.removerPartePoloPassivo(parte)">Remover</a>
+                                                        <a href="#" ng-click="autuacao.removerPartePoloPassivo(parte)">Remover</a>
                                                     </span>
                                                 </td>
 										    </tr>
@@ -118,7 +121,8 @@
                             </div>
                         </md-input-container>
                     </div>
-                    <md-button type="button" class="md-raised md-accent" id="btnautuarProcessoRecursal" aria-label="Submit" ng-click="vm.autuarProcessoRecursal()">
+                    <md-button type="button" class="md-raised md-accent" id="autuar-processo-recursal" aria-label="Submit" ng-click="autacao.autuarProcessoRecursal()" 
+                    	command="autuacao.cmdAutuar">
                         Autuar
                     </md-button>
                 </form>
