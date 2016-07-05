@@ -6,6 +6,6 @@ System.config({
 		'system-polyfills': './node_modules/systemjs/dist/system-polyfills.src.js'
 	},
 	bundles: {
-		'autuacao/bundle': ['autuacao/autuacao/*', 'autuacao/recursal/autuacao/recursal/*', 'autuacao/services/*']
+		'autuacao/bundle': ['autuacao/autuacao/*', 'autuacao/recursal/autuacao/recursal/*', 'autuacao/recursal/autuacao/criminal/*', 'autuacao/services/*']
 	}
 });
