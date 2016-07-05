@@ -25,20 +25,21 @@ export class AutuacaoRecursalController {
     public cmdAutuar : AutuarProcessoRecursalCommand = new AutuarProcessoRecursalCommand();
     
     /** @ngInject **/
-    static $inject = ["$state", "$mdDialog", "app.autuacao.autuacao-services.AutuacaoService", "app.autuacao.recursal.AutuacaoRecursalService"];
+    static $inject = ["$state", "messagesService", "app.autuacao.autuacao-services.AutuacaoService", "app.autuacao.recursal.AutuacaoRecursalService"];
     
-    constructor(private $state: IStateService, private $mdDialog: IDialogService, private autuacaoService: AutuacaoService, private autuacaoRecursalService : AutuacaoRecursalService){
+    constructor(private $state: IStateService, private messagesService: app.support.messaging.MessagesService, private autuacaoService: AutuacaoService,
+    		private autuacaoRecursalService : AutuacaoRecursalService){
     	
 		this.assuntos.push(new Assunto('4291', 'Jurisdição e Competência', null));
 		this.assuntos.push(new Assunto('10912', 'Medidas Assecuratórias', null));
 		this.teses.push(new Tese(170, 'Recurso extraordinário em que se discute', 1, null, 'REPERCUSSAO_GERAL'));
     	
-/*		let parteAtiva = new ParteDto('JOSÉ DE SOUZA', 2);
+		let parteAtiva = new ParteDto('JOSÉ DE SOUZA', 2);
 		this.cmdAutuar.poloAtivo.push(parteAtiva);
 		let partePassiva = new ParteDto('ALINE PEREIRA', 3);
 		this.cmdAutuar.poloPassivo.push(partePassiva);
 		this.processoId = 1;
-*/		
+	
  /*       autuacaoService.consultarProcesso(1).then((processo: Processo) => {
 			this.numeroProcesso = processo.numero;
             this.teses = processo.teses;
@@ -46,17 +47,7 @@ export class AutuacaoRecursalController {
             this.processoId = 1;
 		}); */ 
     }
-    
-    /**
-     * Exibe mensagens de alerta.
-     * @param mensagem 
-     */
-    private exibirMensagem(mensagem: string, titulo: string){
-        let alert = this.$mdDialog.alert().title(titulo).textContent(mensagem).ok("Fechar");
-        this.$mdDialog.show(alert).finally(function() {
-            alert = undefined;
-        });
-    }
+   
     
     public adicionarPartePoloAtivo(): void {
         for (let i = 0; i < this.cmdAutuar.poloAtivo.length; i++){
@@ -95,7 +86,17 @@ export class AutuacaoRecursalController {
      * Realiza a autuação de um processo recursal.
      */
     public autuarProcessoRecursal(){
-        this.autuacaoRecursalService.autuarProcessoRecursal(this.cmdAutuar);
+    	
+    	for (let i  of this.assuntos){
+    		this.cmdAutuar.assuntos.push(i.codigo);
+    	}
+    	
+        this.autuacaoRecursalService.autuarProcessoRecursal(this.cmdAutuar).then(() => {
+            this.$state.go('app.tarefas.minhas-tarefas');
+			this.messagesService.success('Processo autuado com sucesso.');
+    	}, () => {
+			this.messagesService.error('Erro ao autuar o processo.');
+		});
     }
 }
 
