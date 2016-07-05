@@ -1,23 +1,41 @@
 sudo: required
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
 services:
-  - docker
+- docker
 addons:
   hosts:
-    - docker
+  - docker
 before_cache:
-  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
-  - docker save -o $HOME/docker_cache/docker.tar stfdigital-autuacao-autuacao $(docker history -q stfdigital-autuacao-autuacao | tail -n +2 | grep -v \<missing\> | tr '\n' ' ')
+- rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+- docker save -o $HOME/docker_cache/docker.tar stfdigital-autuacao-autuacao $(docker
+  history -q stfdigital-autuacao-autuacao | tail -n +2 | grep -v \<missing\> | tr
+  '\n' ' ')
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - node_cache
-    - node_modules
-    - $HOME/docker_cache
+  - "$HOME/.gradle/caches/"
+  - node_cache
+  - node_modules
+  - "$HOME/docker_cache"
 before_install:
-  - ./scripts/upgrade-docker.sh
-  - mkdir -p $HOME/docker_cache
+- "./scripts/upgrade-docker.sh"
+- mkdir -p $HOME/docker_cache
 install: docker load -i $HOME/docker_cache/docker.tar || true
-script: gradle docker && gradle gulpTestUnit && ./scripts/test-e2e.sh
+script: gradle docker && gradle gulpTestUnit
+after_success:
+- docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+- export REPO=supremotribunalfederal/stfdigital-autuacao-autuacao
+- docker tag stfdigital-autuacao-autuacao $REPO:latest
+- docker push $REPO:latest
+notifications:
+  slack:
+    secure: KBOtc59Yck1JDT/nJdTgF+i5/PdZU3rGtwlkOVN1Mg4BSiprHApsj7UjPJcDzfeqHAAgybAOtRDZwN4R7WlCioEkxCV7x4omaaAstG9mXlkCGDcKiyvyWKLp5MPjNF8785J9IT/Kh4e2TsrTfD+Wo/xE8CrWRNIM67ylLTlylAIZYd+qQHY62hcQ6OxFjBaGGehgNBlsj15axUL+9Kt73gNaSjVgJ+V51nI83NmgnKY0ET4T9R/hgMda/+qLvvR+WeFR4Rv7CZ7alJXUEo3bGkTD/CFwXNN514knXv5WQujsskMmpgYnNa73SzolzOypAY1Xx00YSfEt5czBDrmt/+E4CeYIQxDwEV9mWw7ToAGdkUfGDYTpFEd8ppWk0P9XHeoor4RB+USSbnpLPxe+zT7nqEwCuYFGYkpOk3rNHiZDqLCDw6XQGi+oEXW2W54q6sg8zwFkJtVLadwdI/vSu3HPFC+D6AZBg/1gBq6rfUORnhtoTuvhF030dlVPbNwGuOXwZMJkK4GSAvTM85pvlic9kGU4PvwkHNUZ9h51naelXoLY1AQvc9hKVdKprIV31Kt2IScoAdOvqarOilx1uE44awkwUYDiXbcjK8HvzK8oHcgbClA0q4FsbthoHh6DvoTVeYPZkQTTBAjohnJXpVECfWemrlWcgzqgnBTUWW4=
+env:
+  global:
+  # DOCKER_EMAIL
+  - secure: Zz554Ik0SV8xMWKoO5+iqOZHeZC6x8dAyu/O/AVq4PMN3U65+SgdIY2n3z951rfT+e+p/xCfBltTkP0Grcb1mpKAVpQTjDAjUEuZB94G72pl/kDrCNhcjN/QonS+Hm4zNFcHmlfnvk3IJ0NXe8kbq0sXnL3vEDBn7Qn+NjqPw7Ulc7KA+RM49Klx6weV441hksW8JUpT4VdifpxkUN73an/LUtQ1yKMVa4NQ+L4tfQy6/lXb2KBxICQ9uBqWrZ2Zv5GO7+LempifyhQiIRrvCHCJLojZ83pqgUsL2Tph2go5D8MQ0lZ883tqVJ9n984g8ms178OrB8VCquovRco48dZN2cXejXs7upp4aXILOrdAGrwIgmaI7Q6CeWw/C+jtkjG2NQhONpD3450nIODPz+V8p6Xt0VGT591iJlhqqZHuLJ2z3GjOCl0fnEimgoS3I/IdqCwzRH9+Xpbhyos7j7PIgJ7SWwxz4aypC9jLTfR+G4kuppj9xYgvX+cJrFfoCtgNA5Wzf+07E42jG5Ir5NT6gF90XVwCaCzOoijg0t8x/Yd3kpvR2pI2PfFod+5mil0hr4tLo4Om3VFdpYCJxhTTqe79hxE/dzexPNPHVa+vqFf5wztQsMdEQicrzavQpFYOiBWEYtPA9BO66qS3MHw/1Pv7pPh9t6hZFG24eAU=
+  # DOCKER_USER
+  - secure: aT3tr1HirlA7/6t2QMdO7ycb4GUpu+Kr2oxKMSuJzs1vDlj5gnpKG59t4Gq3CeXqRn2qu48DcdXEW+6wV+be8g7OUzLdlzppzDicBQulMam2h9j92Ttt/ALeeQDkXzdiI3sw5BlRemtGsxgJBeQSLlw8M7gL35MLHk3DqIrmvQ1bYR9SANlXDzAEJ9cQ5cYplQNUK/0+jZEkmNIzthrOJNIgMhxCQEz1GvKUlBzisJjSqpZqwKFMqag2lgHfJwEPXsst1XSf5KmEfQjym3KPHvhLePOYQWc3gm2D7IcbPqZ8yQgKHX8rcvqW81E/4KiriEXUWKV1gsaF4ga30EHskZVOX5dIFx9pUfBgh8/YeO7iDKE+J24gc7Vs+7p0eomtPfHeaRm351J6V61gePIP8Ku9qrAnto+KoP4SHB9Cxf9Rvv5LAIP28/LoLvFW0Cco38HNL4bVEO0Bg59uIcq7iJ1QgxaDpjGcR3dxzMN4Xt4GTP2CULnkzxctkTHx1v8uT4mrJF6d3livnIYSl18PXqHcsYaJT4mEK2VAdAEFQxMlBEHrBEx5WOyrh1Slw+UheUxVILexVxfn6QlrxftkPJLk76/FFgWr0PQ4rQ6cLlJ0ADXP2+2dmW/UtAd3Y8PJFeHBJ7QbHxhUPcF3eD+OstA2f/NO7+KC48TJfdf/NV4=
+  # DOCKER_PASS
+  - secure: Nr0tJR1zwxxiWl3j6IhvmhNxS4+Mm+x+WZsJfVlwwbyqG5mbfUqQF8UVURYw3bgCKUEFWukY36SoRM8DKUnSrhc4haX4PbyUn8HfSonwCjsFVxVYeSNmpGvsbQiAw6/CcYy5TvyobPJKnbYqmGboaSgMcn1NaIxjMQqK+fEHT5D6ENT3BsdK/4iRohRV1/PvCsS6JBu8qwmZ7S7++ggL+aVxNdhGfYiZSGxNDd+rVbaMjHhJNl0bq0BVeDPaOD5p0KyDOy6QtbX4YbvRToAr5BtxtqZaCmQ36fZ5/31RUtGscN1/0M4Ypa9E3wNAr9WMdi3Xv2N9uVl70++umZI93osUyRPlqt60auW6d5qrPtAOHVZzjEPyNaPBpzNp3Fjj1ZBaz63p077hGl7a9eklYu5ifrpOA/rHFOTGQKaC+xfP2YIiJCWezk4HrQDpmLpwb0L+aPi8ibLTROBQ7UGPg2xAkxvVzK4SNaoGg/7kqw4OHc8agELmfj8OA+Q0hptxtBrzHEBXnOWWNuODjorGhoRJhfnJnfj7dhaMuH8qzmKyayiZboIHGha9pVXZLhvVNuDCmSkl93jZrhlrPLbntG2Tus4+bppnn6cJ4xSqXCAddqOxDpZ/Sk3HP1y5h3R8mXTS/PX1JEtSc4lUCEUCQWe0yW+iVUNzO84k73Baygw=

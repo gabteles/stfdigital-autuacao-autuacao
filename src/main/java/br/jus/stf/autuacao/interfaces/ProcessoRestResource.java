@@ -25,7 +25,6 @@ import br.jus.stf.autuacao.application.commands.AutuarProcessoCommand;
 import br.jus.stf.autuacao.application.commands.AutuarProcessoCriminalCommand;
 import br.jus.stf.autuacao.application.commands.AutuarProcessoRecursalCommand;
 import br.jus.stf.autuacao.application.commands.EnviarProcessoCommand;
-import br.jus.stf.autuacao.application.commands.RejeitarProcessoCommand;
 import br.jus.stf.autuacao.application.commands.RevisarAnalisePressupostosCommand;
 import br.jus.stf.autuacao.application.commands.RevisarRepercussaoGeralCommand;
 import br.jus.stf.autuacao.domain.ParteAdapter;

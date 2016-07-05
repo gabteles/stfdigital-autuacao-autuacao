@@ -14,6 +14,12 @@ services:
     environment:
      - spring.profiles.active=${JAVA_SERVICE_SPRING_PROFILES}
      - JAVA_OPTS=${JAVA_SERVICE_OPTS}
+  documents:
+    environment:
+     - JAVA_OPTS=${JAVA_SERVICE_OPTS}
+     - spring.profiles.active=${JAVA_SERVICE_SPRING_PROFILES}
+     - onlyoffice.documentserver.host=gateway
+     - onlyoffice.server.address=https://docker:443
   autuacao:
     container_name: autuacao
     image: stfdigital-autuacao-autuacao
