@@ -10,14 +10,15 @@ import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
 /**
- * Comando usado pelo front-end para enviar os dados da autuação de processo recursal para o back-end.
+ * Comando usado pelo front-end para enviar os dados da autuação de processo recursal criminal/eleitoral para o back-end.
  * 
- * @author anderson.araujo
- * @since 30/05/2016
+ * @author viniciusk
  *
  */
-@ApiModel(value = "Comando usado pelo front-end para enviar os dados da autuação de processo recursal para o back-end.")
-public class AutuarProcessoRecursalCommand {
+
+@ApiModel(value = "Comando usado pelo front-end para enviar os dados da autuação de processo recursal criminal/eleitoral para o back-end.")
+public class AutuarRecursalCriminalEleitoralCommand {
+	
 	@NotNull
     @ApiModelProperty(value = "O identificador do processo originário criado ao iniciar o fluxo de autuação.", required=true)
     private Long processoId;
@@ -49,4 +50,5 @@ public class AutuarProcessoRecursalCommand {
 	public Set<String> getAssuntos() {
 		return assuntos;
 	}
+
 }

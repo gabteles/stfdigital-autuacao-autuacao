@@ -18,7 +18,7 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  *
  */
 @ApiModel("Commando usado para enviar um processo.")
-public class EnviarProcessoCommand {
+public class EnviarProcessoRecursalCommand {
 	@NotBlank
 	@ApiModelProperty(value = "Id da classe processual.", required=true)
 	private String classeId;

@@ -17,7 +17,7 @@ import com.wordnik.swagger.annotations.ApiModelProperty;
  * @since 23.06.2015
  */
 @ApiModel(value = "Contém as informações necessárias para autuar um processo originário")
-public class AutuarProcessoCommand {
+public class AutuarOriginarioCommand {
 
     @NotNull
     @ApiModelProperty(value = "O identificador do processo originário criado ao iniciar o fluxo de autuação.", required=true)

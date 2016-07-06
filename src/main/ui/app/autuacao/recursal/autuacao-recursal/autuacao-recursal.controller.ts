@@ -2,8 +2,8 @@ import IStateService = angular.ui.IStateService;
 import IStateParamService = angular.ui.IStateParamsService;
 import IDialogService = angular.material.IDialogService;
 import autuacaoRecursal from "./autuacao-recursal.module";
-import {Tese, Assunto, Processo} from "../../../services/model";
-import {AutuacaoService} from "../../../services/autuacao.service";
+import {AutuacaoService} from "../../services/autuacao.service";
+import {Tese, Assunto, Processo} from "../../services/model";
 
 export class AutuarProcessoRecursalCommand {
     public processoId: number;
@@ -47,15 +47,6 @@ export class AutuacaoRecursalController {
             this.poloPassivo = new Array<string>();
             this.processoId = 1;
 		});
-        
-        /*
-        let processo = this.autuacaoService.consultarProcesso(1);
-        this.numeroProcesso = processo.numero;
-        this.teses = processo.teses;
-        this.assuntos = processo.assuntos;
-        this.poloAtivo = new Array<string>();
-        this.poloPassivo = new Array<string>();
-        this.processoId = 1;*/
     }
     
     /**

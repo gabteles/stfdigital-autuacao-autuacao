@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import br.jus.stf.autuacao.domain.model.MotivoInaptidao;
 import br.jus.stf.autuacao.domain.model.Parte;
 import br.jus.stf.autuacao.domain.model.Processo;
-import br.jus.stf.autuacao.domain.model.ProcessoOriginarioRepository;
+import br.jus.stf.autuacao.domain.model.ProcessoRepository;
 import br.jus.stf.core.shared.processo.ProcessoId;
 
 /**
@@ -25,7 +25,7 @@ import br.jus.stf.core.shared.processo.ProcessoId;
  * @since 12.02.2016
  */
 @Repository
-public class ProcessoOriginarioRepositoryImpl extends SimpleJpaRepository<Processo, ProcessoId> implements ProcessoOriginarioRepository {
+public class ProcessoOriginarioRepositoryImpl extends SimpleJpaRepository<Processo, ProcessoId> implements ProcessoRepository {
 
     private EntityManager entityManager;
 

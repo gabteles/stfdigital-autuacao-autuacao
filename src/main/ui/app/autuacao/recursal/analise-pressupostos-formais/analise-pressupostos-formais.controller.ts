@@ -1,14 +1,14 @@
-import {AnaliseCommand, AnalisePressupostosService} from "./analise-pressupostos.service";
+import {AnaliseCommand, AnalisePressupostosFormaisService} from "./analise-pressupostos-formais.service";
 import IStateService = angular.ui.IStateService;
 import IStateParamService = angular.ui.IStateParamsService;
 import IPromise = angular.IPromise;
-import analise from "./analise-pressupostos.module";
+import analise from "./analise-pressupostos-formais.module";
 
 /**
  * @author Viniciusk
  */
 
-export class AnalisePressupostosController {
+export class AnalisePressupostosFormaisController {
 	
 	public basicForm: Object = {};
 	public apto : boolean = false;
@@ -20,7 +20,7 @@ export class AnalisePressupostosController {
 	static $inject = ['$state', 'app.autuacao.analise.AnalisePressupostosService', 'motivos', '$stateParams'];
 	
     constructor(private $state: IStateService,
-            private analisePressupostosService: AnalisePressupostosService,
+            private analisePressupostosService: AnalisePressupostosFormaisService,
             public motivos, private $stateParams : IStateParamService ) {
     }
     

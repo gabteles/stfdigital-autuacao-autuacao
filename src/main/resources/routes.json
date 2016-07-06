@@ -1,50 +1,50 @@
 [    
     {
-        "id": "autuar-processo",
-        "stateName": "app.novo-processo.autuacao",
-        "urlPrefix": "/novo-processo/autuacao/autuar",
-        "src": "autuacao/autuacao"
+        "id": "autuar-originario",
+        "stateName": "app.novo-processo.autuacao-originario",
+        "urlPrefix": "/novo-processo/autuacao/originario/autuacao",
+        "src": "autuacao/autuacao-originario"
     },
      
     {
-        "id": "autuar-processo-recursal",
+        "id": "autuar-recursal",
         "stateName": "app.novo-processo.autuacao-recursal",
-        "urlPrefix": "/novo-processo/autuacao/recursal/autuacao/recursal",
+        "urlPrefix": "/novo-processo/autuacao/recursal/autuacao",
         "src": "autuacao/autuacao-recursal"
     },
     
     {
-        "id": "autuar-processo-criminal",
-        "stateName": "app.novo-processo.autuacao-criminal",
-        "urlPrefix": "/novo-processo/autuacao/recursal/autuacao/criminal",
-        "src": "autuacao/autuacao-criminal"
+        "id": "autuar-recursal-criminal-eleitoral",
+        "stateName": "app.novo-processo.autuacao-recursal-criminal-eleitoral",
+        "urlPrefix": "/novo-processo/autuacao/recursal/autuacao-criminal-eleitoral",
+        "src": "autuacao/autuacao-recursal-criminal-eleitoral"
     },
     
     {
-        "id": "analisar-pressupostos",
-        "stateName": "app.novo-processo.analise-pressupostos",
-        "urlPrefix": "/novo-processo/autuacao/recursal/pressuposto/analise",
-        "src": "autuacao/analise-pressupostos"
+        "id": "analisar-pressupostos-formais",
+        "stateName": "app.novo-processo.analise-pressupostos-formais",
+        "urlPrefix": "/novo-processo/autuacao/recursal/analise-pressupostos-formais",
+        "src": "autuacao/analise-pressupostos-formais"
 	},
 	
 	{
-        "id": "revisar-analise-pressupostos",
-        "stateName": "app.novo-processo.revisao-analise-pressupostos",
-        "urlPrefix": "/novo-processo/autuacao/recursal/pressuposto/revisao",
-        "src": "autuacao/revisao-analise-pressupostos"
+        "id": "revisar-pressupostos-formais",
+        "stateName": "app.novo-processo.revisao-pressupostos-formais",
+        "urlPrefix": "/novo-processo/autuacao/recursal/revisao-pressupostos-formais",
+        "src": "autuacao/revisao-pressupostos-formais"
     },
     
     {
         "id": "analisar-repercussao-geral",
-        "stateName": "app.novo-processo.analise",
-        "urlPrefix": "/novo-processo/autuacao/recursal/repercussao/analise",
+        "stateName": "app.novo-processo.analise-repercussao-geral",
+        "urlPrefix": "/novo-processo/autuacao/recursal/analise-repercussao-geral",
         "src": "autuacao/analise-repercussao-geral"
     },
     
     {
         "id": "revisar-repercussao-geral",
         "stateName": "app.novo-processo.revisao-repercussao-geral",
-        "urlPrefix": "/novo-processo/autuacao/recursal/repercussao/revisao",
+        "urlPrefix": "/novo-processo/autuacao/recursal/revisao-repercussao-geral",
         "src": "autuacao/revisao-repercussao-geral"
     }
      

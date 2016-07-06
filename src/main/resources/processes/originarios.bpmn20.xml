@@ -1,19 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="Examples" xmlns:modeler="http://activiti.com/modeler" modeler:version="1.0ev" modeler:exportDateTime="20151226193121" modeler:modelId="952053" modeler:modelVersion="2" modeler:modelLastUpdated="1451158249779">
 
-	<message id="peticionamentoOrgao" name="peticionamentoOrgao" />
+	<message id="peticionamento-orgao" name="peticionamento-orgao" />
 	
 	<process id="originarios" name="originarios" isExecutable="true">
 	
 		<startEvent id="inicio" name="Enviar Petição Digital" />
 		
-        <sequenceFlow id="autuar" sourceRef="inicio" targetRef="autuacao" />
+        <sequenceFlow id="autuacao" sourceRef="inicio" targetRef="autuar-processo" />
         
-        <userTask id="autuacao" name="Autuar Processo Originário" activiti:candidateGroups="autuadores">
+        <userTask id="autuar-processo" name="Autuar Processo Originário" activiti:candidateGroups="autuadores">
             <documentation>AUTUACAO</documentation>
         </userTask>
         
-		<sequenceFlow id="rejeitar" sourceRef="autuacao" targetRef="rejeitado">
+		<sequenceFlow id="rejeicao" sourceRef="autuar-processo" targetRef="rejeitado">
             <conditionExpression xsi:type="tFormalExpression">${transition == 'REJEITAR'}</conditionExpression>
         </sequenceFlow>
 		
@@ -21,17 +21,17 @@
             <documentation>REJEITADO</documentation>
         </endEvent>
         
-		<startEvent id="peticaoOrgao" name="Enviar Petição Digital por Órgão">
-			<messageEventDefinition messageRef="peticionamentoOrgao" />
+		<startEvent id="peticao-orgao" name="Enviar Petição Digital por Órgão">
+			<messageEventDefinition messageRef="peticionamento-orgao" />
 		</startEvent>
 		
-		<sequenceFlow id="autuarOrgao" sourceRef="peticaoOrgao" targetRef="autuacao" />
+		<sequenceFlow id="autuacao-orgao" sourceRef="peticao-orgao" targetRef="autuar-processo" />
 		
-		<sequenceFlow id="distribuir" sourceRef="autuacao" targetRef="distribuicao">
+		<sequenceFlow id="distribuicao" sourceRef="autuar-processo" targetRef="distribuir">
             <conditionExpression xsi:type="tFormalExpression">${transition == 'DISTRIBUIR'}</conditionExpression>
         </sequenceFlow>
 
-        <endEvent id="distribuicao" name="Distribuir">
+        <endEvent id="distribuir" name="Distribuir">
             <documentation>AUTUADO</documentation>
             <extensionElements>
                 <activiti:executionListener expression="${autuacaoFinalizadaListener.handle(execution)}" event="end"/>

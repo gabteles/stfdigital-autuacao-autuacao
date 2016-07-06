@@ -1,14 +1,15 @@
 /**
  * @author Viniciusk
  */
-import {AutuacaoOriginarioCommand, AutuacaoOriginarioService, ParteDto} from "./autuacao.originario.service";
+import {AutuacaoOriginarioCommand, AutuacaoOriginarioService, ParteDto} from "./autuacao-originario.service";
 import IStateService = angular.ui.IStateService;
 import IStateParamService = angular.ui.IStateParamsService;
 import IPromise = angular.IPromise;
-import autuacao from "./autuacao.module";
+import MessagesService = app.support.messaging.MessagesService;
+import autuacaoOriginario from "./autuacao-originario.module";
 
 
-export class AutuacaoController {
+export class AutuacaoOriginarioController {
 	
 	public basicForm: Object = {};
 	public partePoloAtivo: string;
@@ -19,10 +20,10 @@ export class AutuacaoController {
 
 	public cmdAutuar : AutuacaoOriginarioCommand = new AutuacaoOriginarioCommand();
 	
-	static $inject = ['$state', 'app.autuacao.autuacao.AutuacaoOriginarioService', 'classes',  'messagesService'];
+	static $inject = ['$state', 'app.autuacao.originario.AutuacaoOriginarioService', 'classes',  'messagesService'];
 	
     constructor(private $state: IStateService, private autuacaoOriginarioService: AutuacaoOriginarioService,
-            public classes, private messagesService: app.support.messaging.MessagesService ) {
+            public classes, private messagesService: MessagesService ) {
     		
     		let parteAtiva = new ParteDto('JOSÉ DE SOUZA', 2);
     		this.cmdAutuar.poloAtivo.push(parteAtiva);
@@ -77,12 +78,7 @@ export class AutuacaoController {
 		});
 	};
 	
-/*	public mockProcessoAutuacao () : Object {
-		let processoMock : Object = {processoId : 1, remessa : {classeSugerida : 'RE',  qtdVolumes : 2, qtdApensos : 3, formaRecebimento : 'SEDEX', numeroSedex : '2000'}} ;
-		return processoMock;
-	} 
-*/	
 }
 
-autuacao.controller('app.autuacao.autuacao.AutuacaoController', AutuacaoController);
-export default autuacao;
+autuacaoOriginario.controller('app.autuacao.originario.AutuacaoOriginarioController', AutuacaoOriginarioController);
+export default autuacaoOriginario;

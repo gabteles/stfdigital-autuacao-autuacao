@@ -10,7 +10,7 @@ import br.jus.stf.core.shared.processo.ProcessoId;
  * @since 1.0.0
  * @since 04.02.2016
  */
-public interface ProcessoOriginarioRepository {
+public interface ProcessoRepository {
 
     /** Processo **/
 	<P extends Processo> P save(P processo);

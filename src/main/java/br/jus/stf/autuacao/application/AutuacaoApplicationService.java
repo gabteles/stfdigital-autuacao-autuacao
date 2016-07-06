@@ -12,14 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.jus.stf.autuacao.application.commands.AnalisarPressupostosCommand;
+import br.jus.stf.autuacao.application.commands.AnalisarPressupostosFormaisCommand;
 import br.jus.stf.autuacao.application.commands.AnalisarRepercussaoGeralCommand;
-import br.jus.stf.autuacao.application.commands.AutuarProcessoCommand;
-import br.jus.stf.autuacao.application.commands.AutuarProcessoCriminalCommand;
-import br.jus.stf.autuacao.application.commands.AutuarProcessoRecursalCommand;
-import br.jus.stf.autuacao.application.commands.EnviarProcessoCommand;
+import br.jus.stf.autuacao.application.commands.AutuarOriginarioCommand;
+import br.jus.stf.autuacao.application.commands.AutuarRecursalCriminalEleitoralCommand;
+import br.jus.stf.autuacao.application.commands.AutuarRecursalCommand;
+import br.jus.stf.autuacao.application.commands.EnviarProcessoRecursalCommand;
 import br.jus.stf.autuacao.application.commands.IniciarAutuacaoCommand;
-import br.jus.stf.autuacao.application.commands.RevisarAnalisePressupostosCommand;
+import br.jus.stf.autuacao.application.commands.RevisarPressupostosFormaisCommand;
 import br.jus.stf.autuacao.application.commands.RevisarRepercussaoGeralCommand;
 import br.jus.stf.autuacao.domain.NumeroProcessoAdapter;
 import br.jus.stf.autuacao.domain.PessoaAdapter;
@@ -32,7 +32,7 @@ import br.jus.stf.autuacao.domain.model.Origem;
 import br.jus.stf.autuacao.domain.model.Parte;
 import br.jus.stf.autuacao.domain.model.Processo;
 import br.jus.stf.autuacao.domain.model.ProcessoOriginario;
-import br.jus.stf.autuacao.domain.model.ProcessoOriginarioRepository;
+import br.jus.stf.autuacao.domain.model.ProcessoRepository;
 import br.jus.stf.autuacao.domain.model.ProcessoRecursal;
 import br.jus.stf.autuacao.domain.model.Status;
 import br.jus.stf.autuacao.domain.model.classe.Classe;
@@ -75,7 +75,7 @@ import br.jus.stf.core.shared.protocolo.ProtocoloId;
 public class AutuacaoApplicationService {
     
     @Autowired
-    private ProcessoOriginarioRepository processoRepository;
+    private ProcessoRepository processoRepository;
     
     @Autowired
     private ClasseRepository classeRepository;
@@ -131,8 +131,8 @@ public class AutuacaoApplicationService {
         rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_REGISTRADO_QUEUE, new ProcessoRegistrado(command.getProtocoloId(), processoId.toString()));
     }
 
-    @Command(description = "Autuação ou Rejeição de Originários ")
-    public void handle(AutuarProcessoCommand command) {
+    @Command(description = "Autuação de Originários")
+    public void handle(AutuarOriginarioCommand command) {
         ProcessoOriginario processo = (ProcessoOriginario) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
         Identificacao numero = numeroProcessoAdapter.novoNumeroProcesso(command.getClasseId());
         Classe classe = classeRepository.findOne(new ClasseId(command.getClasseId()));
@@ -157,7 +157,7 @@ public class AutuacaoApplicationService {
     }
     
     @Command(description = "Autuação de Recursais")
-    public void handle(AutuarProcessoRecursalCommand command) {
+    public void handle(AutuarRecursalCommand command) {
 		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
         Status status = statusRecursalAdapter.nextStatus(processo.identity());
         //TODO: Alterar para pegar dados do autuador pelo usuário da sessão.
@@ -176,7 +176,7 @@ public class AutuacaoApplicationService {
     }
     
     @Command(description = "Autuação de Processos Criminais")
-    public void handle(AutuarProcessoCriminalCommand command) {
+    public void handle(AutuarRecursalCriminalEleitoralCommand command) {
 		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
         Status status = statusRecursalAdapter.nextStatus(processo.identity());
         //TODO: Alterar para pegar dados do autuador pelo usuário da sessão.
@@ -195,7 +195,7 @@ public class AutuacaoApplicationService {
     }
     
     @Command(description = "Análise de Pressupostos Formais")
-    public void handle(AnalisarPressupostosCommand command) {
+    public void handle(AnalisarPressupostosFormaisCommand command) {
 		ProcessoRecursal processoRecursal = (ProcessoRecursal) processoRepository
 				.findOne(new ProcessoId(command.getProcessoId()));
 		Status status = command.isAnaliseApta() ? statusRecursalAdapter.nextStatus(processoRecursal.identity())
@@ -210,7 +210,7 @@ public class AutuacaoApplicationService {
     }
     
     @Command(description = "Revisão de Análise de Pressupostos")
-	public void handle(RevisarAnalisePressupostosCommand command) {
+	public void handle(RevisarPressupostosFormaisCommand command) {
 		ProcessoRecursal processoRecursal = (ProcessoRecursal) processoRepository
 				.findOne(new ProcessoId(command.getProcessoId()));
 		Status status = command.isAnaliseApta() ? statusRecursalAdapter.nextStatus(processoRecursal.identity())
@@ -251,7 +251,7 @@ public class AutuacaoApplicationService {
     }
     
     @Command(description = "Enviar um Processo Recursal")
-	public void handle(EnviarProcessoCommand command){
+	public void handle(EnviarProcessoRecursalCommand command){
     	ProcessoId processoId = processoRepository.nextProcessoId();
     	Classe classe = classeRepository.findOne(new ClasseId(command.getClasseId()));
     	Set<Preferencia> preferencias = Optional.ofNullable(command.getPreferencias()).isPresent()

@@ -1,9 +1,10 @@
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
-import analise from './analise-pressupostos.module';
+import Properties = app.support.constants.Properties;
+import analise from './analise-pressupostos-formais.module';
 
-export class AnaliseCommand {
+export class AnalisePressupostosFormaisCommand {
     
     constructor(public processoId: number, 
                 public classificacao: boolean,
@@ -11,15 +12,15 @@ export class AnaliseCommand {
                 public observacao: string) { }    
 }
 
-export class AnalisePressupostosService {
+export class AnalisePressupostosFormaisService {
 
     private static apiProcesso: string = '/autuacao/api/processos';
 
     /** @ngInject **/
-    constructor(private $http: IHttpService, private properties) { }
+    constructor(private $http: IHttpService, private properties: Properties) { }
 
-    public analisar(processo: AnaliseCommand): IPromise<any> {
-        return this.$http.post(this.properties.url + ":" + this.properties.port + AnalisePressupostosService.apiProcesso + '/analise-pressupostos', processo);
+    public analisar(command: AnalisePressupostosFormaisCommand): IPromise<any> {
+        return this.$http.post(this.properties.apiUrl + AnalisePressupostosFormaisService.apiProcesso + '/analise-pressupostos', command);
     }
     
     

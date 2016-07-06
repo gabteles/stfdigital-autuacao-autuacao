@@ -8,14 +8,13 @@ import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
 /**
- * Comando usado para efetuar a revisão de uma análise de pressupostos.
+ * @author viniciusk
  * 
- * @author anderson.araujo
- * @since 06/06/2016
- *
+ * @since 1.0.0
+ * @since 25.05.2016
  */
 @ApiModel(value = "Contém as informações necessárias para analisar os pressupostos de um processo originário")
-public class RevisarAnalisePressupostosCommand {
+public class AnalisarPressupostosFormaisCommand {
 	
     @NotNull
     @ApiModelProperty(value = "O identificador do processo originário criado ao iniciar o fluxo de autuação.", required=true)
@@ -30,13 +29,12 @@ public class RevisarAnalisePressupostosCommand {
     
     @ApiModelProperty(value = "Observação da análise do processo")
     private String observacao;
-    
 
 	public Long getProcessoId() {
 		return processoId;
 	}
 
-	public boolean isAnaliseApta() {
+	public Boolean isAnaliseApta() {
 		return analiseApta;
 	}
 
@@ -47,4 +45,7 @@ public class RevisarAnalisePressupostosCommand {
 	public String getObservacao() {
 		return observacao;
 	}
+    
+    
+
 }
