@@ -1,33 +1,65 @@
 <div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
-
-    <!-- CONTENT -->
     <div class="content" layout="column">
-
-        <div class="md-title mt-10">Petição</div>
+        <div class="md-title mt-10">Autuação de Recursais</div>
         <div class="pb-16">Informe a classe, partes e aptidão da petição</div>
-
         <div layout="row">
-
-            <!-- BASIC FORM -->
             <div class="form-wrapper md-whiteframe-1dp" flex="100">
-
                 <form name="basicForm" class="md-inline-form">
-
                     <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
                         <md-input-container flex>
-                            <label>Número da Petição {{autuacao.processo.processoId}}</label>
-                            <input ng-model="autuacao.numero" id="numero" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
-                        </md-input-container>
-                        <md-input-container flex>
-                            <label>Classe Processual {{autuacao.processo.remessa.classeSugerida}}</label>
-                            <input ng-model="autuacao.classeSugerida" id="classeSugerida" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+                            <label>Processo Nº  {{autuacao.processoId}}</label>
                         </md-input-container>
                     </div>
-                    
+                    <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
+                        <md-input-container flex>
+                            <div class="md-title mt-10">Teses de Repercussão Geral</div>
+                            <div class="simple-table-container md-whiteframe-4dp">
+                                <div class="ms-responsive-table-wrapper">
+                                    <table class="simple" ms-responsive-table>
+                                        <thead>
+                                            <tr>
+                                                <th>Código</th>
+                                                <th>Descrição</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="tese in autuacao.teses">
+											    <td>{{tese.codigo}}</td>
+											    <td>{{tese.descricao}}</td>
+										    </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
+                        <md-input-container flex>
+                            <div class="md-title mt-10">Assuntos</div>
+                            <div class="simple-table-container md-whiteframe-4dp">
+                                <div class="ms-responsive-table-wrapper">
+                                    <table class="simple" ms-responsive-table>
+                                        <thead>
+                                            <tr>
+                                                <th>Código</th>
+                                                <th>Descrição</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="assunto in autuacao.assuntos">
+											    <td>{{assunto.codigo}}</td>
+											    <td>{{assunto.descricao}}</td>
+										    </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
                     <div class="form-title">Partes</div>
                     <div layout="column" layout-gt-sm="row" class="layout-gt-sm-row layout-column">
                         <md-input-container flex="" class="md-icon-float flex md-default-theme md-input-invalid">
-                            <label>Informe o nome da parte do polo ativo</label>
+                            <label>Informe o nome da parte do polo ativos</label>
                             <input type="text" name="txtPartePoloAtivo" id="txtPoloAtivo" ng-model="autuacao.partePoloAtivo" class="ng-pristine" aria-label="" 
                             	aria-invalid="true" ng-keydown="$event.which === 13 && autuacao.adicionarPartePoloAtivo()" ng-click= "$event.stopPropagation()">
                              
@@ -89,68 +121,12 @@
                             </div>
                         </md-input-container>
                     </div>
-                    
-                    <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
-	                    <md-input-container flex>
-	                        <label>Quantidade de volumes</label>
-	                        <input ng-model="autuacao.processo.remessa.qtdVolumes" id="qtdVolumes" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
-	                    </md-input-container>
-	                    <md-input-container flex>
-	                        <label>Quantidade de apensos</label>
-	                        <input ng-model="autuacao.processo.remessa.qtdApensos" id="qtdApensos" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
-	                    </md-input-container>
-                    </div>
-                    
-                    <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
-	                    <md-input-container flex>
-	                        <label>Tipo de Recebimento </label>
-	                        <input ng-model="autuacao.processo.remessa.formaRecebimento" id="formaRecebimento" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
-	                    </md-input-container>
-	                    <md-input-container flex>
-	                        <label>Número de Sedex</label>
-	                        <input ng-model="autuacao.processo.remessa.numeroSedex" id="numeroSedex" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
-	                    </md-input-container>
-                    </div>
-                    
-                    <div layout="row" layout-gt-xs="column" class="layout-gt-xs-row">
-                        <md-input-container style="width:50%">
-                            <label>Classe</label>
-                            <md-select ng-model="autuacao.cmdAutuar.classeId" id="classes">
-                                <md-option></md-option>
-                                <md-option ng-repeat="classe in autuacao.classes" value="{{classe.id}}">
-                                    {{classe.nome}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-						<div>
-							<label style="font-size:70%; color: rgba(0,0,0,0.87)">Aptidão</label>
-								<div>
-			                        <input type="radio" ng-model="autuacao.valida" value="true" id="yes" checked> 
-			                        <label for="yes">Válida</label> 
-			                        <input type="radio" ng-model="autuacao.valida" value="false" id="no"> 
-			                        <label for="no">Inválida</label>
-			                    </div>
-	                    </div>
-                    </div>
-					<div ng-hide="autuacao.valida == 'true'">
-						<md-input-container class="md-block">
-						 	<label>Informe o motivo de inaptidão da petição.</label>
-          					<textarea ng-model="autuacao.cmdRejeitar.motivo" md-maxlength="150" rows="5" md-select-on-focus id="txtMotivo"></textarea>
-						 </md-input-container>
-					</div>
-                    <md-button type="button" class="md-raised md-accent" id="autuar-processo" aria-label="Submit" 
-                    	ng-click ="autuacao.registrarAutuacao()" command="autuacao.cmdAutuar">
-                        	Autuar
+                    <md-button type="button" class="md-raised md-accent" id="autuar-processo-recursal" aria-label="Submit" ng-click="autacao.autuarProcessoRecursal()" 
+                    	command="autuacao.cmdAutuar">
+                        Autuar
                     </md-button>
-                      
                 </form>
-
             </div>
-            <!-- / BASIC FORM -->
-
         </div>
-
     </div>
-    <!-- / CONTENT -->
-
 </div>
