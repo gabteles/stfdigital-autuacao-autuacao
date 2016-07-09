@@ -29,7 +29,7 @@ after_success:
 - docker tag stfdigital-autuacao-autuacao $REPO:latest
 - docker push $REPO:latest
 after_failure:
-- docker-compose logs
+- docker-compose -f docker-compose.yml -f compose/docker-compose.e2e.yml logs
 notifications:
   slack:
     secure: KBOtc59Yck1JDT/nJdTgF+i5/PdZU3rGtwlkOVN1Mg4BSiprHApsj7UjPJcDzfeqHAAgybAOtRDZwN4R7WlCioEkxCV7x4omaaAstG9mXlkCGDcKiyvyWKLp5MPjNF8785J9IT/Kh4e2TsrTfD+Wo/xE8CrWRNIM67ylLTlylAIZYd+qQHY62hcQ6OxFjBaGGehgNBlsj15axUL+9Kt73gNaSjVgJ+V51nI83NmgnKY0ET4T9R/hgMda/+qLvvR+WeFR4Rv7CZ7alJXUEo3bGkTD/CFwXNN514knXv5WQujsskMmpgYnNa73SzolzOypAY1Xx00YSfEt5czBDrmt/+E4CeYIQxDwEV9mWw7ToAGdkUfGDYTpFEd8ppWk0P9XHeoor4RB+USSbnpLPxe+zT7nqEwCuYFGYkpOk3rNHiZDqLCDw6XQGi+oEXW2W54q6sg8zwFkJtVLadwdI/vSu3HPFC+D6AZBg/1gBq6rfUORnhtoTuvhF030dlVPbNwGuOXwZMJkK4GSAvTM85pvlic9kGU4PvwkHNUZ9h51naelXoLY1AQvc9hKVdKprIV31Kt2IScoAdOvqarOilx1uE44awkwUYDiXbcjK8HvzK8oHcgbClA0q4FsbthoHh6DvoTVeYPZkQTTBAjohnJXpVECfWemrlWcgzqgnBTUWW4=
