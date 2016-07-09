@@ -25,6 +25,7 @@ services:
     extends:
       file: compose/shared/common.yml
       service: autuacao
+    image: stfdigital-autuacao-autuacao
     depends_on:
      - rabbit
      - discovery
