@@ -2,7 +2,7 @@ import {LoginPage} from "./pages/login.page";
 import {PrincipalPage}  from "./pages/principal.page";
 import {AutuacaoRePage} from "./pages/autuacaoRe.page";
 
-describe('Autuação de Processos Recursais criminal e eleitoral', () => {	
+xdescribe('Autuação de Processos Recursais criminal e eleitoral', () => {	
 	
     var loginPage: LoginPage = new LoginPage();
     var principalPage: PrincipalPage = new PrincipalPage();
