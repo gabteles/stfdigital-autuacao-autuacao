@@ -6,9 +6,6 @@ COMPOSE_FILES_PARAMS="$MAIN_DOCKER_COMPOSE_FILE -f compose/docker-compose.e2e.ym
 
 docker-compose $COMPOSE_FILES_PARAMS up -d
 
-./scripts/wait-up.sh "https://docker:8765/autuacao/info" 600
-./scripts/wait-up.sh "http://docker:4444/wd/hub" 30
+./scripts/e2e-wait.sh
 
 gradle gulpTestE2E
-
-docker-compose $COMPOSE_FILES_PARAMS down
