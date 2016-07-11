@@ -4,7 +4,7 @@ import {AnaliseRevisaoPressupostosPage} from "./pages/analise-revisao-pr.page";
 import {AnaliseRevisaoRepercussaoPage} from "./pages/analise-revisao-rg.page";
 import {AutuacaoRePage} from "./pages/autuacaoRe.page";
 
-describe('Autuação de Processos Recursais sem ser criminal ou eleitoral', () => {	
+xdescribe('Autuação de Processos Recursais sem ser criminal ou eleitoral', () => {	
 	
     var loginPage: LoginPage = new LoginPage();
     var principalPage: PrincipalPage = new PrincipalPage();

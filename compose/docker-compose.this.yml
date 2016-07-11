@@ -1,0 +1,11 @@
+# Define a configuração para rodar esse contexto construído localmente
+version: '2'
+services:
+  autuacao:
+    extends:
+      file: shared/compose/common.yml
+      service: autuacao
+    image: stfdigital-autuacao-autuacao
+    depends_on:
+     - rabbit
+     - discovery

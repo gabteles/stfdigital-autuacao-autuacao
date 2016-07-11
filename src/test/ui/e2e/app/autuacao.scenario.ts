@@ -10,15 +10,15 @@ describe('Autuação de Petições Físicas Originárias', () => {
                 
     it ('Deveria logar na tela', () => {
         loginPage.open();
-        loginPage.login('aaa', '123');
+        loginPage.login('autuador', '123');
     });
     
-    it ('Deveria acessar a pagina para autuar petição', () => {
+    xit ('Deveria acessar a pagina para autuar petição', () => {
         principalPage.iniciarProcesso();
         principalPage.iniciarAutuacao();
     });
     
-    it('Deveria preencher as informações da petição física', () => {
+    xit('Deveria preencher as informações da petição física', () => {
     	autuacaoPage.cadastrarPoloAtivo('Maria da Silva');
     	autuacaoPage.cadastrarPoloPassivo('João Carneiro')
     	autuacaoPage.selecionarClasse();

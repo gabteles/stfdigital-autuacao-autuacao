@@ -1,0 +1,11 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/supremotribunalfederal/stfdigital-shared
+	branch = master
+	commit = c3c6cb3b565978f1209a4288cce00d45e9654d45
+	parent = 15da1b4660c064913d91023ea0cb4e740c8fe48c
+	cmdver = 0.3.0

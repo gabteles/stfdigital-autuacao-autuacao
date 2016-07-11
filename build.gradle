@@ -24,6 +24,7 @@ buildscript {
         classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.8.0")
         classpath("com.moowork.gradle:gradle-node-plugin:0.12")
         classpath("com.moowork.gradle:gradle-gulp-plugin:0.12")
+        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.0.1")
     }
 }
 
@@ -43,6 +44,10 @@ apply plugin: 'com.moowork.node'
 
 apply plugin: 'com.moowork.gulp'
 
+apply plugin: 'jacoco'
+
+apply plugin: 'org.sonarqube'
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -53,6 +58,7 @@ dependencyManagement {
     imports {
         mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
         mavenBom("org.springframework.cloud:spring-cloud-netflix:${springCloudVersion}")
+        mavenBom("org.springframework.cloud:spring-cloud-starter-parent:Brixton.RELEASE")
         mavenBom("io.spring.platform:platform-bom:${springPlatformVersion}")
     }
 }
@@ -67,6 +73,10 @@ dependencies {
     }
     
     compile("org.springframework.boot:spring-boot-starter-undertow")
+    
+    compile("org.springframework.cloud:spring-cloud-starter-oauth2")
+    
+    compile("org.springframework.cloud:spring-cloud-starter-feign")
     
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
 
@@ -109,6 +119,11 @@ eclipse.classpath.file {
     }
 }
 
+// Cobertura de testes
+jacoco {
+    toolVersion = '0.7.7.201606060606'
+}
+
 node {
   // Version of node to use.
   version = '5.9.1'
@@ -137,7 +152,11 @@ npmInstall {
 }
 
 task gulpTestUnit(type: GulpTask) {
-    args = ['test:unit']
+    args = ['test:unit:coverage']
+}
+
+task gulpPublishUnitCoverage(type: GulpTask) {
+    args = ['publish-unit-coverage']
 }
 
 ext.e2eBaseUrl = project.hasProperty('e2eBaseUrl') ? project.getProperty('e2eBaseUrl') : 'https://docker:8443'
