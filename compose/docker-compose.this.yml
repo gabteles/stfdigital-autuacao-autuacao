@@ -3,7 +3,7 @@ version: '2'
 services:
   autuacao:
     extends:
-      file: compose/shared/common.yml
+      file: shared/compose/common.yml
       service: autuacao
     image: stfdigital-autuacao-autuacao
     depends_on:
