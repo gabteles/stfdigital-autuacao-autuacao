@@ -45,7 +45,5 @@ public class MotivoInaptidao extends EntitySupport<MotivoInaptidao, Long> {
 	public String descricao() {
 		return descricao;
 	}
-	
-	
 
 }

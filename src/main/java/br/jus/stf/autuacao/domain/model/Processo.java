@@ -3,6 +3,7 @@ package br.jus.stf.autuacao.domain.model;
 import static java.util.Comparator.comparing;
 import static javax.persistence.CascadeType.ALL;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
@@ -161,8 +162,53 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
     	this.status = status;
     }
 
-	public ProtocoloId protocoloId() {
-		return protocoloId;
+	public Optional<ProtocoloId> protocoloId() {
+		return Optional.ofNullable(protocoloId);
+	}
+	
+	public Status status() {
+		return status;
+	}
+	
+	public Optional<Classe> classe() {
+		return Optional.ofNullable(classe);
+	}
+	
+	public Optional<Long> numero() {
+		return Optional.ofNullable(numero);
+	}
+	
+	public String identificacao() {
+		return Optional.ofNullable(classe)
+				.map(cl -> Optional.ofNullable(numero)
+								.map(num -> new StringBuilder(cl.identity().toString())
+												.append(" ").append(num).toString())
+								.orElse(""))
+				.orElse("");
+	}
+	
+	public Set<Preferencia> preferencias() {
+		return Collections.unmodifiableSet(preferencias);
+	}
+	
+	public MeioTramitacao meioTramitacao() {
+		return meioTramitacao;
+	}
+	
+	public Sigilo sigilo() {
+		return sigilo;
+	}
+	
+	public Set<Parte> partes() {
+		return Collections.unmodifiableSet(partes);
+	}
+	
+	public Optional<Autuador> autuador() {
+		return Optional.ofNullable(autuador);
+	}
+	
+	public Optional<Date> dataAutuacao() {
+		return Optional.ofNullable(dataAutuacao);
 	}
 	
 	public boolean isCriminalEleitoral() {

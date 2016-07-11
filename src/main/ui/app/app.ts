@@ -1,7 +1,9 @@
-import './autuacao/analise-pressupostos';
-import './autuacao/analise-repercussao-geral';
-import './autuacao/autuacao-criminal';
-import './autuacao/autuacao-recursal';
-import './autuacao/autuacao';
-import './autuacao/revisao-analise-pressupostos';
-import './autuacao/revisao-repercussao-geral';
+import './autuacao/shared'
+import './autuacao/originario/autuacao-originario';
+import './autuacao/recursal/shared';
+import './autuacao/recursal/analise-pressupostos-formais';
+import './autuacao/recursal/analise-repercussao-geral';
+import './autuacao/recrusal/autuacao-criminal-eleitoral';
+import './autuacao/recursal/autuacao-recursal';
+import './autuacao/recursal/revisao-pressupostos-formais';
+import './autuacao/recursal/revisao-repercussao-geral';

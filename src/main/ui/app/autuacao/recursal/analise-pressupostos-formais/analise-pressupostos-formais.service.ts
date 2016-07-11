@@ -2,30 +2,35 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 import Properties = app.support.constants.Properties;
-import analise from './analise-pressupostos-formais.module';
-
-export class AnalisePressupostosFormaisCommand {
-    
-    constructor(public processoId: number, 
-                public classificacao: boolean,
-                public motivos: Array<number>,
-                public observacao: string) { }    
-}
+import cmd = app.support.command;
+import {AnalisarPressupostosFormaisCommand, API_AUTUACAO_RECURSAL} from '../shared/recursal.model';
+import autuacaoRecursal from '../shared/recursal.module';
 
 export class AnalisePressupostosFormaisService {
 
-    private static apiProcesso: string = '/autuacao/api/processos';
+    private api: string;
 
     /** @ngInject **/
-    constructor(private $http: IHttpService, private properties: Properties) { }
-
-    public analisar(command: AnalisePressupostosFormaisCommand): IPromise<any> {
-        return this.$http.post(this.properties.apiUrl + AnalisePressupostosFormaisService.apiProcesso + '/analise-pressupostos', command);
+    constructor(private $http: IHttpService, properties: Properties, commandService: cmd.CommandService) {
+    	this.api = properties.apiUrl.concat(API_AUTUACAO_RECURSAL);
+    	commandService.setValidator('analisar-pressupostos-formais', new ValidadorAnalise());
     }
-    
-    
+
+    public analisar(command: AnalisarPressupostosFormaisCommand): IPromise<any> {
+        return this.$http.post(this.api + '/analise-pressupostos-formais', command);
+    }
+        
 }
 
-analise.service('app.autuacao.analise.AnalisePressupostosService', AnalisePressupostosService);
+class ValidadorAnalise implements cmd.CommandValidator {
+	
+	public isValid(command: AnalisarPressupostosFormaisCommand): boolean {
+		if (!command.processoApto && command.motivosInaptidao.length == 0) return false;
+		return true;
+	}
+	
+} 
 
-export default analise;
+autuacaoRecursal.service('app.autuacao.recursal.AnalisePressupostosFormaisService', AnalisePressupostosFormaisService);
+
+export default autuacaoRecursal;

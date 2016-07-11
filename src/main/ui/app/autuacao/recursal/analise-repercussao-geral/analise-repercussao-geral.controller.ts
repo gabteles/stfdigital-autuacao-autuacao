@@ -1,13 +1,13 @@
-import {AnalisarRepercussaoGeralCommand, AutuacaoService} from "../../../services/autuacao.service";
 import IStateService = angular.ui.IStateService;
 import IScope = angular.IScope
 import IStateParamService = angular.ui.IStateParamsService;
 import IPromise = angular.IPromise;
 import IHttpService = angular.IHttpService;
-import {Assunto, TipoTese, Tese} from "../../../services/model";
-import {AssuntoDto, AssuntoService} from "../../../services/assunto.service";
-import "../../../services/assunto.service";
-import analise from "./analise-repercussao-geral.module";
+import {AnaliseRepercussaoGeralService} from "./analise-repercussao-geral.service";
+import {AssuntoService} from "../shared/assunto.service";
+import {Assunto, TipoTese, Tese, AnalisarRepercussaoGeralCommand} from "../shared/recursal.model";
+import {AutuacaoRecursalSharedService} from '../shared/recursal.service'; 
+import autuacaoRecursal from '../shared/recursal.module';
 
 /**
  * @author viniciusk
@@ -16,33 +16,34 @@ import analise from "./analise-repercussao-geral.module";
 
 export class AnaliseRepercussaoGeralController {
 	
-	public basicForm: Object = {};
-	public assuntosSelecionados : Array<AssuntoDto> = [];
+	public assuntosSelecionados : Array<Assunto> = [];
 	public observacao : string;
 	public assunto : Assunto;
-	public assuntos : Array<AssuntoDto> = [];
+	public assuntos : Array<Assunto> = [];
 	public tipoTese : string;
 	public numeroTese : string;
 	public teses : Array<Tese> = [];
 	public numeroProcesso : number;
 	public classeProcesso : string;
 
-	static $inject = ['$state', 'app.autuacao.autuacao-services.AutuacaoService', 
-	                  'app.autuacao.autuacao-services.AssuntoService', 'tiposTese', '$stateParams', 'properties', '$scope', '$http'];
+	static $inject = ['$state', 'app.autuacao.recursal.AutuacaoRecursalSharedService', 'app.autuacao.recursal.AssuntoService',
+	                  'app.autuacao.recursal.AnaliseRepercussaoGeralService', 'tiposTese', '$stateParams', 'properties', '$scope', '$http'];
 	
-    constructor(private $state: IStateService, private autuacaoService: AutuacaoService, private assuntoService : AssuntoService, public tiposTese,
-    		private $stateParams : IStateParamService, private properties, private $scope : IScope, private $http : IHttpService ) {
+    constructor(private $state: IStateService, private autuacaoRecursalService: AutuacaoRecursalSharedService,
+    		    private assuntoService : AssuntoService, private analiseRepercussaoGeralService: AnaliseRepercussaoGeralService,
+    		    public tiposTese, private $stateParams : IStateParamService, private properties, private $scope : IScope,
+    		    private $http : IHttpService ) {
     	this.numeroProcesso = 100;
     	this.classeProcesso = 'ADI';
     }
     
     public pesquisaAssuntos(assunto : string) : void{
-    	this.assuntoService.listarAssuntos(assunto).then((assuntos : AssuntoDto[])=> {
+    	this.assuntoService.listarAssuntos(assunto).then((assuntos : Assunto[])=> {
     		this.assuntos = assuntos;
     	});
     };
     
-    public adicionarAssuntoNaLista (assunto : AssuntoDto): void {
+    public adicionarAssuntoNaLista (assunto : Assunto): void {
     	let verificaSeAssuntoExiste : boolean = false;
     	for (let i  of this.assuntosSelecionados){
     		if (i.codigo == assunto.codigo){
@@ -67,7 +68,7 @@ export class AnaliseRepercussaoGeralController {
 			return false;
 		}
 		
-		this.autuacaoService.consultarTeses(this.tipoTese, this.numeroTese).then((teses : Tese[]) => {
+		this.autuacaoRecursalService.consultarTeses(this.tipoTese, this.numeroTese).then((teses : Tese[]) => {
 			let teseConsultada : Tese = teses[0];
 			
 			if (teseConsultada !== undefined){
@@ -76,7 +77,7 @@ export class AnaliseRepercussaoGeralController {
 				this.adicionarTese(teseConsultada);
 				
 				for (let i = 0; i < assuntosConsultados.length; i++) {
-					this.adicionarAssuntoNaLista({codigo : assuntosConsultados[i].codigo, descricao : assuntosConsultados[i].descricao, nivel: 0});
+					this.adicionarAssuntoNaLista(<Assunto>{codigo: assuntosConsultados[i].codigo, descricao: assuntosConsultados[i].descricao, nivel: 0});
 				}
 				
 				this.numeroTese = null;
@@ -111,13 +112,13 @@ export class AnaliseRepercussaoGeralController {
     
 	public analisarRepercussaoGeral(): void {
 		//TODO mudar o valor "1" para o id do processo que será recuperado no momento de analisar a repercussao geral
-	    this.autuacaoService.analisarRepercussaoGeral(this.commandAnaliseRepercussao(1, this.assuntosSelecionados, this.teses, this.observacao))
+	    this.analiseRepercussaoGeralService.analisar(this.commandAnaliseRepercussao(1, this.assuntosSelecionados, this.teses, this.observacao))
 	        .then(() => {
-	            this.$state.go('app.tarefas.minhas-tarefas', {}, { reload: true });
+	            this.$state.go('app.tarefas.minhas-tarefas');
 	    });
 	};
 
-	private commandAnaliseRepercussao(processoId : number, assuntosC : Array<AssuntoDto>, teses : Array<Tese>, observacao : string ): AnalisarRepercussaoGeralCommand {
+	private commandAnaliseRepercussao(processoId : number, assuntosC : Array<Assunto>, teses : Array<Tese>, observacao : string ): AnalisarRepercussaoGeralCommand {
 		let assuntosCommand : string[];
 		for(let assunto of assuntosC){
 			assuntosCommand.push(assunto.codigo);
@@ -128,10 +129,9 @@ export class AnaliseRepercussaoGeralController {
 			tesesCommand.push(tese.codigo);
 		}
 		
-	    return new AnalisarRepercussaoGeralCommand(1, assuntosCommand, tesesCommand, observacao);
+	    return //new AnalisarRepercussaoGeralCommand(1, assuntosCommand, tesesCommand, observacao);
 	};
 	
 }
 
-analise.controller('app.autuacao.analise.AnaliseRepercussaoGeralController', AnaliseRepercussaoGeralController);
-export default analise;
+autuacaoRecursal.controller('app.autuacao.recursal.AnaliseRepercussaoGeralController', AnaliseRepercussaoGeralController);

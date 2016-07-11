@@ -1,54 +1,33 @@
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
-import autuacaoOriginario from "./autuacao-originario.module";
 import cmd = app.support.command;
 import Properties = app.support.constants.Properties;
+import {Parte} from "../shared/autuacao.model";
+import autuacaoOriginario from "./autuacao-originario.module";
 
-export class ParteDto{
-	public apresentacao : string;
-	public pessoa : number;
-
-	constructor (apresentacao : string , pessoa? : number) {
-		this.apresentacao = apresentacao;
-		this.pessoa = pessoa;
-	}
-}
-
-export class AutuacaoOriginarioCommand {
+export interface AutuacaoOriginarioCommand extends cmd.Command {
     
-    public processoId: number;
-    public classeId: String;
-	public poloAtivo: Array<ParteDto> = [];
-    public poloPassivo: Array<ParteDto> = []
-	public motivo : string;
-    public valida : boolean;
-	
-    constructor (){};
-}
-
-
-export class Processo{	constructor (public processoId : number, public remessa : Object){}
+    processoId: number;
+    classeId: String;
+	poloAtivo: Array<Parte>;
+    poloPassivo: Array<Parte>;
+	motivo : string;
+    valida : boolean;
 }
 
 export class AutuacaoOriginarioService {
 
-    private static apiProcesso: string = '/autuacao/api/processos';
+    private api: string;
 
     /** @ngInject **/
     constructor(private $http: IHttpService, private properties : Properties, commandService: cmd.CommandService) {
+    	this.api = properties.apiUrl.concat('/autuacao/api/processos/originario');
     	commandService.setValidator('preautuar-recursal', new ValidadorAutuacao());
     }
 
     public autuar(cmd: AutuacaoOriginarioCommand): IPromise<any> {
-        return this.$http.post(this.properties.url + ":" + this.properties.port + AutuacaoOriginarioService.apiProcesso + '/autuacao', cmd);
-    }
-    
-    public consultar(processoId : number) : IPromise<Processo> {
-        return this.$http.get(this.properties.url + ":" + this.properties.port + AutuacaoOriginarioService.apiProcesso + '/processo/' + processoId)
-                .then((response: IHttpPromiseCallbackArg<Processo>) => { 
-                    return response.data; 
-                });
+        return this.$http.post(this.api + '/autuacao', cmd);
     }
 }
 

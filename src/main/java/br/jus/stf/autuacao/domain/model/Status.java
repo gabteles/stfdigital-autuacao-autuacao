@@ -8,12 +8,12 @@ package br.jus.stf.autuacao.domain.model;
  */
 public enum Status {
     
-    AUTUACAO(),
-    AUTUADO(),
-    REJEITADO(),
-    ANALISAR_PRESSUPOSTO(),
-    REVISAR_PRESSUPOSTO(),
-    ANALISAR_RG(),
-    REVISAR_RG();
+    AUTUACAO,
+    AUTUADO,
+    REJEITADO,
+    ANALISAR_PRESSUPOSTO,
+    REVISAR_PRESSUPOSTO,
+    ANALISAR_RG,
+    REVISAR_RG;
 
 }

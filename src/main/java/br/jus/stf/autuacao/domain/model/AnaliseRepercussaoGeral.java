@@ -2,6 +2,7 @@ package br.jus.stf.autuacao.domain.model;
 
 import static javax.persistence.CascadeType.ALL;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,7 +46,15 @@ public class AnaliseRepercussaoGeral extends ValueObjectSupport<AnaliseRepercuss
 		this.teses.addAll(teses);
 	}
 	
-	public boolean revisarRepercussaoGeral() {
+	public String observacao() {
+		return observacao;
+	}
+	
+	public Set<Tese> teses() {
+		return Collections.unmodifiableSet(teses);
+	}
+	
+	public boolean temTeseRepercussaoGeral() {
 		return teses.stream().anyMatch(tese -> TipoTese.REPERCUSSAO_GERAL.equals(tese.tipo()));
 	}
 

@@ -1,50 +1,28 @@
 import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
-import autuacao from "./autuacao-recursal.module";
 import cmd = app.support.command;
 import Properties = app.support.constants.Properties;
-
-export class ParteDto {
-	public apresentacao : string;
-	public pessoa : number;
-
-	constructor (apresentacao : string , pessoa? : number) {
-		this.apresentacao = apresentacao;
-		this.pessoa = pessoa;
-	}
-}
-
-/*
- * Comando usado para autuar um processo recursal.
- * @author anderson.araujo
- * @since 31/05/2016 
- */
-export class AutuarProcessoRecursalCommand implements cmd.Command {
-    constructor() {};
-    public processoId: number;
-    public assuntos: Array<string> = [];
-    public poloAtivo: Array<ParteDto> = [];
-    public poloPassivo: Array<ParteDto> = [];
-}
-
+import {AutuarProcessoRecursalCommand, API_AUTUACAO_RECURSAL} from "../shared/recursal.model";
+import autuacaoRecursal from "../shared/recursal.module";
 
 export class AutuacaoRecursalService {
 
-    private static api: string = '/autuacao/api/processos/recursal';
+    private api: string;
 
     /** @ngInject **/
-    constructor(private $http: IHttpService, private properties : Properties, commandService: cmd.CommandService) {
-    	commandService.setValidator('autuar-processo-recursal', new ValidadorAutuacaoRecursal());
+    constructor(private $http: IHttpService, properties : Properties, commandService: cmd.CommandService) {
+    	this.api = properties.apiUrl + API_AUTUACAO_RECURSAL;
+    	commandService.setValidator('autuar-processo-recursal', new ValidadorAutuacao());
     }
 
-    public autuarProcessoRecursal(command: AutuarProcessoRecursalCommand): IPromise<any> {
-        return this.$http.post(this.properties.apiUrl + AutuacaoRecursalService.api + '/autuacao', command);
+    public autuar(cmd: AutuarProcessoRecursalCommand): IPromise<any> {
+        return this.$http.post(this.api + '/autuacao', cmd);
     }
     
 }
 
-class ValidadorAutuacaoRecursal implements cmd.CommandValidator {
+class ValidadorAutuacao implements cmd.CommandValidator {
 	
 	constructor() {}
 	
@@ -56,6 +34,6 @@ class ValidadorAutuacaoRecursal implements cmd.CommandValidator {
 	}
 }
 
-autuacao.service('app.autuacao.recursal.AutuacaoRecursalService', AutuacaoRecursalService);
+autuacaoRecursal.service('app.autuacao.recursal.AutuacaoRecursalService', AutuacaoRecursalService);
 
-export default autuacao;
+export default autuacaoRecursal;

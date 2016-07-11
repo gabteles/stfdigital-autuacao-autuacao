@@ -1,34 +1,39 @@
-import ITranslatePartialLoaderProvider = angular.translate.ITranslatePartialLoaderProvider;
+import ITranslatePartialLoaderService = angular.translate.ITranslatePartialLoaderService;
 import IStateProvider = angular.ui.IStateProvider;
 import IModule = angular.IModule;
-import {AutuacaoService} from "../../../services/autuacao.service";
-import "../../../services/autuacao.service";
-
+import Properties = app.support.constants.Properties;
+import {AutuacaoRecursalSharedService} from "../shared/recursal.service";
+import autuacaoRecursal from '../shared/recursal.module';
 
 /** @ngInject **/
-function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider,
-                $stateProvider: IStateProvider,
-                properties: any) {
+function config($stateProvider: IStateProvider) {
 
-    $translatePartialLoaderProvider.addPart(properties.apiUrl + '/autuacao/recursal/repercussao/analise');
-
-    $stateProvider.state('app.novo-processo.analise', {
-        url : '/autuacao/recursal/repercussao/analise',
+    $stateProvider.state('app.novo-processo.analise-repercussao-geral', {
+        url : '/autuacao/recursal/analise-repercussao-geral/:informationId',
         views : {
             'content@app.autenticado' : {
                 templateUrl : './analise-repercussao-geral.tpl.html',
-                controller : 'app.autuacao.analise.AnaliseRepercussaoGeralController',
+                controller : 'app.autuacao.recursal.AnaliseRepercussaoGeralController',
                 controllerAs: 'analise'
             }
         },
         resolve : {
-            tiposTese : ['app.autuacao.autuacao-services.AutuacaoService', (autuacaoService: AutuacaoService) => {
-                return autuacaoService.listarTiposTese();
+            tiposTese : ['app.autuacao.recursal.AutuacaoRecursalSharedService', (autuacaoRecursalService: AutuacaoRecursalSharedService) => {
+                return autuacaoRecursalService.listarTiposTese();
             }]
+        },
+        params : {
+            informationId : undefined
         }
     });
 }
 
-let analise: IModule = angular.module('app.autuacao.analise', ['app.autuacao.autuacao-services', 'app.novo-processo', 'app.support']);
-analise.config(config);
-export default analise;
+/** @ngInject **/
+function run($translatePartialLoader: ITranslatePartialLoaderService, properties: Properties) {
+	
+    $translatePartialLoader.addPart(properties.apiUrl + '/autuacao/recursal/analise-repercussao-geral');
+}
+
+autuacaoRecursal.config(config).run(run);
+
+export default autuacaoRecursal;

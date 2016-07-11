@@ -198,14 +198,14 @@ public class AutuacaoApplicationService {
     public void handle(AnalisarPressupostosFormaisCommand command) {
 		ProcessoRecursal processoRecursal = (ProcessoRecursal) processoRepository
 				.findOne(new ProcessoId(command.getProcessoId()));
-		Status status = command.isAnaliseApta() ? statusRecursalAdapter.nextStatus(processoRecursal.identity())
+		Status status = command.isProcessoApto() ? statusRecursalAdapter.nextStatus(processoRecursal.identity())
 				: statusRecursalAdapter.nextStatus(processoRecursal.identity(), "REVISAR_ANALISE");
-		Set<MotivoInaptidao> motivos = Optional.ofNullable(command.getMotivos())
+		Set<MotivoInaptidao> motivos = Optional.ofNullable(command.getMotivosInaptidao())
 				.map(motvs -> motvs.stream().map(motivo -> processoRepository.findOneMotivoInaptidao(motivo))
 						.collect(Collectors.toSet()))
 				.orElse(new HashSet<>(0));
         
-		processoRecursal.analisarPressupostosFormais(command.isAnaliseApta(), command.getObservacao(), motivos, status);
+		processoRecursal.analisarPressupostosFormais(command.isProcessoApto(), command.getObservacao(), motivos, status);
         processoRepository.save(processoRecursal);
     }
     
@@ -213,14 +213,14 @@ public class AutuacaoApplicationService {
 	public void handle(RevisarPressupostosFormaisCommand command) {
 		ProcessoRecursal processoRecursal = (ProcessoRecursal) processoRepository
 				.findOne(new ProcessoId(command.getProcessoId()));
-		Status status = command.isAnaliseApta() ? statusRecursalAdapter.nextStatus(processoRecursal.identity())
+		Status status = command.isProcessoApto() ? statusRecursalAdapter.nextStatus(processoRecursal.identity())
 				: statusRecursalAdapter.nextStatus(processoRecursal.identity(), "INAPTO");
-		Set<MotivoInaptidao> motivos = Optional.ofNullable(command.getMotivos())
+		Set<MotivoInaptidao> motivos = Optional.ofNullable(command.getMotivosInaptidao())
 				.map(motvs -> motvs.stream().map(motivo -> processoRepository.findOneMotivoInaptidao(motivo))
 						.collect(Collectors.toSet()))
 				.orElse(new HashSet<>(0));
 		
-		processoRecursal.analisarPressupostosFormais(command.isAnaliseApta(), command.getObservacao(), motivos, status);
+		processoRecursal.analisarPressupostosFormais(command.isProcessoApto(), command.getObservacao(), motivos, status);
 		processoRepository.save(processoRecursal);
 	}
     

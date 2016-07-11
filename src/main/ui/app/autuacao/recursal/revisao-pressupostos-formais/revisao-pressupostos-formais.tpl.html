@@ -1,0 +1,38 @@
+<div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
+    <div class="content" layout="column">
+        <div class="md-title mt-10">Análise</div>
+        <div class="pb-16">Informe se a petição será apto ou inapta</div>
+        <div layout="row">
+            <div class="form-wrapper md-whiteframe-1dp" flex="100">
+                <form name="basicForm" class="md-inline-form">
+                    <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
+                        <md-input-container flex="40" >
+                       		<label>Classificação</label>
+                            <md-switch ng-model="revisao.cmd.processoApto" aria-label="Classificacao" class="md-warn md-block" id="classificacao">
+    							{{ revisao.cmd.processoApto ? 'Apto' : 'Inapto' }}
+  							</md-switch>
+                        </md-input-container>
+                        <md-input-container flex="60" ng-show="!revisao.cmd.processoApto">
+                            <label>Motivo</label>
+                             <md-select multiple ng-model="revisao.cmd.motivosInaptidao" id="cboMotivo">
+                                <md-option ng-repeat="motivoInaptidao in revisao.motivosInaptidao" value="{{motivoInaptidao.id}}">
+                                    {{motivo.descricao}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>                    
+                   <div ng-show="!revisao.cmd.processoApto">
+						<md-input-container class="md-block">
+          					<label>Informe uma observação da análise do processo.</label>
+          					<textarea ng-model="revisao.cmd.observacao" md-maxlength="150" rows="5" md-select-on-focus id="observacao"></textarea>
+        				</md-input-container>
+                    </div>
+                    <md-button type="button" class="md-raised md-accent" id="btnRevisarAnalisePressupostos" aria-label="Submit" 
+                    	ng-click ="vm.revisarAnalisePressupostos()" >
+                        	Revisar Análise de Pressupostos
+                    </md-button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

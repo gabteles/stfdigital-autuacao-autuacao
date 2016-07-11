@@ -1,38 +1,43 @@
-import ITranslatePartialLoaderProvider = angular.translate.ITranslatePartialLoaderProvider;
+import ITranslatePartialLoaderService = angular.translate.ITranslatePartialLoaderService;
 import IStateProvider = angular.ui.IStateProvider;
-import IModule = angular.IModule;
-import {AutuacaoService} from "../../../services/autuacao.service";
-import "../../../services/autuacao.service";
+import IStateParamsService = angular.ui.IStateParamsService;
+import Properties = app.support.constants.Properties;
+import {AutuacaoRecursalSharedService} from "../shared/recursal.service";
+import {RevisaoRepercussaoGeralService} from "./revisao-repercussao-geral.service";
+import autuacaoRecursal from '../shared/recursal.module';
 
 /** @ngInject **/
-function config($stateProvider: IStateProvider, properties: any) {
+function config($stateProvider: IStateProvider) {
 
-    $stateProvider.state("app.novo-processo.revisao-repercussao-geral", {
-        url : "/autuacao/recursal/repercussao/revisao",
+    $stateProvider.state("app.tarefas.revisao-repercussao-geral", {
+        url : "/autuacao/recursal/revisao-repercussao-geral/:informationId",
         views : {
             "content@app.autenticado" : {
                 templateUrl : "./revisao-repercussao-geral.tpl.html",
-                controller : "app.autuacao.revisao-repercussao-geral.RevisaoRepercussaoGeralController",
+                controller : "app.autuacao.recursal.RevisaoRepercussaoGeralController",
                 controllerAs: "revisao"
             }
         },
         resolve : {
-            tiposTese : ['app.autuacao.autuacao-services.AutuacaoService', (autuacaoService: AutuacaoService) => {
-                return autuacaoService.listarTiposTese();
+            analise : ['app.autuacao.recursal.RevisaoPressupostosFormaisService', (revisaoService: RevisaoRepercussaoGeralService, $stateParams: IStateParamsService) => {
+                let id = $stateParams['informationId'];
+                return revisaoService.consultarAnaliseProcesso(id);
+            }],
+            tiposTese : ['app.autuacao.recursal.AutuacaoRecursalSharedService', (autuacaoRecursalService: AutuacaoRecursalSharedService) => {
+                return autuacaoRecursalService.listarTiposTese();
             }]
+        },
+        params : {
+            informationId : undefined
         }
     });
 }
 
 /** @ngInject **/
-function run($translatePartialLoader: ITranslatePartialLoaderProvider,
-			 properties: any) {
+function run($translatePartialLoader: ITranslatePartialLoaderService, properties: Properties) {
 	
-	$translatePartialLoader.addPart(properties.apiUrl + "/autuacao/recursal/repercussao/revisao");
+	$translatePartialLoader.addPart(properties.apiUrl + "/autuacao/recursal/revisao-repercussao-geral");
 }
 
-let revisaoAnaliseRepercussaoGeral: IModule = angular.module("revisao-repercussao-geral", 
-    ["app.autuacao.autuacao-services", "app.novo-processo", "app.support"]);
-
-revisaoAnaliseRepercussaoGeral.config(config).run(run);
-export default revisaoAnaliseRepercussaoGeral;
+autuacaoRecursal.config(config).run(run);
+export default autuacaoRecursal;

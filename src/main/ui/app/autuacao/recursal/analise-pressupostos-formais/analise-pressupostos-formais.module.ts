@@ -1,33 +1,39 @@
-import ITranslatePartialLoaderProvider = angular.translate.ITranslatePartialLoaderProvider;
+import ITranslatePartialLoaderService = angular.translate.ITranslatePartialLoaderService;
 import IStateProvider = angular.ui.IStateProvider;
-import IModule = angular.IModule;
-import {AutuacaoService} from "../../../services/autuacao.service";
+import IStateParamsService = angular.ui.IStateParamsService;
+import Properties = app.support.constants.Properties;
+import {AutuacaoSharedService} from '../../shared/autuacao.service';
+import {AutuacaoRecursalSharedService} from '../shared/recursal.service';
+import autuacaoRecursal from '../shared/recursal.module';
 
 /** @ngInject **/
-function config($translatePartialLoaderProvider: ITranslatePartialLoaderProvider,
-                $stateProvider: IStateProvider,
-                properties: any) {
+function config($stateProvider: IStateProvider) {
 
-    $translatePartialLoaderProvider.addPart(properties.apiUrl + '/autuacao/recursal/pressuposto/analise');
-
-    $stateProvider.state('app.novo-processo.analise-pressupostos', {
-        url : '/autuacao/recursal/pressuposto/analise',
+    $stateProvider.state('app.tarefas.analise-pressupostos-formais', {
+        url : '/autuacao/recursal/analisar-pressupostos-formais/:informationId',
         views : {
             'content@app.autenticado' : {
-                templateUrl : './analise-pressupostos.tpl.html',
-                controller : 'app.autuacao.analise.AnalisePressupostosController',
+                templateUrl : './analise-pressupostos-formais.tpl.html',
+                controller : 'app.autuacao.recursal.AnalisePressupostosFormaisController',
                 controllerAs: 'analise'
             }
         },
         resolve : {
-            motivos : ['app.autuacao.autuacao-services.AutuacaoService', (autuacaoService: AutuacaoService) => {
-                return autuacaoService.listarMotivosInaptidao();
+            motivosInaptidao : ['app.autuacao.recursal.AutuacaoRecursalSharedService', (autuacaoRecursalService: AutuacaoRecursalSharedService) => {
+                return autuacaoRecursalService.listarMotivosInaptidao();
             }]
+        },
+        params : {
+        	informationId : undefined
         }
     });
 }
 
-let analisePressupostos: IModule = angular.module('app.autuacao.analise', 
-    ['app.autuacao.autuacao-services', 'app.novo-processo', 'app.support']);
-analisePressupostos.config(config);
-export default analisePressupostos;
+/** @ngInject **/
+function run($translatePartialLoader: ITranslatePartialLoaderService, properties: Properties) {
+
+    $translatePartialLoader.addPart(properties.apiUrl + '/autuacao/recursal/analise-pressupostos-formais');
+}
+
+autuacaoRecursal.config(config).run(run);
+export default autuacaoRecursal;

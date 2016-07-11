@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,9 +26,14 @@ import br.jus.stf.autuacao.application.commands.AutuarRecursalCriminalEleitoralC
 import br.jus.stf.autuacao.application.commands.EnviarProcessoRecursalCommand;
 import br.jus.stf.autuacao.application.commands.RevisarPressupostosFormaisCommand;
 import br.jus.stf.autuacao.application.commands.RevisarRepercussaoGeralCommand;
+import br.jus.stf.autuacao.domain.model.ProcessoRecursal;
 import br.jus.stf.autuacao.domain.model.ProcessoRepository;
 import br.jus.stf.autuacao.domain.model.controletese.TeseRepository;
 import br.jus.stf.autuacao.domain.model.controletese.TipoTese;
+import br.jus.stf.autuacao.interfaces.dto.AnalisePressupostosFormaisDto;
+import br.jus.stf.autuacao.interfaces.dto.AnalisePressupostosFormaisDtoAssembler;
+import br.jus.stf.autuacao.interfaces.dto.AnaliseRepercussaoGeralDto;
+import br.jus.stf.autuacao.interfaces.dto.AnaliseRepercussaoGeralDtoAssembler;
 import br.jus.stf.autuacao.interfaces.dto.AssuntoDto;
 import br.jus.stf.autuacao.interfaces.dto.AssuntoDtoAssembler;
 import br.jus.stf.autuacao.interfaces.dto.MotivoInaptidaoDto;
@@ -36,6 +42,8 @@ import br.jus.stf.autuacao.interfaces.dto.TeseDto;
 import br.jus.stf.autuacao.interfaces.dto.TeseDtoAssembler;
 import br.jus.stf.autuacao.interfaces.dto.TipoTeseDto;
 import br.jus.stf.core.shared.controletese.AssuntoId;
+import br.jus.stf.core.shared.processo.ProcessoId;
+import br.jus.stf.core.shared.processo.TipoProcesso;
 
 /**
  * @author Lucas Rodrigues
@@ -55,6 +63,12 @@ public class ProcessoRecursalRestResource {
     
     @Autowired
     private TeseRepository teseRepository;
+    
+    @Autowired
+    private AnaliseRepercussaoGeralDtoAssembler analiseRepercussaoGeralDtoAssembler;
+    
+    @Autowired    
+	private AnalisePressupostosFormaisDtoAssembler analisePressupostosFormaisDtoAssembler;
     
     @Autowired
     private MotivoInaptidaoDtoAssembler motivoInaptidaoDtoAssembler;
@@ -101,6 +115,15 @@ public class ProcessoRecursalRestResource {
         autuarProcessoCommandHandler.handle(command);
     }
     
+    @RequestMapping(value = "/{id}/analise-pressupostos-formais", method = RequestMethod.GET)
+    public AnalisePressupostosFormaisDto analisePressupostosFormais(@PathVariable("id") Long id) {
+    	
+		return Optional.ofNullable(processoRepository.findOne(new ProcessoId(id)))
+				.filter(processo -> processo.tipo().equals(TipoProcesso.RECURSAL))
+				.map(processo -> analisePressupostosFormaisDtoAssembler.toDto((ProcessoRecursal) processo))
+				.orElseThrow(() -> new IllegalArgumentException("Processo inválido."));
+    }
+    
     @RequestMapping(value = "/revisao-pressupostos-formais", method = RequestMethod.POST)
     public void revisarPressupostosFormais(@RequestBody @Valid RevisarPressupostosFormaisCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
@@ -117,6 +140,15 @@ public class ProcessoRecursalRestResource {
         }
         
         autuarProcessoCommandHandler.handle(command);
+    }
+    
+    @RequestMapping(value = "/{id}/analise-repercussao-geral", method = RequestMethod.GET)
+    public AnaliseRepercussaoGeralDto analiseRepercussaoGeral(@PathVariable("id") Long id) {
+    	
+		return Optional.ofNullable(processoRepository.findOne(new ProcessoId(id)))
+				.filter(processo -> processo.tipo().equals(TipoProcesso.RECURSAL))
+				.map(processo -> analiseRepercussaoGeralDtoAssembler.toDto((ProcessoRecursal) processo))
+				.orElseThrow(() -> new IllegalArgumentException("Processo inválido."));
     }
     
     @RequestMapping(value = "/revisao-repercussao-geral", method = RequestMethod.POST)

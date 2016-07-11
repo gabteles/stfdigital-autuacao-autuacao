@@ -1,8 +1,8 @@
-import {AnaliseCommand, AnalisePressupostosFormaisService} from "./analise-pressupostos-formais.service";
 import IStateService = angular.ui.IStateService;
-import IStateParamService = angular.ui.IStateParamsService;
-import IPromise = angular.IPromise;
-import analise from "./analise-pressupostos-formais.module";
+import IStateParamsService = angular.ui.IStateParamsService;
+import {AnalisePressupostosFormaisService} from "./analise-pressupostos-formais.service";
+import {AnalisarPressupostosFormaisCommand, MotivoInaptidao} from "../shared/recursal.model";
+import autuacaoRecursal from '../shared/recursal.module';
 
 /**
  * @author Viniciusk
@@ -10,32 +10,24 @@ import analise from "./analise-pressupostos-formais.module";
 
 export class AnalisePressupostosFormaisController {
 	
-	public basicForm: Object = {};
-	public apto : boolean = false;
-	public classificacao : string;
-	public motivosSelecionados : Array<number>;
-	public observacao : string;
-	public peticao : Object = {};
+	public cmd : AnalisarPressupostosFormaisCommand = new AnalisarPressupostosFormaisCommand();
 
-	static $inject = ['$state', 'app.autuacao.analise.AnalisePressupostosService', 'motivos', '$stateParams'];
+	static $inject = ['$state', '$stateParams', 'app.autuacao.recursal.AnalisePressupostosFormaisService', 'motivosInaptidao'];
 	
     constructor(private $state: IStateService,
-            private analisePressupostosService: AnalisePressupostosFormaisService,
-            public motivos, private $stateParams : IStateParamService ) {
+    	        private $stateParams: IStateParamsService,
+    		    private analiseService: AnalisePressupostosFormaisService,
+    		    public motivosInaptidao: Array<MotivoInaptidao>) {
+    	this.cmd.processoId = $stateParams['informationId'];
     }
     
 	public registrarAnalise(): void {
-	    this.analisePressupostosService.analisar(this.commandAnalise())
-	        .then(() => {
-	            this.$state.go('app.tarefas.minhas-tarefas', {}, { reload: true });
+	    this.analiseService.analisar(this.cmd).then(() => {
+	    	this.$state.go('app.tarefas.minhas-tarefas');
 	    });
-	};
-
-	private commandAnalise(): AnaliseCommand {
-	    return new AnaliseCommand(1, this.apto, this.motivosSelecionados, this.observacao);
 	};
 	
 }
 
-analise.controller('app.autuacao.analise.AnalisePressupostosController', AnalisePressupostosController);
-export default analise;
+autuacaoRecursal.controller('app.autuacao.recursal.AnalisePressupostosFormaisController', AnalisePressupostosFormaisController);
+export default autuacaoRecursal;

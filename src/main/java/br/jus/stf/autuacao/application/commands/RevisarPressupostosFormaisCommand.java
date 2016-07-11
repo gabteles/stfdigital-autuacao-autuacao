@@ -23,10 +23,10 @@ public class RevisarPressupostosFormaisCommand {
     
     @NotNull
     @ApiModelProperty(value = "Sinaliza se o processo é apto ou inapto para autução", required = true)
-    private Boolean analiseApta;
+    private Boolean processoApto;
     
     @ApiModelProperty(value = "O identificador do motivo de inaptidao da análise do processo")
-    private Set<Long> motivos;
+    private Set<Long> motivosInaptidao;
     
     @ApiModelProperty(value = "Observação da análise do processo")
     private String observacao;
@@ -36,12 +36,12 @@ public class RevisarPressupostosFormaisCommand {
 		return processoId;
 	}
 
-	public boolean isAnaliseApta() {
-		return analiseApta;
+	public boolean isProcessoApto() {
+		return processoApto;
 	}
 
-	public Set<Long> getMotivos() {
-		return motivos;
+	public Set<Long> getMotivosInaptidao() {
+		return motivosInaptidao;
 	}
 
 	public String getObservacao() {

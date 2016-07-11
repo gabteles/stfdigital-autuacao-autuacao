@@ -59,6 +59,10 @@ public class ProcessoOriginario extends Processo {
     	super.alterarStatus(status);
     }
     
+    public String motivoRejeicao() {
+    	return rejeicao != null ? rejeicao.motivo() : "";
+    }
+    
     @Override
     public TipoProcesso tipo() {
     	return TipoProcesso.ORIGINARIO;

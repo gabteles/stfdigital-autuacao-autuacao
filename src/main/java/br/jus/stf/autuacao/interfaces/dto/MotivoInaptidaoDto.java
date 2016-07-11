@@ -7,17 +7,17 @@ package br.jus.stf.autuacao.interfaces.dto;
  */
 public class MotivoInaptidaoDto {
 	
-	public Long id;
+	public Long codigo;
 	
 	private String descricao;
 	
-	public MotivoInaptidaoDto(Long id, String descricao) {
-		this.id = id;
+	public MotivoInaptidaoDto(Long codigo, String descricao) {
+		this.codigo = codigo;
 		this.descricao = descricao;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getCodigo() {
+		return codigo;
 	}
 
 	public String getDescricao() {

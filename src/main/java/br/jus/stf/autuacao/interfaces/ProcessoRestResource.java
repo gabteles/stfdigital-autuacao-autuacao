@@ -1,7 +1,7 @@
 package br.jus.stf.autuacao.interfaces;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,18 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.jus.stf.autuacao.domain.ParteAdapter;
-import br.jus.stf.autuacao.domain.RemessaAdapter;
-import br.jus.stf.autuacao.domain.model.Processo;
-import br.jus.stf.autuacao.domain.model.ProcessoRecursal;
 import br.jus.stf.autuacao.domain.model.ProcessoRepository;
 import br.jus.stf.autuacao.domain.model.classe.ClasseRepository;
-import br.jus.stf.autuacao.infra.RemessaDto;
+import br.jus.stf.autuacao.domain.model.preferencia.PreferenciaRepository;
 import br.jus.stf.autuacao.interfaces.dto.ClasseDto;
 import br.jus.stf.autuacao.interfaces.dto.ClasseDtoAssembler;
-import br.jus.stf.autuacao.interfaces.dto.MotivoInaptidaoDto;
 import br.jus.stf.autuacao.interfaces.dto.ParteDto;
 import br.jus.stf.autuacao.interfaces.dto.ParteDtoAssembler;
+import br.jus.stf.autuacao.interfaces.dto.PreferenciaDto;
+import br.jus.stf.autuacao.interfaces.dto.PreferenciaDtoAssembler;
 import br.jus.stf.autuacao.interfaces.dto.ProcessoDto;
 import br.jus.stf.autuacao.interfaces.dto.ProcessoDtoAssembler;
 import br.jus.stf.core.shared.processo.ProcessoId;
@@ -43,13 +40,10 @@ public class ProcessoRestResource {
     private ProcessoRepository processoRepository;
     
     @Autowired
-    private ClasseDtoAssembler classeDtoAssembler;
+    private PreferenciaRepository preferenciaRepository;
     
     @Autowired
-    private RemessaAdapter remessaAdapter;
-    
-    @Autowired 
-    private ParteAdapter parteAdapter;
+    private ClasseDtoAssembler classeDtoAssembler;
     
     @Autowired
     private ProcessoDtoAssembler processoDtoAssembler;
@@ -57,35 +51,32 @@ public class ProcessoRestResource {
     @Autowired
     private ParteDtoAssembler parteDtoAssembler;
     
+    @Autowired
+    private PreferenciaDtoAssembler preferenciaDtoAssembler;
+    
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
     public ProcessoDto consultarProcessoOriginario(@PathVariable("id") Long id){
-		Processo processo = processoRepository.findOne(new ProcessoId(id));
 		
-		if (processo == null){
-			throw new IllegalArgumentException("Processo não encontrado");
-		}
-		
-		List<ParteDto> partes = parteAdapter.consultar(processo.protocoloId());
-		RemessaDto remessa = remessaAdapter.consultar(processo.protocoloId());
-		List<MotivoInaptidaoDto> motivosInaptidao = new ArrayList<MotivoInaptidaoDto>();
-		
-		if (processo instanceof ProcessoRecursal){
-			ProcessoRecursal processoRecursal = (ProcessoRecursal) processo;
-			processoRecursal.motivosInaptidao().forEach(motivo -> new MotivoInaptidaoDto(motivo.identity(), motivo.descricao()));
-		}
-		
-		return processoDtoAssembler.toDto(processo.identity().toLong(), remessa, partes, motivosInaptidao);
+		return Optional.ofNullable(processoRepository.findOne(new ProcessoId(id)))
+				.map(processoDtoAssembler::toDto)
+				.orElseThrow(() -> new IllegalArgumentException("Processo não encontrado"));
     }
 	
 	@RequestMapping(value = "/{id}/partes", method = RequestMethod.GET)
 	public List<ParteDto> listarPartesProcessoOriginario(@PathVariable("id") Long id){
-		return processoRepository.consultarPartes(id).stream().map(parte -> parteDtoAssembler.toDto(parte)).collect(Collectors.toList());
+		return processoRepository.consultarPartes(id).stream().map(parteDtoAssembler::toDto).collect(Collectors.toList());
 	}
     
 	@RequestMapping(value="/classes", method = RequestMethod.GET)
-    public List<ClasseDto> listar(){
+    public List<ClasseDto> listarClasses(){
     	return classeRepository.findAll().stream()
-    			.map(classe -> classeDtoAssembler.toDto(classe)).collect(Collectors.toList());
+    			.map(classeDtoAssembler::toDto).collect(Collectors.toList());
+    }
+	
+	@RequestMapping(value="/preferencias", method = RequestMethod.GET)
+    public List<PreferenciaDto> listarPreferencias(){
+    	return preferenciaRepository.findAll().stream()
+    			.map(preferenciaDtoAssembler::toDto).collect(Collectors.toList());
     }
 
 }

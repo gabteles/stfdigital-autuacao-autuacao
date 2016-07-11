@@ -13,7 +13,7 @@ public class AssuntoDto {
 	
 	private int nivel;
 	
-	public AssuntoDto(String codigo, String descricao, int nivel ) {
+	public AssuntoDto(String codigo, String descricao, int nivel) {
 		this.codigo = codigo;
 		this.descricao = descricao;
 		this.nivel = nivel;

@@ -2,7 +2,9 @@ package br.jus.stf.autuacao.domain.model;
 
 import static javax.persistence.CascadeType.ALL;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -74,8 +76,8 @@ public class ProcessoRecursal extends Processo {
     	this.quantidadeRecurso = quantidadeRecurso;
     }
     
-    public void analisarPressupostosFormais(boolean analiseApta, String observacao, Set<MotivoInaptidao> motivacaoInaptidao, Status status) {
-    	analisePressupostoFormal = new AnalisePressupostoFormal(analiseApta, observacao, motivacaoInaptidao);
+    public void analisarPressupostosFormais(boolean processoApto, String observacao, Set<MotivoInaptidao> motivacaoInaptidao, Status status) {
+    	analisePressupostoFormal = new AnalisePressupostoFormal(processoApto, observacao, motivacaoInaptidao);
     	super.alterarStatus(status);
 	}
     
@@ -110,12 +112,24 @@ public class ProcessoRecursal extends Processo {
 		this.assuntos.addAll(assuntos);
 	}
     
-    public Set<MotivoInaptidao> motivosInaptidao(){
-    	return this.analisePressupostoFormal.motivosInaptidao();
+	public Set<Assunto> assuntos() {
+		return Collections.unmodifiableSet(assuntos);
+	}
+	
+	public Set<Origem> origens() {
+		return Collections.unmodifiableSet(origens);
+	}
+    
+    public Optional<AnaliseRepercussaoGeral> analiseRepercussaoGeral() {
+    	return Optional.ofNullable(analiseRepercussaoGeral);
+    }
+    
+    public Optional<AnalisePressupostoFormal> analisePressupostoFormal() {
+    	return Optional.ofNullable(analisePressupostoFormal);
     }
     
     public boolean isRepercursaoGeral() {
-    	return analiseRepercussaoGeral.revisarRepercussaoGeral();
+    	return analiseRepercussaoGeral.temTeseRepercussaoGeral();
     }
     
     @Override

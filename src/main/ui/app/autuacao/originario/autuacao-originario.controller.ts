@@ -1,34 +1,29 @@
 /**
  * @author Viniciusk
  */
-import {AutuacaoOriginarioCommand, AutuacaoOriginarioService, ParteDto} from "./autuacao-originario.service";
 import IStateService = angular.ui.IStateService;
 import IStateParamService = angular.ui.IStateParamsService;
 import IPromise = angular.IPromise;
 import MessagesService = app.support.messaging.MessagesService;
+import {AutuacaoOriginarioCommand, AutuacaoOriginarioService} from "./autuacao-originario.service";
+import {Parte} from "../shared/autuacao.model";
 import autuacaoOriginario from "./autuacao-originario.module";
 
 
 export class AutuacaoOriginarioController {
 	
-	public basicForm: Object = {};
 	public partePoloAtivo: string;
 	public partePoloPassivo: string;
 	public processo : Object = {};
 	public valida : boolean;
 	public processoId : number;
 
-	public cmdAutuar : AutuacaoOriginarioCommand = new AutuacaoOriginarioCommand();
+	public cmdAutuar : AutuacaoOriginarioCommand = <AutuacaoOriginarioCommand>{};
 	
 	static $inject = ['$state', 'app.autuacao.originario.AutuacaoOriginarioService', 'classes',  'messagesService'];
 	
     constructor(private $state: IStateService, private autuacaoOriginarioService: AutuacaoOriginarioService,
             public classes, private messagesService: MessagesService ) {
-    		
-    		let parteAtiva = new ParteDto('JOSÉ DE SOUZA', 2);
-    		this.cmdAutuar.poloAtivo.push(parteAtiva);
-    		let partePassiva = new ParteDto('ALINE PEREIRA', 3);
-    		this.cmdAutuar.poloPassivo.push(partePassiva);
     		this.valida = true;
     		
     		//consulta o processo aqui!!!
@@ -41,7 +36,7 @@ export class AutuacaoOriginarioController {
                 return;
             }
         }
-        let parte = new ParteDto(this.partePoloAtivo.toUpperCase());
+        let parte = new Parte(this.partePoloAtivo.toUpperCase());
         this.cmdAutuar.poloAtivo.push(parte);
         this.partePoloAtivo = "";
     }
@@ -58,7 +53,7 @@ export class AutuacaoOriginarioController {
             }
         }
         
-        let parte = new ParteDto(this.partePoloPassivo.toUpperCase())
+        let parte = new Parte(this.partePoloPassivo.toUpperCase())
         this.cmdAutuar.poloPassivo.push(parte);
         this.partePoloPassivo = "";
     }

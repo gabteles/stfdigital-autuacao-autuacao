@@ -1,30 +1,32 @@
-import ITranslatePartialLoaderProvider = angular.translate.ITranslatePartialLoaderProvider;
+import ITranslatePartialLoaderService = angular.translate.ITranslatePartialLoaderService;
 import IStateProvider = angular.ui.IStateProvider;
 import IModule = angular.IModule;
+import Properties = app.support.constants.Properties;
+import autuacaoRecursal from '../shared/recursal.module'
 
 /** @ngInject **/
-function config($stateProvider: IStateProvider, properties: any) {
+function config($stateProvider: IStateProvider) {
 
-    $stateProvider.state("app.novo-processo.autuacao-recursal", {
-        url : "/autuacao/recursal",
+    $stateProvider.state("app.tarefas.autuacao-recursal", {
+        url : "/autuacao/recursal/autuacao-recursal/:informationId",
         views : {
             "content@app.autenticado" : {
                 templateUrl : "./autuacao-recursal.tpl.html",
                 controller : "app.autuacao.recursal.AutuacaoRecursalController",
-                controllerAs: "vm"
+                controllerAs: "autuacao"
             }
+        },
+        params : {
+            informationId : undefined
         }
     });
 }
 
 /** @ngInject **/
-function run($translatePartialLoader: ITranslatePartialLoaderProvider,
-			 properties: any) {
-	
-	$translatePartialLoader.addPart(properties.apiUrl + "/recursal/autuacao-recursal");
+function run($translatePartialLoader: ITranslatePartialLoaderService, properties: Properties) {
+    
+    $translatePartialLoader.addPart(properties.apiUrl + '/autuacao/recursal/autuacao-recursal');
 }
 
-let autuacaoRecursal: IModule = angular.module("app.autuacao.recursal", 
-    ["app.autuacao.services", "app.novo-processo", "app.support"]);
 autuacaoRecursal.config(config).run(run);
 export default autuacaoRecursal;

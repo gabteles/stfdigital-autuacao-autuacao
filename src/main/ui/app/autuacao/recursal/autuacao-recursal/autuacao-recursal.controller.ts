@@ -1,16 +1,12 @@
 import IStateService = angular.ui.IStateService;
 import IStateParamService = angular.ui.IStateParamsService;
 import IDialogService = angular.material.IDialogService;
-import autuacaoRecursal from "./autuacao-recursal.module";
-import {AutuacaoService} from "../../services/autuacao.service";
-import {Tese, Assunto, Processo} from "../../services/model";
+import {Parte} from "../../shared/autuacao.model";
+import {Tese, Assunto, ProcessoRecursal, AutuarProcessoRecursalCommand} from "../shared/recursal.model";
+import {AutuacaoRecursalService} from "./autuacao-recursal.service";
+import {AutuacaoSharedService} from "../../shared/autuacao.service";
+import autuacaoRecursal from "../shared/recursal.module";
 
-export class AutuarProcessoRecursalCommand {
-    public processoId: number;
-	public poloAtivo: Array<string>;
-	public poloPassivo: Array<string>;
-	public assuntos: Array<string>;
-}
 
 /*
  * Comando usado para enviar os dados do processo recursal para a autuação.
@@ -24,93 +20,84 @@ export class AutuacaoRecursalController {
     public numeroProcesso: string;
     public teses: Array<Tese> = [];
     public assuntos: Array<Assunto> = [];
-    public poloAtivo: Array<string> = [];
-    public poloPassivo: Array<string> = [];
     public partePoloAtivo: string;
     public partePoloPassivo: string;
     
-    /** @ngInject **/
-    static $inject = ["$state", "$mdDialog", "app.autuacao.autuacao-services.AutuacaoService"];
+    public cmdAutuar : AutuarProcessoRecursalCommand = new AutuarProcessoRecursalCommand();
     
-    constructor(private $state: IStateService, private $mdDialog: IDialogService, private autuacaoService: AutuacaoService){
-        
+    /** @ngInject **/
+    static $inject = ["$state", "messagesService", "app.autuacao.AutuacaoSharedService", "app.autuacao.recursal.AutuacaoRecursalService"];
+    
+    constructor(private $state: IStateService, private messagesService: app.support.messaging.MessagesService, private autuacaoService: AutuacaoSharedService,
+    		private autuacaoRecursalService : AutuacaoRecursalService){
     	
 		this.assuntos.push(new Assunto('4291', 'Jurisdição e Competência', null));
 		this.assuntos.push(new Assunto('10912', 'Medidas Assecuratórias', null));
 		this.teses.push(new Tese(170, 'Recurso extraordinário em que se discute', 1, null, 'REPERCUSSAO_GERAL'));
     	
-        autuacaoService.consultarProcesso(1).then((processo: Processo) => {
+		let parteAtiva = new Parte('JOSÉ DE SOUZA', 2);
+		this.cmdAutuar.poloAtivo.push(parteAtiva);
+		let partePassiva = new Parte('ALINE PEREIRA', 3);
+		this.cmdAutuar.poloPassivo.push(partePassiva);
+		this.processoId = 1;
+	
+ /*       autuacaoService.consultarProcesso(1).then((processo: Processo) => {
 			this.numeroProcesso = processo.numero;
             this.teses = processo.teses;
             this.assuntos = processo.assuntos;
-            this.poloAtivo = new Array<string>();
-            this.poloPassivo = new Array<string>();
             this.processoId = 1;
-		});
+		}); */ 
     }
+   
     
-    /**
-     * Exibe mensagens de alerta.
-     * @param mensagem 
-     */
-    private exibirMensagem(mensagem: string, titulo: string){
-        let alert = this.$mdDialog.alert().title(titulo).textContent(mensagem).ok("Fechar");
-        this.$mdDialog.show(alert).finally(function() {
-            alert = undefined;
-        });
-    }
-    
-    /**
-     * Adiciona uma parte ao polo ativo.
-     */
     public adicionarPartePoloAtivo(): void {
-        for (let i = 0; i < this.poloAtivo.length; i++){
-            if (this.poloAtivo[i] == this.partePoloAtivo.toUpperCase()){
+        for (let i = 0; i < this.cmdAutuar.poloAtivo.length; i++){
+            if (this.cmdAutuar.poloAtivo[i].apresentacao == this.partePoloAtivo.toUpperCase()){
                 this.partePoloAtivo = "";
-                this.exibirMensagem("A parte informada já foi adicionada ao polo ativo.", "Adicionar Parte");
                 return;
             }
         }
-        
-        this.poloAtivo.push(this.partePoloAtivo.toUpperCase());
+        let parte = new Parte(this.partePoloAtivo.toUpperCase());
+        this.cmdAutuar.poloAtivo.push(parte);
         this.partePoloAtivo = "";
     }
     
-    /**
-     * Remove uma parte do polo ativo.
-     */
     public removerPartePoloAtivo(indice: number): void {
-        this.poloAtivo.splice(indice);
+    	this.cmdAutuar.poloAtivo.splice(indice);
     }
     
-    /**
-     * Adiciona uma parte ao polo passivo.
-     */
     public adicionarPartePoloPassivo(): void {
-        for (let i = 0; i < this.poloPassivo.length; i++){
-            if (this.poloPassivo[i] == this.partePoloPassivo.toUpperCase()){
+        for (let i = 0; i < this.cmdAutuar.poloPassivo.length; i++){
+            if (this.cmdAutuar.poloPassivo[i].apresentacao == this.partePoloPassivo.toUpperCase()){
                 this.partePoloPassivo = "";        
-                this.exibirMensagem("A parte informada já foi adicionada ao polo passivo.", "Adicionar Parte");
                 return;
             }
         }
         
-        this.poloPassivo.push(this.partePoloPassivo.toUpperCase());
+        let parte = new Parte(this.partePoloPassivo.toUpperCase())
+        this.cmdAutuar.poloPassivo.push(parte);
         this.partePoloPassivo = "";
     }
     
-    /**
-     * Remove uma parte do polo passivo.
-     */
     public removerPartePoloPassivo(indice: number): void {
-        this.poloPassivo.splice(indice);
+    	this.cmdAutuar.poloPassivo.splice(indice);
     }
     
     /**
      * Realiza a autuação de um processo recursal.
      */
     public autuarProcessoRecursal(){
-        this.autuacaoService.autuarProcessoRecursal(this.processoId, this.poloAtivo, this.poloPassivo, this.assuntos);
+    	
+    	for (let i  of this.assuntos){
+    		this.cmdAutuar.assuntos.push(i.codigo);
+    	}
+    	
+        this.autuacaoRecursalService.autuar(this.cmdAutuar).then(() => {
+            this.$state.go('app.tarefas.minhas-tarefas');
+			this.messagesService.success('Processo autuado com sucesso.');
+    	}, () => {
+			this.messagesService.error('Erro ao autuar o processo.');
+		});
     }
 }
 
