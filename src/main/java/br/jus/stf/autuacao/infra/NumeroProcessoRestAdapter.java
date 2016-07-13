@@ -1,14 +1,10 @@
 package br.jus.stf.autuacao.infra;
 
-import java.net.URI;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import br.jus.stf.autuacao.domain.NumeroProcessoAdapter;
+import br.jus.stf.autuacao.infra.client.NumeroProcessoRestClient;
 import br.jus.stf.core.shared.processo.Identificacao;
 
 /**
@@ -20,16 +16,13 @@ import br.jus.stf.core.shared.processo.Identificacao;
 @Component
 public class NumeroProcessoRestAdapter implements NumeroProcessoAdapter {
 	
-    @Autowired
-    private DiscoveryClient discoveryClient;
+	@Autowired
+    private NumeroProcessoRestClient numeroProcessoRestClient;
     
 	@Override
 	public Identificacao novoNumeroProcesso(String classe) {
-		URI servicesUri = discoveryClient.getInstances("gateway").get(0).getUri();
 		
-		URI uri = UriComponentsBuilder.fromUri(servicesUri).path("/services/api/identificadores").queryParam("categoria", classe).build().toUri();
-		
-		IdentificacaoDto identificacao = new RestTemplate().getForObject(uri, IdentificacaoDto.class);
+		IdentificacaoDto identificacao = numeroProcessoRestClient.identificador(classe);
     	
 		return new Identificacao(identificacao.getCategoria(), identificacao.getNumero());
 	}

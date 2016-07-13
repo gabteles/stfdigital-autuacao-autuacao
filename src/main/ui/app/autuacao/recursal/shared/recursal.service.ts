@@ -26,7 +26,7 @@ export class AutuacaoRecursalSharedService {
      * @return Lista de motivos de inaptidão de processos.
      */
 	public listarMotivosInaptidao() : IPromise<MotivoInaptidao[]> {
-		return this.$http.get(this.api + "/motivoinaptidao")
+		return this.$http.get(this.api + "/motivos-inaptidao")
         .then((response: IHttpPromiseCallbackArg<MotivoInaptidao[]>) => { 
             return response.data; 
         });
@@ -36,9 +36,9 @@ export class AutuacaoRecursalSharedService {
      * Retorna as classes processuais.
      * @return Array de classes.
      */
-    public listarClasses() : IPromise<Classe[]> {
+    public listarClasses() : IPromise<Array<Classe>> {
         return this.$http.get(this.api + "/classes")
-            .then((response: IHttpPromiseCallbackArg<Classe[]>) => { 
+            .then((response: IHttpPromiseCallbackArg<Array<Classe>>) => { 
                     return response.data; 
             });
     }
@@ -47,9 +47,9 @@ export class AutuacaoRecursalSharedService {
      * Retorna os tipos de tese.
      * @return Array de tipo de teses.
      */
-    public listarTiposTese() : IPromise<TipoTese[]> {
-        return this.$http.get(this.api + "/tipostese")
-            .then((response: IHttpPromiseCallbackArg<TipoTese[]>) => { 
+    public listarTiposTese() : IPromise<Array<TipoTese>> {
+        return this.$http.get(this.api + "/tipos-tese")
+            .then((response: IHttpPromiseCallbackArg<Array<TipoTese>>) => { 
                     return response.data; 
             });
     }
@@ -58,26 +58,13 @@ export class AutuacaoRecursalSharedService {
      * Retorna as teses.
      * @return Array de teses.
      */
-    public consultarTeses(tipoTese: string, numeroTese : string) : IPromise<Tese[]> {
+    public consultarTeses(tipoTese: string, numeroTese : string) : IPromise<Array<Tese>> {
         return this.$http.get(this.api + "/teses", {params: {'tipo' : tipoTese, 'numero': numeroTese}})
-            .then((response: IHttpPromiseCallbackArg<Tese[]>) => { 
+            .then((response: IHttpPromiseCallbackArg<Array<Tese>>) => { 
                     return response.data; 
             });
     }
-        
-
-    /**
-     * Retorna os tipos de tese.
-     * @return Array de tipos de tese.
-     */
-    public listarTiposTeses() : Array<TipoTese> {
-        let tiposTese = new Array<TipoTese>();
-        tiposTese.push(new TipoTese("CONTROVERSIA", "Controvérsia"));
-        tiposTese.push(new TipoTese("PRE_TEMA", "Pré-tema"));
-        tiposTese.push(new TipoTese("REPERCUSSAO_GERAL", "Repercussão Geral"));
-
-        return tiposTese;
-    }    
+    
 }
 
 autuacaoRecursal.service("app.autuacao.recursal.AutuacaoRecursalSharedService", AutuacaoRecursalSharedService);

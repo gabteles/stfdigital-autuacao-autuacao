@@ -6,14 +6,16 @@ import Properties = app.support.constants.Properties;
 import {Parte} from "../shared/autuacao.model";
 import autuacaoOriginario from "./autuacao-originario.module";
 
-export interface AutuacaoOriginarioCommand extends cmd.Command {
+export class AutuacaoOriginarioCommand implements cmd.Command {
     
-    processoId: number;
-    classeId: String;
-	poloAtivo: Array<Parte>;
-    poloPassivo: Array<Parte>;
-	motivo : string;
-    valida : boolean;
+    public processoId: number;
+    public classeId: String;
+	public poloAtivo: Array<Parte> = new Array();
+    public poloPassivo: Array<Parte> = new Array();
+	public motivo : string;
+    public valida : boolean = true;
+    
+    constructor() {}
 }
 
 export class AutuacaoOriginarioService {

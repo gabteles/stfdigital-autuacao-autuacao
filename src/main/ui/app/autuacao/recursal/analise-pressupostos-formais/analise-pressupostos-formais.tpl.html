@@ -3,7 +3,7 @@
     <!-- CONTENT -->
     <div class="content" layout="column">
 
-        <div class="md-title mt-10">Análise</div>
+        <div class="md-title mt-10">Análise de Pressupostos Formais</div>
         <div class="pb-16">Informe se a petição será apto ou inapta</div>
 
         <div layout="row">
@@ -19,8 +19,8 @@
                         <md-input-container flex="60" ng-show="!analise.cmd.processoApto">
                             <label>Motivo *</label>
                             <md-select multiple ng-model="analise.cmd.motivosInaptidao" id="motivoInaptidao">
-                                <md-option ng-repeat="motivoInaptidao in analise.motivosInaptidao" value="{{motivoInaptidao.id}}">
-                                    {{motivo.descricao}}
+                                <md-option ng-repeat="motivoInaptidao in analise.motivosInaptidao" value="{{motivoInaptidao.codigo}}">
+                                    {{motivoInaptidao.descricao}}
                                 </md-option>
                             </md-select>
                         </md-input-container>

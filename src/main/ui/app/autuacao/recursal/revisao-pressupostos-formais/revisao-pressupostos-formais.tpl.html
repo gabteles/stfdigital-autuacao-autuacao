@@ -13,10 +13,10 @@
   							</md-switch>
                         </md-input-container>
                         <md-input-container flex="60" ng-show="!revisao.cmd.processoApto">
-                            <label>Motivo</label>
+                            <label>Motivos de Inaptidão</label>
                              <md-select multiple ng-model="revisao.cmd.motivosInaptidao" id="cboMotivo">
-                                <md-option ng-repeat="motivoInaptidao in revisao.motivosInaptidao" value="{{motivoInaptidao.id}}">
-                                    {{motivo.descricao}}
+                                <md-option ng-repeat="motivoInaptidao in revisao.motivosInaptidao" value="{{motivoInaptidao.codigo}}">
+                                    {{motivoInaptidao.descricao}}
                                 </md-option>
                             </md-select>
                         </md-input-container>

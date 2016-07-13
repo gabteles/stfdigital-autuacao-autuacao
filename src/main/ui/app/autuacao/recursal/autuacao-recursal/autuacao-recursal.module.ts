@@ -8,7 +8,7 @@ import autuacaoRecursal from '../shared/recursal.module'
 function config($stateProvider: IStateProvider) {
 
     $stateProvider.state("app.tarefas.autuacao-recursal", {
-        url : "/autuacao/recursal/autuacao-recursal/:informationId",
+        url : "/autuacao/recursal/:informationId/autuacao",
         views : {
             "content@app.autenticado" : {
                 templateUrl : "./autuacao-recursal.tpl.html",

@@ -1,50 +1,50 @@
 [    
     {
         "id": "autuar-originario",
-        "stateName": "app.novo-processo.autuacao-originario",
-        "urlPrefix": "/tarefas/autuacao/originario/autuacao",
+        "stateName": "app.tarefas.autuacao-originario",
+        "url": "/autuacao/originario/:informationId/autuacao",
         "src": "autuacao/originario/autuacao-originario"
     },
      
     {
         "id": "autuar-recursal",
         "stateName": "app.tarefas.autuacao-recursal",
-        "urlPrefix": "/tarefas/autuacao/recursal/autuacao",
+        "url": "/autuacao/recursal/:informationId/autuacao",
         "src": "autuacao/recursal/autuacao-recursal"
     },
     
     {
         "id": "autuar-recursal-criminal-eleitoral",
         "stateName": "app.tarefas.autuacao-criminal-eleitoral",
-        "urlPrefix": "/tarefas/autuacao/recursal/autuacao-criminal-eleitoral",
+        "url": "/autuacao/recursal/:informationId/autuacao-criminal-eleitoral",
         "src": "autuacao/recursal/autuacao-criminal-eleitoral"
     },
     
     {
         "id": "analisar-pressupostos-formais",
         "stateName": "app.tarefas.analise-pressupostos-formais",
-        "urlPrefix": "/tarefas/autuacao/recursal/analise-pressupostos-formais",
+        "url": "/autuacao/recursal/:informationId/analise-pressupostos-formais",
         "src": "autuacao/recursal/analise-pressupostos-formais"
 	},
 	
 	{
         "id": "revisar-pressupostos-formais",
         "stateName": "app.tarefas.revisao-pressupostos-formais",
-        "urlPrefix": "/tarefas/autuacao/recursal/revisao-pressupostos-formais",
+        "url": "/autuacao/recursal/:informationId/revisao-pressupostos-formais",
         "src": "autuacao/recursal/revisao-pressupostos-formais"
     },
     
     {
         "id": "analisar-repercussao-geral",
         "stateName": "app.tarefas.analise-repercussao-geral",
-        "urlPrefix": "/tarefas/autuacao/recursal/analise-repercussao-geral",
+        "url": "/autuacao/recursal/:informationId/analise-repercussao-geral",
         "src": "autuacao/recursal/analise-repercussao-geral"
     },
     
     {
         "id": "revisar-repercussao-geral",
         "stateName": "app.tarefas.revisao-repercussao-geral",
-        "urlPrefix": "/tarefas/autuacao/recursal/revisao-repercussao-geral",
+        "url": "/autuacao/recursal/:informationId/revisao-repercussao-geral",
         "src": "autuacao/recursal/revisao-repercussao-geral"
     }
      

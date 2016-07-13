@@ -10,7 +10,7 @@ import autuacaoRecursal from '../shared/recursal.module';
 function config($stateProvider: IStateProvider) {
 
     $stateProvider.state("app.tarefas.revisao-repercussao-geral", {
-        url : "/autuacao/recursal/revisao-repercussao-geral/:informationId",
+        url : "/autuacao/recursal/:informationId/revisao-repercussao-geral",
         views : {
             "content@app.autenticado" : {
                 templateUrl : "./revisao-repercussao-geral.tpl.html",

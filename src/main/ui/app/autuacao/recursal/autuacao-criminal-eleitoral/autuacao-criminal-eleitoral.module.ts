@@ -8,7 +8,7 @@ import autuacaoRecursal from '../shared/recursal.module';
 function config($stateProvider: IStateProvider) {
 
     $stateProvider.state('app.tarefas.autuacao-criminal-eleitoral', {
-        url : '/autuacao/recursal/autuacao-criminal-eleitoral/:informationId',
+        url : '/autuacao/recursal/:informationId/autuacao-criminal-eleitoral',
         views : {
             'content@app.autenticado' : {
                 templateUrl : './autuacao-criminal-eleitoral.tpl.html',

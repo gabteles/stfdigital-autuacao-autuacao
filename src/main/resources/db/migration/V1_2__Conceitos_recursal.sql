@@ -51,7 +51,7 @@ alter table autuacao.processo add tip_meio_tramitacao varchar2(10) not null;
 alter table autuacao.processo add constraint ck_proc_tip_meio_tramitacao check (tip_meio_tramitacao in ('ELETRONICO', 'FISICO'));
 alter table autuacao.processo add tip_sigilo varchar2(15) not null;
 alter table autuacao.processo add constraint ck_proc_tip_sigilo check (tip_sigilo in ('PUBLICO', 'SEGREDO_JUSTICA'));
-alter table autuacao.processo add flg_analise_processo_apto varchar2(1);
+alter table autuacao.processo add flg_processo_apto varchar2(1);
 alter table autuacao.processo add txt_analise_pressuposto_formal varchar2(1000);
 alter table autuacao.processo add constraint ck_proc_flg_processo_apto check (flg_processo_apto is null or flg_processo_apto in ('Y', 'N'));
 alter table autuacao.processo add txt_analise_repercussao_geral varchar2(1000);

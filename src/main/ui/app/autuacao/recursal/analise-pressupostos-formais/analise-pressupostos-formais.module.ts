@@ -10,7 +10,7 @@ import autuacaoRecursal from '../shared/recursal.module';
 function config($stateProvider: IStateProvider) {
 
     $stateProvider.state('app.tarefas.analise-pressupostos-formais', {
-        url : '/autuacao/recursal/analisar-pressupostos-formais/:informationId',
+        url : '/autuacao/recursal/:informationId/analise-pressupostos-formais',
         views : {
             'content@app.autenticado' : {
                 templateUrl : './analise-pressupostos-formais.tpl.html',

@@ -1,3 +1,4 @@
+import "../shared";
 import ITranslatePartialLoaderService = angular.translate.ITranslatePartialLoaderService;
 import IStateProvider = angular.ui.IStateProvider;
 import IModule = angular.IModule;
@@ -9,7 +10,7 @@ import {AutuacaoSharedService} from "../shared/autuacao.service";
 function config($stateProvider: IStateProvider, properties: Properties) {
 
     $stateProvider.state('app.tarefas.autuacao-originario', {
-        url : '/autuacao/originario/autuacao',
+        url : '/autuacao/originario/:informationId/autuacao',
         views : {
             'content@app.autenticado' : {
                 templateUrl : './autuacao-originario.tpl.html',
@@ -21,6 +22,9 @@ function config($stateProvider: IStateProvider, properties: Properties) {
             classes : ['app.autuacao.AutuacaoSharedService', (autuacaoService: AutuacaoSharedService) => {
                 return autuacaoService.listarClasses();
             }]
+        },
+        params : {
+            informationId : undefined
         }
     });
 }
@@ -30,6 +34,6 @@ function run($translatePartialLoader: ITranslatePartialLoaderService, properties
 	$translatePartialLoader.addPart(properties.apiUrl + '/autuacao/originario');
 }
 
-let autuacaoOriginario: IModule = angular.module('app.autuacao.originario', ['app.autuacao.services', 'app.support']);
+let autuacaoOriginario: IModule = angular.module('app.autuacao.originario', ['app.autuacao', 'app.support']);
 autuacaoOriginario.config(config).run(run);
 export default autuacaoOriginario;

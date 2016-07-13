@@ -18,7 +18,7 @@ export class AutuacaoOriginarioController {
 	public valida : boolean;
 	public processoId : number;
 
-	public cmdAutuar : AutuacaoOriginarioCommand = <AutuacaoOriginarioCommand>{};
+	public cmdAutuar : AutuacaoOriginarioCommand = new AutuacaoOriginarioCommand();
 	
 	static $inject = ['$state', 'app.autuacao.originario.AutuacaoOriginarioService', 'classes',  'messagesService'];
 	

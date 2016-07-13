@@ -19,7 +19,7 @@ export class RevisaoPressupostosFormaisController {
     	
     	this.cmd.processoId = analise.processoId;
     	analise.motivosInaptidao.forEach(motivoInaptidao => {
-    		this.cmd.motivosInaptidao.push(motivoInaptidao.id);
+    		this.cmd.motivosInaptidao.push(motivoInaptidao.codigo);
     	});
     	this.cmd.observacao = analise.observacao;
     	this.cmd.processoApto = analise.processoApto;

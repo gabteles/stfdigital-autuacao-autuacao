@@ -9,7 +9,7 @@ import autuacaoRecursal from '../shared/recursal.module';
 /** @ngInject **/
 function config($stateProvider: IStateProvider) {
 
-    $stateProvider.state("app.tarefas.revisao-analise-pressupostos", {
+    $stateProvider.state("app.tarefas.revisao-pressupostos-formais", {
         url : "/autuacao/recursal/revisao-pressupostos-formais/:informationId",
         views : {
             "content@app.autenticado" : {

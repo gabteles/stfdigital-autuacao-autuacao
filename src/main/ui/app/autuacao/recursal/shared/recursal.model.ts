@@ -18,7 +18,7 @@ export class Assunto {
 }
 
 export class MotivoInaptidao {
-    constructor(public id: number, public descricao: string) {}
+    constructor(public codigo: number, public descricao: string) {}
 }
 
 export interface ProcessoRecursal extends Processo {

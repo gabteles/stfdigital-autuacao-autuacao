@@ -1,6 +1,6 @@
-import autuacaoRecursal from './shared/recursal.module';
-import "./recursal/analise-pressupostos-formais/analise-pressupostos-formais.module";
-import "./recursal/analise-pressupostos-formais/analise-pressupostos-formais.controller";
-import "./recursal/analise-pressupostos-formais/analise-pressupostos-formais.service";
+import autuacaoRecursal from './shared';
+import "./analise-pressupostos-formais/analise-pressupostos-formais.module";
+import "./analise-pressupostos-formais/analise-pressupostos-formais.controller";
+import "./analise-pressupostos-formais/analise-pressupostos-formais.service";
 
 export default autuacaoRecursal;

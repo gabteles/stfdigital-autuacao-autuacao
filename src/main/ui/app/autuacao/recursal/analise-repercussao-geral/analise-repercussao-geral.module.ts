@@ -8,8 +8,8 @@ import autuacaoRecursal from '../shared/recursal.module';
 /** @ngInject **/
 function config($stateProvider: IStateProvider) {
 
-    $stateProvider.state('app.novo-processo.analise-repercussao-geral', {
-        url : '/autuacao/recursal/analise-repercussao-geral/:informationId',
+    $stateProvider.state('app.tarefas.analise-repercussao-geral', {
+        url : '/autuacao/recursal/:informationId/analise-repercussao-geral',
         views : {
             'content@app.autenticado' : {
                 templateUrl : './analise-repercussao-geral.tpl.html',

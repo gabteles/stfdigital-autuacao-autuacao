@@ -7,13 +7,13 @@
 	
 		<startEvent id="inicio" name="Enviar Petição Digital" />
 		
-        <sequenceFlow id="autuacao" sourceRef="inicio" targetRef="autuar-processo" />
+        <sequenceFlow id="autuacao" sourceRef="inicio" targetRef="autuar-originario" />
         
-        <userTask id="autuar-processo" name="Autuar Processo Originário" activiti:candidateGroups="autuadores">
+        <userTask id="autuar-originario" name="Autuar Processo Originário" activiti:candidateGroups="autuadores">
             <documentation>AUTUACAO</documentation>
         </userTask>
         
-		<sequenceFlow id="rejeicao" sourceRef="autuar-processo" targetRef="rejeitado">
+		<sequenceFlow id="rejeicao" sourceRef="autuar-originario" targetRef="rejeitado">
             <conditionExpression xsi:type="tFormalExpression">${transition == 'REJEITAR'}</conditionExpression>
         </sequenceFlow>
 		
@@ -25,9 +25,9 @@
 			<messageEventDefinition messageRef="peticionamento-orgao" />
 		</startEvent>
 		
-		<sequenceFlow id="autuacao-orgao" sourceRef="peticao-orgao" targetRef="autuar-processo" />
+		<sequenceFlow id="autuacao-orgao" sourceRef="peticao-orgao" targetRef="autuar-originario" />
 		
-		<sequenceFlow id="distribuicao" sourceRef="autuar-processo" targetRef="distribuir">
+		<sequenceFlow id="distribuicao" sourceRef="autuar-originario" targetRef="distribuir">
             <conditionExpression xsi:type="tFormalExpression">${transition == 'DISTRIBUIR'}</conditionExpression>
         </sequenceFlow>
 
