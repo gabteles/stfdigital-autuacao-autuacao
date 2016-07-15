@@ -24,12 +24,16 @@ public class TribunalJuizoRepositoryImpl extends SimpleJpaRepository<TribunalJui
 
 	private EntityManager entityManager;
 	
+	/**
+	 * @param entityManager
+	 */
 	@Autowired
     public TribunalJuizoRepositoryImpl(EntityManager entityManager) {
         super(TribunalJuizo.class, entityManager);
         this.entityManager = entityManager;
     }
 	
+	@Override
 	public List<TribunalJuizo> findByUnidadeFederacao(UnidadeFederacao uf) {
 		TypedQuery<TribunalJuizo> query = entityManager.createQuery("FROM TribunalJuizo tj INNER JOIN tj.ufsAtuacao uf WITH uf = :uf", TribunalJuizo.class);
 		

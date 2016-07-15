@@ -15,12 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import br.jus.stf.autuacao.application.commands.AnalisarPressupostosFormaisCommand;
 import br.jus.stf.autuacao.application.commands.AnalisarRepercussaoGeralCommand;
 import br.jus.stf.autuacao.application.commands.AutuarOriginarioCommand;
-import br.jus.stf.autuacao.application.commands.AutuarRecursalCriminalEleitoralCommand;
 import br.jus.stf.autuacao.application.commands.AutuarRecursalCommand;
+import br.jus.stf.autuacao.application.commands.AutuarRecursalCriminalEleitoralCommand;
 import br.jus.stf.autuacao.application.commands.EnviarProcessoRecursalCommand;
 import br.jus.stf.autuacao.application.commands.IniciarAutuacaoCommand;
 import br.jus.stf.autuacao.application.commands.RevisarPressupostosFormaisCommand;
 import br.jus.stf.autuacao.application.commands.RevisarRepercussaoGeralCommand;
+import br.jus.stf.autuacao.domain.AutuadorAdapter;
 import br.jus.stf.autuacao.domain.NumeroProcessoAdapter;
 import br.jus.stf.autuacao.domain.PessoaAdapter;
 import br.jus.stf.autuacao.domain.ProcessoFactory;
@@ -32,8 +33,8 @@ import br.jus.stf.autuacao.domain.model.Origem;
 import br.jus.stf.autuacao.domain.model.Parte;
 import br.jus.stf.autuacao.domain.model.Processo;
 import br.jus.stf.autuacao.domain.model.ProcessoOriginario;
-import br.jus.stf.autuacao.domain.model.ProcessoRepository;
 import br.jus.stf.autuacao.domain.model.ProcessoRecursal;
+import br.jus.stf.autuacao.domain.model.ProcessoRepository;
 import br.jus.stf.autuacao.domain.model.Status;
 import br.jus.stf.autuacao.domain.model.classe.Classe;
 import br.jus.stf.autuacao.domain.model.classe.ClasseRepository;
@@ -112,6 +113,12 @@ public class AutuacaoApplicationService {
     @Autowired
     private TribunalJuizoRepository tribunalJuizoRepository;
     
+    @Autowired
+    private AutuadorAdapter autuadorAdapter;
+    
+    /**
+     * @param command
+     */
     @Transactional(propagation = REQUIRES_NEW)
     public void handle(IniciarAutuacaoCommand command) {
         ProcessoId processoId = processoRepository.nextProcessoId();
@@ -131,38 +138,45 @@ public class AutuacaoApplicationService {
         rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_REGISTRADO_QUEUE, new ProcessoRegistrado(command.getProtocoloId(), processoId.toString()));
     }
 
+    /**
+     * @param command
+     */
     @Command(description = "Autuação de Originários")
     public void handle(AutuarOriginarioCommand command) {
         ProcessoOriginario processo = (ProcessoOriginario) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
         Identificacao numero = numeroProcessoAdapter.novoNumeroProcesso(command.getClasseId());
-        Classe classe = classeRepository.findOne(new ClasseId(command.getClasseId()));
-        //TODO: Alterar para pegar dados do autuador pelo usuário da sessão.
-        Autuador autuador = new Autuador("USUARIO_FALSO", new PessoaId(1L));
-        //TODO: Alterar para reutilizar pessoas.
-        Set<Parte> partes = new HashSet<>(0);
-        command.getPoloAtivo().forEach(parteDto -> partes.add(new Parte(parteDto.getApresentacao(), Polo.ATIVO, new PessoaId(parteDto.getPessoa()))));
-        command.getPoloPassivo().forEach(parteDto -> partes.add(new Parte(parteDto.getApresentacao(), Polo.PASSIVO, new PessoaId(parteDto.getPessoa()))));
-       
-        if (command.isValida()){
+        
+        if (command.isValida()) {
+        	Autuador autuador = autuadorAdapter.autuador();
+        	Classe classe = classeRepository.findOne(new ClasseId(command.getClasseId()));
         	Status status = statusOriginarioAdapter.nextStatus(processo.identity(), "DISTRIBUIR");
-        	processo.autuar(classe, numero.numero(), partes, autuador, status);
-        }else{
+        	Set<Parte> partes = new HashSet<>(0);
+        	
+        	command.getPoloAtivo().forEach(parteDto -> partes.add(new Parte(parteDto.getApresentacao(), Polo.ATIVO, new PessoaId(parteDto.getPessoa()))));
+            command.getPoloPassivo().forEach(parteDto -> partes.add(new Parte(parteDto.getApresentacao(), Polo.PASSIVO, new PessoaId(parteDto.getPessoa()))));
+            processo.autuar(classe, numero.numero(), partes, autuador, status);
+        } else {
         	Status status = statusOriginarioAdapter.nextStatus(processo.identity(), "REJEITAR");
-        	processo.rejeitar(command.getMotivo(), status);        	
+        	processo.rejeitar(command.getMotivo(), status);       	
         }
 
         processoRepository.save(processo);
-        // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
-        rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processo.identity().toString(), numero.toString()));
+        
+        if (command.isValida()) {
+        	// TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
+        	rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processo.identity().toString(), numero.toString()));
+        }
     }
     
+    /**
+     * @param command
+     */
     @Command(description = "Autuação de Recursais")
     public void handle(AutuarRecursalCommand command) {
 		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
         Status status = statusRecursalAdapter.nextStatus(processo.identity());
-        //TODO: Alterar para pegar dados do autuador pelo usuário da sessão.
-        Autuador autuador = new Autuador("USUARIO_FALSO", new PessoaId(1L));
-        Set<Parte> partes = new HashSet<Parte>();
+        Autuador autuador = autuadorAdapter.autuador();
+        Set<Parte> partes = new HashSet<>(0);
         pessoaAdapter.criarPessoas(command.getPoloAtivo()).forEach(p1 -> partes.add(new Parte(p1.getApresentacao(), Polo.ATIVO, new PessoaId(p1.getPessoaId()))));
         pessoaAdapter.criarPessoas(command.getPoloPassivo()).forEach(p2 -> partes.add(new Parte(p2.getApresentacao(), Polo.PASSIVO, new PessoaId(p2.getPessoaId()))));
 
@@ -175,13 +189,15 @@ public class AutuacaoApplicationService {
         rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processo.identity().toString(), processo.toString()));
     }
     
+    /**
+     * @param command
+     */
     @Command(description = "Autuação de Processos Criminais")
     public void handle(AutuarRecursalCriminalEleitoralCommand command) {
 		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
         Status status = statusRecursalAdapter.nextStatus(processo.identity());
-        //TODO: Alterar para pegar dados do autuador pelo usuário da sessão.
-        Autuador autuador = new Autuador("USUARIO_FALSO", new PessoaId(1L));
-        Set<Parte> partes = new HashSet<Parte>();
+        Autuador autuador = autuadorAdapter.autuador();
+        Set<Parte> partes = new HashSet<>(0);
         pessoaAdapter.criarPessoas(command.getPoloAtivo()).forEach(p1 -> partes.add(new Parte(p1.getApresentacao(), Polo.ATIVO, new PessoaId(p1.getPessoaId()))));
         pessoaAdapter.criarPessoas(command.getPoloPassivo()).forEach(p2 -> partes.add(new Parte(p2.getApresentacao(), Polo.PASSIVO, new PessoaId(p2.getPessoaId()))));
 
@@ -194,6 +210,9 @@ public class AutuacaoApplicationService {
         rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processo.identity().toString(), processo.toString()));
     }
     
+    /**
+     * @param command
+     */
     @Command(description = "Análise de Pressupostos Formais")
     public void handle(AnalisarPressupostosFormaisCommand command) {
 		ProcessoRecursal processoRecursal = (ProcessoRecursal) processoRepository
@@ -201,7 +220,7 @@ public class AutuacaoApplicationService {
 		Status status = command.isProcessoApto() ? statusRecursalAdapter.nextStatus(processoRecursal.identity())
 				: statusRecursalAdapter.nextStatus(processoRecursal.identity(), "REVISAR_ANALISE");
 		Set<MotivoInaptidao> motivos = Optional.ofNullable(command.getMotivosInaptidao())
-				.map(motvs -> motvs.stream().map(motivo -> processoRepository.findOneMotivoInaptidao(motivo))
+				.map(motvs -> motvs.stream().map(processoRepository::findOneMotivoInaptidao)
 						.collect(Collectors.toSet()))
 				.orElse(new HashSet<>(0));
         
@@ -209,6 +228,9 @@ public class AutuacaoApplicationService {
         processoRepository.save(processoRecursal);
     }
     
+    /**
+     * @param command
+     */
     @Command(description = "Revisão de Análise de Pressupostos")
 	public void handle(RevisarPressupostosFormaisCommand command) {
 		ProcessoRecursal processoRecursal = (ProcessoRecursal) processoRepository
@@ -216,7 +238,7 @@ public class AutuacaoApplicationService {
 		Status status = command.isProcessoApto() ? statusRecursalAdapter.nextStatus(processoRecursal.identity())
 				: statusRecursalAdapter.nextStatus(processoRecursal.identity(), "INAPTO");
 		Set<MotivoInaptidao> motivos = Optional.ofNullable(command.getMotivosInaptidao())
-				.map(motvs -> motvs.stream().map(motivo -> processoRepository.findOneMotivoInaptidao(motivo))
+				.map(motvs -> motvs.stream().map(processoRepository::findOneMotivoInaptidao)
 						.collect(Collectors.toSet()))
 				.orElse(new HashSet<>(0));
 		
@@ -224,6 +246,9 @@ public class AutuacaoApplicationService {
 		processoRepository.save(processoRecursal);
 	}
     
+    /**
+     * @param command
+     */
     @Command(description = "Análise da Repercussão Geral")
     public void handle(AnalisarRepercussaoGeralCommand command) {
 		ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
@@ -237,6 +262,9 @@ public class AutuacaoApplicationService {
         processoRepository.save(processo);
     }
     
+    /**
+     * @param command
+     */
     @Command(description = "Revisão da Repercussão Geral")
     public void handle(RevisarRepercussaoGeralCommand command) {
     	ProcessoRecursal processo = (ProcessoRecursal) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
@@ -250,6 +278,9 @@ public class AutuacaoApplicationService {
         processoRepository.save(processo);
     }
     
+    /**
+     * @param command
+     */
     @Command(description = "Enviar um Processo Recursal")
 	public void handle(EnviarProcessoRecursalCommand command){
     	ProcessoId processoId = processoRepository.nextProcessoId();

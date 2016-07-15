@@ -13,9 +13,13 @@ public class CadastrarParteCommand {
 	private Long pessoa;
 	
 	public CadastrarParteCommand() {
-		
+		// Construtor default
 	}
 	
+	/**
+	 * @param apresentacao
+	 * @param pessoa
+	 */
 	public CadastrarParteCommand(String apresentacao, Long pessoa) {
 		this.apresentacao = apresentacao;
 		this.pessoa = pessoa;

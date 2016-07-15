@@ -98,6 +98,14 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
 
+    /**
+     * @param id
+     * @param protocoloId
+     * @param classe
+     * @param meioTramitacao
+     * @param sigilo
+     * @param status
+     */
     public Processo(ProcessoId id, ProtocoloId protocoloId, Classe classe, MeioTramitacao meioTramitacao, Sigilo sigilo, Status status) {
     	Validate.notNull(id, "Processo requerido.");
     	Validate.notNull(classe, "Classe requerida.");
@@ -114,6 +122,15 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
         this.status = status;
     }
     
+    /**
+     * @param id
+     * @param protocoloId
+     * @param classe
+     * @param preferencias
+     * @param meioTramitacao
+     * @param sigilo
+     * @param status
+     */
     public Processo(ProcessoId id, ProtocoloId protocoloId, Classe classe, Set<Preferencia> preferencias, MeioTramitacao meioTramitacao, Sigilo sigilo, Status status) {
     	this(id, protocoloId, classe, meioTramitacao, sigilo, status);
     	
@@ -123,13 +140,14 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
     	this.preferencias = Optional.ofNullable(preferencias).orElse(new HashSet<>(0));
     }
     
+    /**
+     * @return
+     */
     public abstract TipoProcesso tipo();
     
-    @Override
-    public ProcessoId identity() {
-        return processoId;
-    }
-    
+    /**
+     * @param partes
+     */
     public void atribuirPartes(Set<Parte> partes) {
 		Validate.notEmpty(partes, "Partes requeridas.");
 		
@@ -162,22 +180,37 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
     	this.status = status;
     }
 
+	/**
+	 * @return
+	 */
 	public Optional<ProtocoloId> protocoloId() {
 		return Optional.ofNullable(protocoloId);
 	}
 	
+	/**
+	 * @return
+	 */
 	public Status status() {
 		return status;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Optional<Classe> classe() {
 		return Optional.ofNullable(classe);
 	}
 	
+	/**
+	 * @return
+	 */
 	public Optional<Long> numero() {
 		return Optional.ofNullable(numero);
 	}
 	
+	/**
+	 * @return
+	 */
 	public String identificacao() {
 		return Optional.ofNullable(classe)
 				.map(cl -> Optional.ofNullable(numero)
@@ -187,26 +220,44 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
 				.orElse("");
 	}
 	
+	/**
+	 * @return
+	 */
 	public Set<Preferencia> preferencias() {
 		return Collections.unmodifiableSet(preferencias);
 	}
 	
+	/**
+	 * @return
+	 */
 	public MeioTramitacao meioTramitacao() {
 		return meioTramitacao;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Sigilo sigilo() {
 		return sigilo;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Set<Parte> partes() {
 		return Collections.unmodifiableSet(partes);
 	}
 	
+	/**
+	 * @return
+	 */
 	public Optional<Autuador> autuador() {
 		return Optional.ofNullable(autuador);
 	}
 	
+	/**
+	 * @return
+	 */
 	public Optional<Date> dataAutuacao() {
 		return Optional.ofNullable(dataAutuacao);
 	}
@@ -214,5 +265,10 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
 	public boolean isCriminalEleitoral() {
 		return preferencias.stream().anyMatch(preferencia -> preferencia.isCriminalEleitoral());
 	}
+	
+	@Override
+    public ProcessoId identity() {
+        return processoId;
+    }
 
 }

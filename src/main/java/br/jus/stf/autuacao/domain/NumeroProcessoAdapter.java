@@ -14,6 +14,10 @@ import br.jus.stf.core.shared.processo.Identificacao;
 @FunctionalInterface
 public interface NumeroProcessoAdapter {
 	
+	/**
+	 * @param classe
+	 * @return
+	 */
 	public Identificacao novoNumeroProcesso(String classe);
 	
 }

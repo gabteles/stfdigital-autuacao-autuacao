@@ -47,6 +47,11 @@ public class Parte extends ValueObjectSupport<Parte> {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param apresentacao
+	 * @param polo
+	 * @param pessoa
+	 */
 	public Parte(String apresentacao, Polo polo, PessoaId pessoa) {
 		Validate.notBlank(apresentacao, "Apresentação requerida.");
 		Validate.notNull(polo, "Polo requerido.");
@@ -56,18 +61,30 @@ public class Parte extends ValueObjectSupport<Parte> {
 		this.pessoa = pessoa;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Long toLong() {
 		return id;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String apresentacao() {
 		return apresentacao;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Polo polo() {
 		return polo;
 	}
 	
+	/**
+	 * @return
+	 */
 	public PessoaId pessoa() {
 		return pessoa;
 	}

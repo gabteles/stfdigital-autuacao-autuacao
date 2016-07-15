@@ -54,25 +54,39 @@ public class ProcessoRestResource {
     @Autowired
     private PreferenciaDtoAssembler preferenciaDtoAssembler;
     
+	/**
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
-    public ProcessoDto consultarProcessoOriginario(@PathVariable("id") Long id){
+    public ProcessoDto consultarProcesso(@PathVariable("id") Long id){
 		
 		return Optional.ofNullable(processoRepository.findOne(new ProcessoId(id)))
 				.map(processoDtoAssembler::toDto)
 				.orElseThrow(() -> new IllegalArgumentException("Processo não encontrado"));
     }
 	
+	/**
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/{id}/partes", method = RequestMethod.GET)
 	public List<ParteDto> listarPartesProcessoOriginario(@PathVariable("id") Long id){
 		return processoRepository.consultarPartes(id).stream().map(parteDtoAssembler::toDto).collect(Collectors.toList());
 	}
     
+	/**
+	 * @return
+	 */
 	@RequestMapping(value="/classes", method = RequestMethod.GET)
     public List<ClasseDto> listarClasses(){
     	return classeRepository.findAll().stream()
     			.map(classeDtoAssembler::toDto).collect(Collectors.toList());
     }
 	
+	/**
+	 * @return
+	 */
 	@RequestMapping(value="/preferencias", method = RequestMethod.GET)
     public List<PreferenciaDto> listarPreferencias(){
     	return preferenciaRepository.findAll().stream()

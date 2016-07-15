@@ -9,6 +9,7 @@ import java.rmi.RemoteException;
  * @author lucas.rodrigues
  *
  */
+@FunctionalInterface
 public interface IdentificadorResource extends Remote {
 
 	/**

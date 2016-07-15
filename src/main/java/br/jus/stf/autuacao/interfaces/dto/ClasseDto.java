@@ -9,6 +9,10 @@ public class ClasseDto {
 	private String id;
 	private String nome;
 	
+	/**
+	 * @param id
+	 * @param nome
+	 */
 	public ClasseDto(String id, String nome) {
 		this.id = id;
 		this.nome = nome;

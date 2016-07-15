@@ -27,13 +27,16 @@ public class TeseRepositoryImpl  extends SimpleJpaRepository<Tese, TeseId> imple
 	
 	private EntityManager entityManager;
 	
+	/**
+	 * @param entityManager
+	 */
 	@Autowired
 	public TeseRepositoryImpl(EntityManager entityManager) {
 		super(Tese.class, entityManager);
 		this.entityManager = entityManager;
 	}
 	
-	/** Assunto **/
+	// Assunto
 	@Override
 	public Assunto findOneAssunto(AssuntoId assuntoId) {
 		TypedQuery<Assunto> query = entityManager.createQuery("FROM Assunto assu WHERE assu.codigo = :codigo", Assunto.class);
@@ -50,7 +53,7 @@ public class TeseRepositoryImpl  extends SimpleJpaRepository<Tese, TeseId> imple
 		return query.getResultList();
 	}
 	
-	/** Tese **/
+	// Tese
 	@Override
 	public List<Tese> findTeseByTipo(TipoTese tipo, Long numero){
 		TypedQuery<Tese> query = entityManager.createQuery("FROM Tese tese WHERE tese.tipo = :tipo AND tese.numero = :numero", Tese.class);

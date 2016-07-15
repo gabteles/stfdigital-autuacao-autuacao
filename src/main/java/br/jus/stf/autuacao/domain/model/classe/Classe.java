@@ -54,6 +54,12 @@ public class Classe extends EntitySupport<Classe, ClasseId> {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param sigla
+	 * @param nome
+	 * @param tipo
+	 * @param preferencias
+	 */
 	public Classe(ClasseId sigla, String nome, TipoProcesso tipo, Set<Preferencia> preferencias) {
 		Validate.notNull(sigla, "Sigla requerida.");
 		Validate.notBlank(nome, "Nome requerido.");
@@ -65,14 +71,23 @@ public class Classe extends EntitySupport<Classe, ClasseId> {
 		this.preferencias = Optional.ofNullable(preferencias).orElse(new HashSet<>(0));
 	}
 	
+	/**
+	 * @return
+	 */
 	public String nome() {
 		return nome;
 	}
 	
+	/**
+	 * @return
+	 */
 	public TipoProcesso tipo() {
 		return tipo;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Set<Preferencia> preferencias() {
 		return Collections.unmodifiableSet(preferencias);
 	}

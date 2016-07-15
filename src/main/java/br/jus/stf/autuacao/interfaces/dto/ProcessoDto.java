@@ -26,11 +26,17 @@ public abstract class ProcessoDto {
 	private List<ParteDto> partes;
 	private List<PreferenciaDto> preferencias;
 	
-	ProcessoDto() { }
-	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
 	private Date dataAutuacao;
 	
+	public ProcessoDto() {
+		// Construtor default
+	}
+	
+	/**
+	 * @param processoId
+	 * @param remessaDto
+	 */
 	public ProcessoDto(Long processoId, RemessaDto remessaDto) {
 		this.processoId = processoId;
 		this.remessa = remessaDto;

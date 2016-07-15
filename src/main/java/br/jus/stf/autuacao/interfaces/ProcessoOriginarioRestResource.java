@@ -25,6 +25,10 @@ public class ProcessoOriginarioRestResource {
     @Autowired
     private AutuacaoApplicationService autuarProcessoCommandHandler;
 
+    /**
+     * @param command
+     * @param binding
+     */
     @RequestMapping(value = "/autuacao", method = RequestMethod.POST)
     public void autuarProcessoOriginario(@RequestBody @Valid AutuarOriginarioCommand command, BindingResult binding) {
         if (binding.hasErrors()) {

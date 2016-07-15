@@ -18,6 +18,9 @@ import br.jus.stf.autuacao.domain.model.procedenciageografica.PaisRepository;
 @Repository
 public class PaisRepositoryImpl extends SimpleJpaRepository<Pais, Long> implements PaisRepository {
 
+	/**
+	 * @param entityManager
+	 */
 	@Autowired
     public PaisRepositoryImpl(EntityManager entityManager) {
         super(Pais.class, entityManager);

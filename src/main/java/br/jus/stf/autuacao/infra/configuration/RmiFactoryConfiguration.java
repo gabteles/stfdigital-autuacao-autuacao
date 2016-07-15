@@ -13,8 +13,11 @@ import br.jus.stf.core.identificadores.interfaces.IdentificadorResource;
 @Configuration
 public class RmiFactoryConfiguration {
 
-	private static String IDENTIFICADOR_SERVICE_URL = "rmi://services/IdentificadorResource";
+	private static final String IDENTIFICADOR_SERVICE_URL = "rmi://services/IdentificadorResource";
 	
+	/**
+	 * @return
+	 */
 	@Bean
 	public RmiProxyFactoryBean numeroProcessoResource() {
 		RmiProxyFactoryBean factory = new RmiProxyFactoryBean();

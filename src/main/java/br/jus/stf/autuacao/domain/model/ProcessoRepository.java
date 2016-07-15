@@ -12,22 +12,51 @@ import br.jus.stf.core.shared.processo.ProcessoId;
  */
 public interface ProcessoRepository {
 
-    /** Processo **/
+    // Processo
+	/**
+	 * @param processo
+	 * @return
+	 */
 	<P extends Processo> P save(P processo);
     
+    /**
+     * @param id
+     * @return
+     */
     Processo findOne(ProcessoId id);
     
+    /**
+     * @return
+     */
     ProcessoId nextProcessoId();
     
-    /** Motivo de inaptidão **/
+    // Motivo de inaptidão
+    /**
+     * @param id
+     * @return
+     */
     MotivoInaptidao findOneMotivoInaptidao(Long id);
     
+    /**
+     * @return
+     */
     List<MotivoInaptidao> findAllMotivoInaptidao();
     
+    /**
+     * @param motivoInaptidao
+     * @return
+     */
     <M extends MotivoInaptidao> M saveMotivoInaptidao(M motivoInaptidao);
     
+    /**
+     * @param motivoInaptidao
+     */
     void deleteMotivoInaptidao(MotivoInaptidao motivoInaptidao);
 
+    /**
+     * @param processoId
+     * @return
+     */
     List<Parte> consultarPartes(Long processoId);
 
 }
