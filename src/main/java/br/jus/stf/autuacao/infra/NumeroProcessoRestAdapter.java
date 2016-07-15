@@ -1,10 +1,13 @@
 package br.jus.stf.autuacao.infra;
 
+import java.rmi.RemoteException;
+
+import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.autuacao.domain.NumeroProcessoAdapter;
-import br.jus.stf.autuacao.infra.client.NumeroProcessoRestClient;
+import br.jus.stf.core.identificadores.interfaces.IdentificadorResource;
 import br.jus.stf.core.shared.processo.Identificacao;
 
 /**
@@ -17,14 +20,19 @@ import br.jus.stf.core.shared.processo.Identificacao;
 public class NumeroProcessoRestAdapter implements NumeroProcessoAdapter {
 	
 	@Autowired
-    private NumeroProcessoRestClient numeroProcessoRestClient;
+    private IdentificadorResource identificadorResource;
     
 	@Override
 	public Identificacao novoNumeroProcesso(String classe) {
+		Validate.notBlank(classe, "A classe não pode ser nula ou vazia.");
 		
-		IdentificacaoDto identificacao = numeroProcessoRestClient.identificador(classe);
-    	
-		return new Identificacao(identificacao.getCategoria(), identificacao.getNumero());
+		Long numero = null;
+		try {
+			numero = identificadorResource.numero(classe);
+		} catch (RemoteException e) {
+			throw new RuntimeException("Não foi possível gerar um número para o processo.", e);
+		}
+		return new Identificacao(classe, numero);
 	}
 	
 }
