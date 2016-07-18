@@ -79,6 +79,10 @@ public class ProcessoRecursalRestResource {
     @Autowired
     private TeseDtoAssembler teseDtoAssembler;
     
+	/**
+	 * @param command
+	 * @param binding
+	 */
 	@RequestMapping(value = "/envio", method = RequestMethod.POST)
     public void enviarRecursal(@RequestBody @Valid EnviarProcessoRecursalCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
@@ -88,6 +92,10 @@ public class ProcessoRecursalRestResource {
         autuarProcessoCommandHandler.handle(command);
     }
     
+    /**
+     * @param command
+     * @param binding
+     */
     @RequestMapping(value = "/autuacao", method = RequestMethod.POST)
     public void autuarRecursal(@RequestBody @Valid AutuarRecursalCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
@@ -97,6 +105,10 @@ public class ProcessoRecursalRestResource {
         autuarProcessoCommandHandler.handle(command);
     }
     
+    /**
+     * @param command
+     * @param binding
+     */
     @RequestMapping(value = "/autuacao-criminal-eleitoral", method = RequestMethod.POST)
     public void autuarRecursalCriminalEleitoral(@RequestBody @Valid AutuarRecursalCriminalEleitoralCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
@@ -106,6 +118,10 @@ public class ProcessoRecursalRestResource {
         autuarProcessoCommandHandler.handle(command);
     }
     
+    /**
+     * @param command
+     * @param binding
+     */
     @RequestMapping(value = "/analise-pressupostos-formais", method = RequestMethod.POST)
     public void analisarPressupostosFormais(@RequestBody @Valid AnalisarPressupostosFormaisCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
@@ -115,6 +131,10 @@ public class ProcessoRecursalRestResource {
         autuarProcessoCommandHandler.handle(command);
     }
     
+    /**
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/{id}/analise-pressupostos-formais", method = RequestMethod.GET)
     public AnalisePressupostosFormaisDto analisePressupostosFormais(@PathVariable("id") Long id) {
     	
@@ -124,6 +144,10 @@ public class ProcessoRecursalRestResource {
 				.orElseThrow(() -> new IllegalArgumentException("Processo inválido."));
     }
     
+    /**
+     * @param command
+     * @param binding
+     */
     @RequestMapping(value = "/revisao-pressupostos-formais", method = RequestMethod.POST)
     public void revisarPressupostosFormais(@RequestBody @Valid RevisarPressupostosFormaisCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
@@ -133,6 +157,10 @@ public class ProcessoRecursalRestResource {
         autuarProcessoCommandHandler.handle(command);
     }
     
+    /**
+     * @param command
+     * @param binding
+     */
     @RequestMapping(value = "/analise-repercussao-geral", method = RequestMethod.POST)
     public void analisarRepercussaoGeral(@RequestBody @Valid AnalisarRepercussaoGeralCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
@@ -142,6 +170,10 @@ public class ProcessoRecursalRestResource {
         autuarProcessoCommandHandler.handle(command);
     }
     
+    /**
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/{id}/analise-repercussao-geral", method = RequestMethod.GET)
     public AnaliseRepercussaoGeralDto analiseRepercussaoGeral(@PathVariable("id") Long id) {
     	
@@ -151,6 +183,10 @@ public class ProcessoRecursalRestResource {
 				.orElseThrow(() -> new IllegalArgumentException("Processo inválido."));
     }
     
+    /**
+     * @param command
+     * @param binding
+     */
     @RequestMapping(value = "/revisao-repercussao-geral", method = RequestMethod.POST)
     public void revisarRepercussaoGeral(@RequestBody @Valid RevisarRepercussaoGeralCommand command, BindingResult binding) {
         if (binding.hasErrors()) {
@@ -160,32 +196,47 @@ public class ProcessoRecursalRestResource {
         autuarProcessoCommandHandler.handle(command);
     }
     
+	/**
+	 * @return
+	 */
 	@RequestMapping(value="/motivos-inaptidao", method = RequestMethod.GET)
     public List<MotivoInaptidaoDto> listarMotivosInaptidao(){
     	return processoRepository.findAllMotivoInaptidao().stream()
-    			.map(motivo -> motivoInaptidaoDtoAssembler.toDto(motivo)).collect(Collectors.toList());
+    			.map(motivoInaptidaoDtoAssembler::toDto).collect(Collectors.toList());
     }
 	
+	/**
+	 * @return
+	 */
 	@RequestMapping(value="/tipos-tese", method = RequestMethod.GET)
     public List<TipoTeseDto> listarTiposTese(){
 		return Arrays.asList(TipoTese.values()).stream().map(tipo -> new TipoTeseDto(tipo.name(), tipo.descricao()))
 				.collect(Collectors.toList());
     }
 	
+	/**
+	 * @param tipo
+	 * @param numero
+	 * @return
+	 */
 	@RequestMapping(value="/teses", method = RequestMethod.GET)
     public List<TeseDto> listarTeses(@RequestParam("tipo")String tipo, @RequestParam("numero") Long numero){
 		TipoTese tipoTese = TipoTese.valueOf(tipo.toUpperCase());
     	return teseRepository.findTeseByTipo(tipoTese, numero).stream()
-    			.map(tese -> teseDtoAssembler.toDto(tese)).collect(Collectors.toList());
+    			.map(teseDtoAssembler::toDto).collect(Collectors.toList());
     }
 	
+	/**
+	 * @param termo
+	 * @return
+	 */
 	@RequestMapping(value="/assuntos", method = RequestMethod.GET)
 	public List<AssuntoDto> listarAssuntos(@RequestParam("termo")String termo){
-		List<AssuntoDto> assuntosDto = new ArrayList<AssuntoDto>();
+		List<AssuntoDto> assuntosDto = new ArrayList<>(0);
 		
 		if(NumberUtils.isNumber(termo)){
 			Optional.ofNullable(teseRepository.findOneAssunto(new AssuntoId(termo)))
-				.ifPresent(assunto -> assuntosDto.add((assuntoDtoAssembler.toDto(assunto))));
+				.ifPresent(assunto -> assuntosDto.add(assuntoDtoAssembler.toDto(assunto)));
 		} else {
 			assuntosDto.addAll(
 				assuntoDtoAssembler.toDto(teseRepository.findAssuntoByDescricao(termo.toUpperCase())));

@@ -4,9 +4,6 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import com.wordnik.swagger.annotations.ApiModel;
 import com.wordnik.swagger.annotations.ApiModelProperty;
 
@@ -23,23 +20,21 @@ public class AutuarOriginarioCommand {
     @ApiModelProperty(value = "O identificador do processo originário criado ao iniciar o fluxo de autuação.", required=true)
     private Long processoId;
     
-    @NotBlank
-	@ApiModelProperty(value = "O identificador da classe processual definitiva, selecionada pelo autuador", required=true)
+    @ApiModelProperty(value = "O identificador da classe processual definitiva, selecionada pelo autuador.")
     private String classeId;
     
-    @NotEmpty
-	@ApiModelProperty(value = "Lista com as partes do polo ativo", required=true)
+    @ApiModelProperty(value = "Lista com as partes do polo ativo.")
 	private List<CadastrarParteCommand> poloAtivo;
 	
-	@NotEmpty
-	@ApiModelProperty(value = "Lista com as partes do polo passivo", required=true)
+	@ApiModelProperty(value = "Lista com as partes do polo passivo.")
 	private List<CadastrarParteCommand> poloPassivo;
 	
-	@ApiModelProperty(value = "Motivo da invalidação do processo na autuação", required=true)
+	@ApiModelProperty(value = "Motivo da invalidação do processo na autuação.")
 	private String motivo;
 	
-	@ApiModelProperty(value = "Indica se a autuacao do processo é válida ou inválida", required=true)
-	private boolean valida;
+	@NotNull
+	@ApiModelProperty(value = "Indica se a autuacao do processo é válida ou inválida.", required=true)
+	private Boolean valida;
 	
     
 	public Long getProcessoId() {
@@ -62,7 +57,7 @@ public class AutuarOriginarioCommand {
 		return motivo;
 	}
 
-	public boolean isValida() {
+	public Boolean isValida() {
 		return valida;
 	}
 	

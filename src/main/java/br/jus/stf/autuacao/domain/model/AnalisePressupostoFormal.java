@@ -38,10 +38,15 @@ public class AnalisePressupostoFormal extends ValueObjectSupport<AnalisePressupo
 		inverseJoinColumns = @JoinColumn(name = "COD_MOTIVO_INAPTIDAO", nullable = false))
 	private Set<MotivoInaptidao> motivacaoInaptidao = new HashSet<>(0);
 	
-	AnalisePressupostoFormal() {
+	public AnalisePressupostoFormal() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param processoApto
+	 * @param observacao
+	 * @param motivacaoInaptidao
+	 */
 	public AnalisePressupostoFormal(boolean processoApto, String observacao, Set<MotivoInaptidao> motivacaoInaptidao) {
 		Validate.isTrue(processoApto || (motivacaoInaptidao != null && !motivacaoInaptidao.isEmpty()), "Motivação de inaptidão requedida.");
 		
@@ -50,14 +55,23 @@ public class AnalisePressupostoFormal extends ValueObjectSupport<AnalisePressupo
 		this.motivacaoInaptidao = motivacaoInaptidao;
 	}
 	
+	/**
+	 * @return
+	 */
 	public boolean processoApto() {
 		return Boolean.TRUE.equals(processoApto);
 	}
 	
+	/**
+	 * @return
+	 */
 	public String observacao() {
 		return observacao;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Set<MotivoInaptidao> motivosInaptidao(){
 		return Collections.unmodifiableSet(motivacaoInaptidao);
 	}

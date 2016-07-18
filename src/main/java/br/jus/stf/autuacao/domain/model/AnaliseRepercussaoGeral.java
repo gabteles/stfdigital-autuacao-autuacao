@@ -39,6 +39,10 @@ public class AnaliseRepercussaoGeral extends ValueObjectSupport<AnaliseRepercuss
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param observacao
+	 * @param teses
+	 */
 	public AnaliseRepercussaoGeral(String observacao, Set<Tese> teses) {
 		Validate.notEmpty(teses, "Teses requeridas.");
 		
@@ -46,14 +50,23 @@ public class AnaliseRepercussaoGeral extends ValueObjectSupport<AnaliseRepercuss
 		this.teses.addAll(teses);
 	}
 	
+	/**
+	 * @return
+	 */
 	public String observacao() {
 		return observacao;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Set<Tese> teses() {
 		return Collections.unmodifiableSet(teses);
 	}
 	
+	/**
+	 * @return
+	 */
 	public boolean temTeseRepercussaoGeral() {
 		return teses.stream().anyMatch(tese -> TipoTese.REPERCUSSAO_GERAL.equals(tese.tipo()));
 	}

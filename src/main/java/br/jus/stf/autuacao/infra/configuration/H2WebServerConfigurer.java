@@ -16,6 +16,10 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class H2WebServerConfigurer {
 	
+	/**
+	 * @return
+	 * @throws SQLException
+	 */
 	@Profile("development")
 	@Bean(initMethod = "start", destroyMethod = "stop")
 	public Server h2WebServer() throws SQLException {

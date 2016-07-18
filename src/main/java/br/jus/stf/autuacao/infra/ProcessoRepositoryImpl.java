@@ -25,17 +25,20 @@ import br.jus.stf.core.shared.processo.ProcessoId;
  * @since 12.02.2016
  */
 @Repository
-public class ProcessoOriginarioRepositoryImpl extends SimpleJpaRepository<Processo, ProcessoId> implements ProcessoRepository {
+public class ProcessoRepositoryImpl extends SimpleJpaRepository<Processo, ProcessoId> implements ProcessoRepository {
 
     private EntityManager entityManager;
 
+	/**
+	 * @param entityManager
+	 */
 	@Autowired
-    public ProcessoOriginarioRepositoryImpl(EntityManager entityManager) {
+    public ProcessoRepositoryImpl(EntityManager entityManager) {
         super(Processo.class, entityManager);
         this.entityManager = entityManager;
     }
     
-	/** Processo **/
+	// Processo
     @Override
     public ProcessoId nextProcessoId() {
     	Query q = entityManager.createNativeQuery("SELECT autuacao.seq_processo.NEXTVAL FROM DUAL");
@@ -46,14 +49,14 @@ public class ProcessoOriginarioRepositoryImpl extends SimpleJpaRepository<Proces
 	@Override
 	public List<Parte> consultarPartes(Long processoId) {
 		TypedQuery<Parte> query = entityManager
-				.createQuery("SELECT proc.partes FROM Processo proc WHERE processoId.id = :id", Parte.class);
+				.createQuery("SELECT part FROM Processo proc JOIN proc.partes part WHERE proc.processoId.id = :id", Parte.class);
 
 		query.setParameter("id", processoId);
 
 		return query.getResultList();
 	}
 
-    /** Motido de inaptidão **/
+    // Motido de inaptidão
 	@Override
 	public MotivoInaptidao findOneMotivoInaptidao(Long id) {
 		TypedQuery<MotivoInaptidao> query = entityManager.createQuery("FROM MotivoInaptidao motivo WHERE motivo.codigo = :id", MotivoInaptidao.class);

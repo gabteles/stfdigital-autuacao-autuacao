@@ -24,6 +24,9 @@ public class UnidadeFederacaoRepositoryImpl extends SimpleJpaRepository<UnidadeF
 
 	private EntityManager entityManager;
 	
+	/**
+	 * @param entityManager
+	 */
 	@Autowired
     public UnidadeFederacaoRepositoryImpl(EntityManager entityManager) {
         super(UnidadeFederacao.class, entityManager);

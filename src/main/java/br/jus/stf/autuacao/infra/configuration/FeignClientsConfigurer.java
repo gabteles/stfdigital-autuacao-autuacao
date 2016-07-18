@@ -19,9 +19,13 @@ import feign.RequestInterceptor;
 @Configuration
 public class FeignClientsConfigurer {
 
-	/*@Bean
+	/**
+	 * @param oAuth2ClientContext
+	 * @return
+	 */
+	@Bean
 	public RequestInterceptor feignRequestInterceptor(OAuth2ClientContext oAuth2ClientContext) {
 		return new OAuth2FeignRequestInterceptor(oAuth2ClientContext, new ClientCredentialsResourceDetails());
-	}*/
+	}
 
 }

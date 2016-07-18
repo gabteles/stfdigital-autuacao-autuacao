@@ -37,21 +37,49 @@ public class ProcessoOriginario extends Processo {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
 
+	/**
+	 * @param id
+	 * @param protocoloId
+	 * @param classe
+	 * @param meioTramitacao
+	 * @param sigilo
+	 * @param status
+	 */
 	public ProcessoOriginario(ProcessoId id, ProtocoloId protocoloId, Classe classe, MeioTramitacao meioTramitacao,
 			Sigilo sigilo, Status status) {
     	super(id, protocoloId, classe, meioTramitacao, sigilo, status);
     }
     
+	/**
+	 * @param id
+	 * @param protocoloId
+	 * @param classe
+	 * @param preferencias
+	 * @param meioTramitacao
+	 * @param sigilo
+	 * @param status
+	 */
 	public ProcessoOriginario(ProcessoId id, ProtocoloId protocoloId, Classe classe, Set<Preferencia> preferencias,
 			MeioTramitacao meioTramitacao, Sigilo sigilo, Status status) {
     	super(id, protocoloId, classe, preferencias, meioTramitacao, sigilo, status);
     }
     
+    /**
+     * @param classe
+     * @param numero
+     * @param partes
+     * @param autuador
+     * @param status
+     */
     public void autuar(Classe classe, Long numero, Set<Parte> partes, Autuador autuador, Status status) {
 		super.identificar(classe, numero);
 		super.autuar(partes, autuador, status);
 	}
     
+    /**
+     * @param motivo
+     * @param status
+     */
     public void rejeitar(String motivo, Status status) {
     	Validate.notNull(status, "Status requerido.");
     	
@@ -59,6 +87,9 @@ public class ProcessoOriginario extends Processo {
     	super.alterarStatus(status);
     }
     
+    /**
+     * @return
+     */
     public String motivoRejeicao() {
     	return rejeicao != null ? rejeicao.motivo() : "";
     }
