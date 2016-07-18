@@ -1,10 +1,10 @@
-import {AutuacaoController} from "autuacao/autuacao/autuacao.controller";
-import {AutuacaoOriginarioService, AutuacaoOriginarioCommand, Processo} from "autuacao/autuacao/autuacao.originario.service";
-import {Classe, Preferencia} from "autuacao/services/model";
+import {AutuacaoOriginarioController} from "autuacao/originario/autuacao-originario.controller";
+import {AutuacaoOriginarioService, AutuacaoOriginarioCommand} from "autuacao/originario/autuacao-originario.service";
+import {Classe, Preferencia, Processo} from "autuacao/shared/autuacao.model";
 
 describe('Teste do controlador autuacao.controller', () => {
 	
-	let controller : AutuacaoController;
+	let controller : AutuacaoOriginarioController;
 	let $q : ng.IQService;
 	let $rootScope : ng.IRootScopeService;
 	let mockState;
@@ -28,7 +28,7 @@ describe('Teste do controlador autuacao.controller', () => {
 		};
 		let protocoloId = 123;
 		
-	    controller = new AutuacaoController(mockState, mockAutuacaoOriginarioService, [new Classe('HC', 'Habeas Corpus', [new Preferencia(1,'Criminal')])], mockMessagesService);
+	    controller = new AutuacaoOriginarioController(mockState, mockAutuacaoOriginarioService, [new Classe('HC', 'Habeas Corpus', [new Preferencia(1,'Criminal')])], mockMessagesService);
 	});
 	
 	
@@ -37,7 +37,7 @@ describe('Teste do controlador autuacao.controller', () => {
 		controller.partePoloAtivo = 'MARIA';
 		controller.adicionarPartePoloAtivo();
 		controller.partePoloAtivo = 'MARIA';
-		expect(controller.cmdAutuar.poloAtivo.length).toEqual(2);
+		expect(controller.cmdAutuar.poloAtivo.length).toEqual(1);
 	});
 	
 	

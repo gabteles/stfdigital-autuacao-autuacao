@@ -10,12 +10,12 @@ export class RevisaoPressupostosFormaisController {
     public cmd: RevisarPressupostosFormaisCommand = new RevisarPressupostosFormaisCommand();
     
     /** @ngInject **/
-    static $inject = ["$state", "app.autuacao.recursal.RevisaoPressupostosFormaisService", "analise", "motivosInaptidao"];
+    static $inject = ['$state', 'app.autuacao.recursal.RevisaoPressupostosFormaisService', 'analise', 'motivosInaptidao', 'messagesService'];
     
     constructor(private $state: IStateService, 
     		private revisaoPressupostosFormaisService: RevisaoPressupostosFormaisService,
     		private analise: AnalisePressupostosFormais,
-    		public motivosInaptidao: Array<MotivoInaptidao>) { 
+    		public motivosInaptidao: Array<MotivoInaptidao>, private messagesService: app.support.messaging.MessagesService) { 
     	
     	this.cmd.processoId = analise.processoId;
     	analise.motivosInaptidao.forEach(motivoInaptidao => {
@@ -29,10 +29,10 @@ export class RevisaoPressupostosFormaisController {
 	 * Realiza a revisão da análise de pressupostos formais realizada. 
 	 */
     public revisarAnalisePressupostos(): void {
-		
-	    this.revisaoPressupostosFormaisService.revisar(this.cmd).then(() => { 
-				this.$state.go("app.tarefas.minhas-tarefas");
-	    });
+	    this.revisaoPressupostosFormaisService.revisar(this.cmd).then(() => {
+            this.$state.go('app.tarefas.minhas-tarefas');
+            this.messagesService.success('Revisão registrada com sucesso!');
+    });
 	};
 }
 

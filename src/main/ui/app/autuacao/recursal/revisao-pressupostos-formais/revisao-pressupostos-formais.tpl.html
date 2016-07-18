@@ -1,6 +1,6 @@
 <div id="forms" class="page-layout simple fullwidth doc-page" layout="column">
     <div class="content" layout="column">
-        <div class="md-title mt-10">Análise</div>
+        <div class="md-title mt-10">Revisão de pressupostos formais</div>
         <div class="pb-16">Informe se a petição será apto ou inapta</div>
         <div layout="row">
             <div class="form-wrapper md-whiteframe-1dp" flex="100">
@@ -28,7 +28,7 @@
         				</md-input-container>
                     </div>
                     <md-button type="button" class="md-raised md-accent" id="btnRevisarAnalisePressupostos" aria-label="Submit" 
-                    	ng-click ="vm.revisarAnalisePressupostos()" >
+                    	ng-click ="revisao.revisarAnalisePressupostos()" command="revisao.cmd">
                         	Revisar Análise de Pressupostos
                     </md-button>
                 </form>

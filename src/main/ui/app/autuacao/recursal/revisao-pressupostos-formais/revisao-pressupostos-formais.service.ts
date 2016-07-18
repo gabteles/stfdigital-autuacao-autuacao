@@ -2,6 +2,7 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 import Properties = app.support.constants.Properties;
+import cmd = app.support.command;
 import {AnalisePressupostosFormais, RevisarPressupostosFormaisCommand, API_AUTUACAO_RECURSAL} from '../shared/recursal.model';
 import autuacaorecursal from '../shared/recursal.module';
 
@@ -28,6 +29,15 @@ export class RevisaoPressupostosFormaisService {
     }
         
 }
+
+class ValidadorRevisao implements cmd.CommandValidator {
+    
+    public isValid(command: RevisarPressupostosFormaisCommand): boolean {
+        if (!command.processoApto && command.motivosInaptidao.length == 0) return false;
+        return true;
+    }
+    
+} 
 
 autuacaorecursal.service('app.autuacao.recursal.RevisaoPressupostosFormaisService', RevisaoPressupostosFormaisService);
 

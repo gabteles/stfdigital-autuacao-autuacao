@@ -33,17 +33,6 @@ export class AutuacaoRecursalSharedService {
 	}
     
     /**
-     * Retorna as classes processuais.
-     * @return Array de classes.
-     */
-    public listarClasses() : IPromise<Array<Classe>> {
-        return this.$http.get(this.api + "/classes")
-            .then((response: IHttpPromiseCallbackArg<Array<Classe>>) => { 
-                    return response.data; 
-            });
-    }
-    
-    /**
      * Retorna os tipos de tese.
      * @return Array de tipo de teses.
      */

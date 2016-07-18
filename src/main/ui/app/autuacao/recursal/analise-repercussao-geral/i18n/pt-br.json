@@ -1,8 +1,7 @@
 {
-	"REMESSA": {
-		"DEVOLUCAO-ASSINATURA": {
-			"TITULO": "Assinatura do Ofício de Devolução",
-			"DESCRICAO": "Selecione as remessas cujos ofícios de devolução serão assinados"
+	"AUTUACAO-RECURSAL": {
+		"ANALISE-REPERCUSSAO-GERAL": {
+			"TITULO": "Análise de repercussão geral"
 		}
 	}
 }

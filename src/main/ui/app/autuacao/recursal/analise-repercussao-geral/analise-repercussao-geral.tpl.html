@@ -3,7 +3,7 @@
     <!-- CONTENT -->
     <div class="content" layout="column">
 
-        <div class="md-title mt-10">Repercussão Geral</div>
+        <div class="md-title mt-10" translate="AUTUACAO-RECURSAL.ANALISE-REPERCUSSAO-GERAL.TITULO">Análise de Repercussão Geral</div>
         <div class="pb-16">Informe a tese, assuntos e observação da análise</div>
 
         <div layout="row">
@@ -11,7 +11,7 @@
             <!-- BASIC FORM -->
             <div class="form-wrapper md-whiteframe-1dp" flex="100">
                 <form name="basicForm">
-                    <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
+                    <div layout="column" layout-gt-xs="row">
 	                    <md-input-container flex>
 	                        <label>Classe Processual</label>
 	                        <input ng-model="analise.classeProcesso" id="classeProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
@@ -36,7 +36,7 @@
 			                            <label>Classificação</label>
 			                            <md-select ng-model="analise.tipoTese" id="tipoTese">
 			                                <md-option></md-option>
-			                                <md-option ng-repeat="tipo in analise.tiposTese" value="{{tipo.id}}">
+			                                <md-option ng-repeat="tipo in analise.tiposTese track by tipo.id" value="{{tipo.id}}">
 			                                    {{tipo.nome}}
 			                                </md-option>
 			                            </md-select>
@@ -58,7 +58,7 @@
 										<tbody>
 											<tr ng-repeat="tese in analise.teses">
 												<td>{{tese.descricao}}</td>
-												<td><span><a href="#" ng-click="analise.removerTese(tese)">Remover</a></span></td>
+												<td><span><a href="#" ng-click="analise.removerTese($index)">Remover</a></span></td>
 											</tr>
 										</tbody>
 									</table>

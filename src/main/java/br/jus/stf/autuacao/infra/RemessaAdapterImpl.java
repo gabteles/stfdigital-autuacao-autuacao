@@ -34,7 +34,7 @@ public class RemessaAdapterImpl implements RemessaAdapter {
 				.findAny()
 				.map(instance -> {
 					URI servicesUri = instance.getUri();
-					URI uri = UriComponentsBuilder.fromUri(servicesUri).path("/api/remessas/").queryParam("protocoloId", protocoloId.toLong()).build().toUri();
+					URI uri = UriComponentsBuilder.fromUri(servicesUri).path("/api/remessas/" + protocoloId.toLong()).build().toUri();
 					return restTemplate.getForObject(uri, RemessaDto.class); 
 				}).orElse(new RemessaDto());
 	}

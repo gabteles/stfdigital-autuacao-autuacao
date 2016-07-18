@@ -13,7 +13,7 @@ import br.jus.stf.autuacao.infra.RemessaDto;
  *
  */
 public abstract class ProcessoDto {
-	
+
 	private Long processoId;
 	private RemessaDto remessa;
 	private String status;
@@ -25,19 +25,24 @@ public abstract class ProcessoDto {
 	private String sigilo;
 	private List<ParteDto> partes;
 	private List<PreferenciaDto> preferencias;
-	
-	ProcessoDto() { }
-	
+
+	ProcessoDto() {
+	}
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
 	private Date dataAutuacao;
-	
+
 	public ProcessoDto(Long processoId, RemessaDto remessaDto) {
 		this.processoId = processoId;
 		this.remessa = remessaDto;
 	}
-	
+
 	public Long getProcessoId() {
 		return processoId;
+	}
+
+	public void setProcessoId(Long processoId) {
+		this.processoId = processoId;
 	}
 
 	public RemessaDto getRemessa() {
@@ -111,7 +116,7 @@ public abstract class ProcessoDto {
 	public List<ParteDto> getPartes() {
 		return partes;
 	}
-	
+
 	public void setPartes(List<ParteDto> partes) {
 		this.partes = partes;
 	}

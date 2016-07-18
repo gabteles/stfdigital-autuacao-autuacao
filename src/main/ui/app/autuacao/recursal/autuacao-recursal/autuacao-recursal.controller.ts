@@ -1,5 +1,5 @@
 import IStateService = angular.ui.IStateService;
-import IStateParamService = angular.ui.IStateParamsService;
+import IStateParamsService = angular.ui.IStateParamsService;
 import IDialogService = angular.material.IDialogService;
 import {Parte} from "../../shared/autuacao.model";
 import {Tese, Assunto, ProcessoRecursal, AutuarProcessoRecursalCommand} from "../shared/recursal.model";
@@ -19,19 +19,20 @@ export class AutuacaoRecursalController {
     public processoId: number;
     public numeroProcesso: string;
     public teses: Array<Tese> = [];
-    public assuntos: Array<Assunto> = [];
     public partePoloAtivo: string;
     public partePoloPassivo: string;
     
     public cmdAutuar : AutuarProcessoRecursalCommand = new AutuarProcessoRecursalCommand();
     
     /** @ngInject **/
-    static $inject = ["$state", "messagesService", "app.autuacao.AutuacaoSharedService", "app.autuacao.recursal.AutuacaoRecursalService"];
+    static $inject = ['$state', '$stateParams', 'messagesService', 'app.autuacao.AutuacaoSharedService', 'app.autuacao.recursal.AutuacaoRecursalService'];
     
-    constructor(private $state: IStateService, private messagesService: app.support.messaging.MessagesService, private autuacaoService: AutuacaoSharedService,
+    constructor(private $state: IStateService, private $stateParams: IStateParamsService, private messagesService: app.support.messaging.MessagesService, private autuacaoService: AutuacaoSharedService,
     		private autuacaoRecursalService : AutuacaoRecursalService){
     	
-		this.assuntos.push(new Assunto('4291', 'Jurisdição e Competência', null));
+    	this.cmdAutuar.processoId = $stateParams['informationId'];
+    	
+/*		this.assuntos.push(new Assunto('4291', 'Jurisdição e Competência', null));
 		this.assuntos.push(new Assunto('10912', 'Medidas Assecuratórias', null));
 		this.teses.push(new Tese(170, 'Recurso extraordinário em que se discute', 1, null, 'REPERCUSSAO_GERAL'));
     	
@@ -41,7 +42,7 @@ export class AutuacaoRecursalController {
 		this.cmdAutuar.poloPassivo.push(partePassiva);
 		this.processoId = 1;
 	
- /*       autuacaoService.consultarProcesso(1).then((processo: Processo) => {
+       autuacaoService.consultarProcesso(1).then((processo: Processo) => {
 			this.numeroProcesso = processo.numero;
             this.teses = processo.teses;
             this.assuntos = processo.assuntos;

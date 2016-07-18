@@ -16,7 +16,7 @@ public class AnalisePressupostosFormaisDto extends ProcessoRecursalDto {
 	
 	public AnalisePressupostosFormaisDto(ProcessoRecursalDto processo, Boolean processoApto, String observacao, List<MotivoInaptidaoDto> motivosInaptidao) {
 		try {
-			BeanUtils.copyProperties(this, processo);
+			BeanUtils.copyProperties(processo, this);
 		} catch (Exception e) {
 			throw new RuntimeException("Não foi possível copiar propriedades do dto do processo.", e);
 		}

@@ -19,7 +19,7 @@ function config($stateProvider: IStateProvider) {
             }
         },
         resolve : {
-            analise : ['app.autuacao.recursal.RevisaoPressupostosFormaisService', (revisaoService: RevisaoPressupostosFormaisService, $stateParams: IStateParamsService) => {
+            analise : ['app.autuacao.recursal.RevisaoPressupostosFormaisService', '$stateParams', (revisaoService: RevisaoPressupostosFormaisService, $stateParams: IStateParamsService) => {
                 let id = $stateParams['informationId'];
                 return revisaoService.consultarAnaliseProcesso(id);
             }],

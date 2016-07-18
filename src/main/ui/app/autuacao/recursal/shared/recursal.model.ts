@@ -47,8 +47,8 @@ export class AutuarProcessoRecursalCommand implements Command {
     
     public processoId: number;
     public assuntos: Array<string>;
-    public poloAtivo: Array<Parte>;
-    public poloPassivo: Array<Parte>;
+    public poloAtivo: Array<Parte> = [];
+    public poloPassivo: Array<Parte> = [];
     
     constructor() {}
 }

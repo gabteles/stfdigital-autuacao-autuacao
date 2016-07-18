@@ -4,8 +4,5 @@ System.config({
 	map: {
 		'systemjs': './node_modules/systemjs/dist/system.src.js',
 		'system-polyfills': './node_modules/systemjs/dist/system-polyfills.src.js'
-	},
-	bundles: {
-		'autuacao/bundle': ['autuacao/originario/*', 'autuacao/recursal/autuacao-recursal/*', 'autuacao/recursal/autuacao-criminal-eleitoral/*', 'autuacao/services/*']
 	}
 });

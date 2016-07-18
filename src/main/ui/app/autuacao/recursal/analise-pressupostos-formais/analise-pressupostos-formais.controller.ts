@@ -12,19 +12,20 @@ export class AnalisePressupostosFormaisController {
 	
 	public cmd : AnalisarPressupostosFormaisCommand = new AnalisarPressupostosFormaisCommand();
 
-	static $inject = ['$state', '$stateParams', 'app.autuacao.recursal.AnalisePressupostosFormaisService', 'motivosInaptidao'];
+	static $inject = ['$state', '$stateParams', 'app.autuacao.recursal.AnalisePressupostosFormaisService', 'motivosInaptidao', 'messagesService'];
 	
     constructor(private $state: IStateService,
     	        private $stateParams: IStateParamsService,
     		    private analiseService: AnalisePressupostosFormaisService,
-    		    public motivosInaptidao: Array<MotivoInaptidao>) {
+    		    public motivosInaptidao: Array<MotivoInaptidao>, private messagesService: app.support.messaging.MessagesService) {
     	this.cmd.processoId = $stateParams['informationId'];
     }
     
 	public registrarAnalise(): void {
 	    this.analiseService.analisar(this.cmd).then(() => {
-	    	this.$state.go('app.tarefas.minhas-tarefas');
-	    });
+            this.$state.go('app.tarefas.minhas-tarefas');
+            this.messagesService.success('Análise registrada com sucesso!');
+    });
 	};
 	
 }
