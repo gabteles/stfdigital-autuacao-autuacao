@@ -144,9 +144,10 @@ public class AutuacaoApplicationService {
     @Command(description = "Autuação de Originários")
     public void handle(AutuarOriginarioCommand command) {
         ProcessoOriginario processo = (ProcessoOriginario) processoRepository.findOne(new ProcessoId(command.getProcessoId()));
-        Identificacao numero = numeroProcessoAdapter.novoNumeroProcesso(command.getClasseId());
+        Identificacao numero = null;
         
         if (command.isValida()) {
+        	numero = numeroProcessoAdapter.novoNumeroProcesso(command.getClasseId());
         	Autuador autuador = autuadorAdapter.autuador();
         	Classe classe = classeRepository.findOne(new ClasseId(command.getClasseId()));
         	Status status = statusOriginarioAdapter.nextStatus(processo.identity(), "DISTRIBUIR");
