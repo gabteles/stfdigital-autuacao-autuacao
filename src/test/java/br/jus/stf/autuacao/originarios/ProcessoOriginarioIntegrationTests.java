@@ -6,8 +6,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import javax.transaction.Transactional;
-
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -40,7 +38,6 @@ import br.jus.stf.core.shared.processo.Identificacao;
 @SpringApplicationConfiguration(ApplicationContextInitializer.class)
 @WebIntegrationTest({"server.port:0", "eureka.client.enabled:false"})
 @ActiveProfiles("test")
-@Transactional
 public class ProcessoOriginarioIntegrationTests extends IntegrationTestsSupport {
 	
 	@Configuration
