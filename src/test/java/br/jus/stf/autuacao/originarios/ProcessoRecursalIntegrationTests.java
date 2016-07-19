@@ -6,6 +6,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import javax.transaction.Transactional;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -15,6 +17,8 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.ResultActions;
 
 import br.jus.stf.autuacao.ApplicationContextInitializer;
@@ -39,12 +43,15 @@ import br.jus.stf.core.shared.processo.Identificacao;
  */
 @SpringApplicationConfiguration(ApplicationContextInitializer.class)
 @WebIntegrationTest({"server.port:0", "eureka.client.enabled:false"})
+@ActiveProfiles("test")
+@Transactional
 public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
 	
 	@Autowired
 	private AutuacaoApplicationService appService;
 	
 	@Configuration
+	@Profile("test")
 	static class ConfiguracaoTest {
 		
 		@Bean
