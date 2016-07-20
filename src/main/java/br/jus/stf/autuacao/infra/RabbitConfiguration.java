@@ -18,6 +18,7 @@ import org.springframework.amqp.support.converter.JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import br.jus.stf.autuacao.interfaces.ProcessoEventHandler;
 import br.jus.stf.core.shared.eventos.PeticaoRegistrada;
@@ -30,6 +31,7 @@ import br.jus.stf.core.shared.eventos.PeticaoRegistrada;
  */
 @Configuration
 @EnableRabbit
+@Profile("!test")
 public class RabbitConfiguration {
 
 	public static final String REMESSA_RECEBIDA_QUEUE = "autuacao.remessa.recebida";

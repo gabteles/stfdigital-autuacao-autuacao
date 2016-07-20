@@ -14,7 +14,6 @@ import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.ResultActions;
 
 import br.jus.stf.autuacao.ApplicationContextInitializer;
@@ -37,7 +36,6 @@ import br.jus.stf.core.shared.processo.Identificacao;
  */
 @SpringApplicationConfiguration(ApplicationContextInitializer.class)
 @WebIntegrationTest({"server.port:0", "eureka.client.enabled:false"})
-@ActiveProfiles("test")
 public class ProcessoOriginarioIntegrationTests extends IntegrationTestsSupport {
 	
 	@Configuration
