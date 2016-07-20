@@ -2,6 +2,7 @@ package br.jus.stf.autuacao.infra.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.remoting.rmi.RmiProxyFactoryBean;
 
 import br.jus.stf.core.identificadores.interfaces.IdentificadorResource;
@@ -11,6 +12,7 @@ import br.jus.stf.core.identificadores.interfaces.IdentificadorResource;
  *
  */
 @Configuration
+@Profile("!test")
 public class RmiFactoryConfiguration {
 
 	private static final String IDENTIFICADOR_SERVICE_URL = "rmi://services:10981/IdentificadorResource";
