@@ -11,8 +11,9 @@ export class RevisaoPressupostosFormaisService {
     private api: string;
 
     /** @ngInject **/
-    constructor(private $http: IHttpService, properties: Properties) {
+    constructor(private $http: IHttpService, properties: Properties,  commandService: cmd.CommandService) {
         this.api = properties.apiUrl.concat(API_AUTUACAO_RECURSAL);
+        commandService.setValidator('revisar-pressupostos-formais', new ValidadorRevisao());
     }
     
     /**

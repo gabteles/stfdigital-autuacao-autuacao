@@ -2,6 +2,7 @@ import IHttpService = angular.IHttpService;
 import IPromise = angular.IPromise;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 import Properties = app.support.constants.Properties;
+import cmd = app.support.command;
 import {AnalisarRepercussaoGeralCommand, API_AUTUACAO_RECURSAL} from '../shared/recursal.model';
 import autuacaoRecursal from '../shared/recursal.module';
 
@@ -10,8 +11,9 @@ export class AnaliseRepercussaoGeralService {
     private api: string;
 
     /** @ngInject **/
-    constructor(private $http: IHttpService, properties: Properties) {
+    constructor(private $http: IHttpService, properties: Properties, commandService: cmd.CommandService) {
         this.api = properties.apiUrl.concat(API_AUTUACAO_RECURSAL);
+        commandService.setValidator('analisar-repercussao-geral', new ValidadorAnalise());
     }
 
     /*
@@ -23,6 +25,13 @@ export class AnaliseRepercussaoGeralService {
     }  
         
 }
+
+class ValidadorAnalise implements cmd.CommandValidator {
+    public isValid(command: AnalisarRepercussaoGeralCommand): boolean {
+        if (command.teses.length === 0 && command.assuntos.length === 0) return false;
+        return true;
+    }
+} 
 
 autuacaoRecursal.service('app.autuacao.recursal.AnaliseRepercussaoGeralService', AnaliseRepercussaoGeralService);
 export default autuacaoRecursal;

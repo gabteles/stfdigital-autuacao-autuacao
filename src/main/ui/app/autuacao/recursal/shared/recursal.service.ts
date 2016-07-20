@@ -54,6 +54,13 @@ export class AutuacaoRecursalSharedService {
             });
     }
     
+    public consultarProcesso(idProcesso : number) : IPromise<Array<Processo>> {
+    	return this.$http.get(this.api + "/" + idProcesso)
+    	   .then((response: IHttpPromiseCallbackArg<Array<Processo>>) => {
+    		   return response.data;
+    	   });
+    }
+    
 }
 
 autuacaoRecursal.service("app.autuacao.recursal.AutuacaoRecursalSharedService", AutuacaoRecursalSharedService);

@@ -16,25 +16,28 @@ import autuacaoRecursal from '../shared/recursal.module';
 
 export class AnaliseRepercussaoGeralController {
 	
+	public classeProcesso : string;
+	public numeroProcesso : number;
 	public assuntosSelecionados : Array<Assunto> = [];
-	public observacao : string;
 	public assunto : Assunto;
 	public assuntos : Array<Assunto> = [];
 	public tipoTese : string;
 	public numeroTese : string;
 	public teses : Array<Tese> = [];
-	public numeroProcesso : number;
-	public classeProcesso : string;
+
+	
+	public cmd: AnalisarRepercussaoGeralCommand = new AnalisarRepercussaoGeralCommand();
 
 	static $inject = ['$state', 'app.autuacao.recursal.AutuacaoRecursalSharedService', 'app.autuacao.recursal.AssuntoService',
-	                  'app.autuacao.recursal.AnaliseRepercussaoGeralService', 'tiposTese', '$stateParams', 'properties', '$scope', '$http'];
+	                  'app.autuacao.recursal.AnaliseRepercussaoGeralService', 'tiposTese', 'processo', '$stateParams', 'properties', '$scope', 'messagesService'];
 	
     constructor(private $state: IStateService, private autuacaoRecursalService: AutuacaoRecursalSharedService,
     		    private assuntoService : AssuntoService, private analiseRepercussaoGeralService: AnaliseRepercussaoGeralService,
-    		    public tiposTese, private $stateParams : IStateParamService, private properties, private $scope : IScope,
-    		    private $http : IHttpService ) {
-    	this.numeroProcesso = 100;
-    	this.classeProcesso = 'ADI';
+    		    public tiposTese, public processo, private $stateParams : IStateParamService, private properties, private $scope : IScope,
+    		    private messagesService: app.support.messaging.MessagesService) {
+    	this.cmd.processoId = $stateParams['informationId']
+    	this.classeProcesso = processo.classe.id;
+    	this.numeroProcesso = processo.numero;
     }
     
     public pesquisaAssuntos(assunto : string) : void{
@@ -53,12 +56,14 @@ export class AnaliseRepercussaoGeralController {
     	}
     	if (!verificaSeAssuntoExiste){
     		this.assuntosSelecionados.push(assunto);
+    		this.cmd.assuntos.push(assunto.codigo);
     		this.assunto = null;
     	}
     }
     
     public removerAssuntosSelecionados ($index) : void{
     	this.assuntosSelecionados.splice($index, 1);
+    	this.cmd.assuntos.splice($index, 1);
     }
     
 	public consultarTese () : boolean {
@@ -96,6 +101,7 @@ export class AnaliseRepercussaoGeralController {
 		
 		if (!teseAdicionada){
 			this.teses.push(tese);
+			this.cmd.teses.push(tese.codigo);
 		}
 	};
 	
@@ -104,32 +110,20 @@ export class AnaliseRepercussaoGeralController {
 		for (let i = 0; i < $index.assuntos.length; i++){
 			let indice = this.assuntos.indexOf($index.assuntos[i]);
 			this.assuntos.splice(indice, 1);
+			this.cmd.assuntos.splice(indice, 1);
 		}
 		
 		this.teses.splice($index,1);
+		this.cmd.teses.splice($index,1);
 	};
     
     
 	public analisarRepercussaoGeral(): void {
-		//TODO mudar o valor "1" para o id do processo que será recuperado no momento de analisar a repercussao geral
-	    this.analiseRepercussaoGeralService.analisar(this.commandAnaliseRepercussao(1, this.assuntosSelecionados, this.teses, this.observacao))
+	    this.analiseRepercussaoGeralService.analisar(this.cmd)
 	        .then(() => {
-	            this.$state.go('app.tarefas.minhas-tarefas');
+            this.$state.go('app.tarefas.minhas-tarefas');
+            this.messagesService.success('Análise registrada com sucesso!');
 	    });
-	};
-
-	private commandAnaliseRepercussao(processoId : number, assuntosC : Array<Assunto>, teses : Array<Tese>, observacao : string ): AnalisarRepercussaoGeralCommand {
-		let assuntosCommand : string[];
-		for(let assunto of assuntosC){
-			assuntosCommand.push(assunto.codigo);
-		}
-		
-		let tesesCommand : number[];
-		for(let tese of teses){
-			tesesCommand.push(tese.codigo);
-		}
-		
-	    return //new AnalisarRepercussaoGeralCommand(1, assuntosCommand, tesesCommand, observacao);
 	};
 	
 }

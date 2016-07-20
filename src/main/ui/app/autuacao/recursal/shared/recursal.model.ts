@@ -82,8 +82,8 @@ export class RevisarPressupostosFormaisCommand extends AnalisarPressupostosForma
 export class AnalisarRepercussaoGeralCommand implements Command {
    
    public processoId: number;
-   public assuntos: Array<string>;
-   public teses: Array<number>;
+   public assuntos: Array<string> = [];
+   public teses: Array<number> = [];
    public observacao: string;
    
    constructor() {}

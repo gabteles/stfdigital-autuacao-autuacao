@@ -2,6 +2,7 @@ import ITranslatePartialLoaderService = angular.translate.ITranslatePartialLoade
 import IStateProvider = angular.ui.IStateProvider;
 import IModule = angular.IModule;
 import Properties = app.support.constants.Properties;
+import IStateParamsService = angular.ui.IStateParamsService;
 import {AutuacaoRecursalSharedService} from "../shared/recursal.service";
 import autuacaoRecursal from '../shared/recursal.module';
 
@@ -20,6 +21,10 @@ function config($stateProvider: IStateProvider) {
         resolve : {
             tiposTese : ['app.autuacao.recursal.AutuacaoRecursalSharedService', (autuacaoRecursalService: AutuacaoRecursalSharedService) => {
                 return autuacaoRecursalService.listarTiposTese();
+            }],
+            processo: ['app.autuacao.recursal.AutuacaoRecursalSharedService', '$stateParams', (autuacaoRecursalService: AutuacaoRecursalSharedService, $stateParams : IStateParamsService) => {
+                let protocoloId = $stateParams['informationId'];
+                return autuacaoRecursalService.consultarProcesso(protocoloId);
             }]
         },
         params : {

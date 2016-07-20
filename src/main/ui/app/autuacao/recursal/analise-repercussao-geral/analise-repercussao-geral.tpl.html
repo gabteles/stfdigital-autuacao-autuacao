@@ -11,16 +11,18 @@
             <!-- BASIC FORM -->
             <div class="form-wrapper md-whiteframe-1dp" flex="100">
                 <form name="basicForm">
-                    <div layout="column" layout-gt-xs="row">
-	                    <md-input-container flex>
-	                        <label>Classe Processual</label>
-	                        <input ng-model="analise.classeProcesso" id="classeProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
-	                    </md-input-container>
-                        <md-input-container flex>
-	                        <label>Número do processo</label>
-	                        <input ng-model="analise.numeroProcesso" id="numeroProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
-	                    </md-input-container>
-                    </div>
+                	<md-card flex layout="column">
+	                    <div layout="column" layout-gt-xs="row">
+		                    <md-input-container flex>
+		                        <label>Classe Processual</label>
+		                        <input ng-model="analise.classeProcesso" id="classeProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+		                    </md-input-container>
+	                        <md-input-container flex>
+		                        <label>Número do processo</label>
+		                        <input ng-model="analise.numeroProcesso" id="numeroProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+		                    </md-input-container>
+	                    </div>
+	                </md-card>
 					<div class="form-title">Pesquisa de Assuntos</div>
 					<div  layout="row" layout-gt-xs="row">
 						<md-card flex layout="column">
@@ -118,14 +120,14 @@
 							</md-card-title>
 							<md-card-content layout="column">
 		                    	<md-input-container class="md-block">
-									<textarea ng-model="analise.observacao" placeholder="Informe uma observação da análise do processo." md-maxlength="150" rows="5" md-select-on-focus id="observacao"></textarea>
+									<textarea ng-model="analise.cmd.observacao" placeholder="Informe uma observação da análise do processo." md-maxlength="150" rows="2" md-select-on-focus id="observacao"></textarea>
 								</md-input-container>								
 							</md-card-content>
 						</md-card>
                     </div>
-                    <md-button type="button" class="md-raised md-accent" id="btnRegistrarAnalise" aria-label="Submit" 
-                    	ng-disabled="basicForm.$invalid || basicForm.$pristine" ng-click ="analise.analisarRepercussaoGeral()" >
-                        	Autuar
+                    <md-button type="button" class="md-raised md-accent" id="analisar-repercussao-geral" aria-label="Submit" 
+                    	ng-click ="analise.analisarRepercussaoGeral()" command="analise.cmd" >
+                        	Analisar
                     </md-button>
                 </form>
             </div>

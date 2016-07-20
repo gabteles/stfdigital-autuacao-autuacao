@@ -38,6 +38,8 @@ import br.jus.stf.autuacao.interfaces.dto.AssuntoDto;
 import br.jus.stf.autuacao.interfaces.dto.AssuntoDtoAssembler;
 import br.jus.stf.autuacao.interfaces.dto.MotivoInaptidaoDto;
 import br.jus.stf.autuacao.interfaces.dto.MotivoInaptidaoDtoAssembler;
+import br.jus.stf.autuacao.interfaces.dto.ProcessoDto;
+import br.jus.stf.autuacao.interfaces.dto.ProcessoDtoAssembler;
 import br.jus.stf.autuacao.interfaces.dto.TeseDto;
 import br.jus.stf.autuacao.interfaces.dto.TeseDtoAssembler;
 import br.jus.stf.autuacao.interfaces.dto.TipoTeseDto;
@@ -78,6 +80,9 @@ public class ProcessoRecursalRestResource {
     
     @Autowired
     private TeseDtoAssembler teseDtoAssembler;
+    
+    @Autowired
+    private ProcessoDtoAssembler processoDtoAssembler;
     
 	/**
 	 * @param command
@@ -143,6 +148,7 @@ public class ProcessoRecursalRestResource {
 				.map(processo -> analisePressupostosFormaisDtoAssembler.toDto((ProcessoRecursal) processo))
 				.orElseThrow(() -> new IllegalArgumentException("Processo inválido."));
     }
+    
     
     /**
      * @param command
@@ -243,5 +249,18 @@ public class ProcessoRecursalRestResource {
 		}
 		return assuntosDto;
 	}
+	
+    /**
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ProcessoDto consultarProcessso(@PathVariable("id") Long id) {
+    	
+		return Optional.ofNullable(processoRepository.findOne(new ProcessoId(id)))
+				.filter(processo -> processo.tipo().equals(TipoProcesso.RECURSAL))
+				.map(processo -> processoDtoAssembler.toDto((ProcessoRecursal) processo))
+				.orElseThrow(() -> new IllegalArgumentException("Processo inválido."));
+    }
 
 }
