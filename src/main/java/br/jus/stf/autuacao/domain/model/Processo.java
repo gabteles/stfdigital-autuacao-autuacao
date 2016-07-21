@@ -32,6 +32,7 @@ import br.jus.stf.autuacao.domain.model.preferencia.Preferencia;
 import br.jus.stf.core.framework.domaindrivendesign.AggregateRoot;
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
 import br.jus.stf.core.shared.processo.MeioTramitacao;
+import br.jus.stf.core.shared.processo.Polo;
 import br.jus.stf.core.shared.processo.ProcessoId;
 import br.jus.stf.core.shared.processo.Sigilo;
 import br.jus.stf.core.shared.processo.TipoProcesso;
@@ -150,6 +151,7 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
      */
     public void atribuirPartes(Set<Parte> partes) {
 		Validate.notEmpty(partes, "Partes requeridas.");
+		Validate.isTrue(isPartesValidas(partes), "Polo ativo deve ter ao menos uma partes.");
 		
 		this.partes.addAll(partes);
 	}
@@ -159,7 +161,7 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
 		Validate.notNull(autuador, "Autuador requerido.");
 		Validate.notNull(status, "Status requerido.");
 		
-		this.partes = partes;
+		atribuirPartes(partes);
 		this.status = status;
 		this.autuador = autuador;
 		this.dataAutuacao = new Date();
@@ -270,5 +272,9 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
     public ProcessoId identity() {
         return processoId;
     }
+	
+	private boolean isPartesValidas(Set<Parte> partes) {
+		return partes.stream().filter(parte -> Polo.ATIVO.equals(parte.polo())).count() >= 1;
+	}
 
 }

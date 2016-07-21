@@ -1,4 +1,4 @@
-package br.jus.stf.autuacao.originarios;
+package br.jus.stf.autuacao;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
