@@ -37,6 +37,7 @@ import br.jus.stf.core.shared.processo.Identificacao;
  * @since 17.02.2016
  */
 @SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false"}, classes = ApplicationContextInitializer.class)
+@Ignore
 public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
 	
 	@Autowired
