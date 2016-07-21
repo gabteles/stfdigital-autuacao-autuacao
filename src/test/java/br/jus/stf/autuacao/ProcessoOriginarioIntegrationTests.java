@@ -1,4 +1,4 @@
-package br.jus.stf.autuacao.originarios;
+package br.jus.stf.autuacao;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.test.web.servlet.ResultActions;
 
-import br.jus.stf.autuacao.ApplicationContextInitializer;
 import br.jus.stf.autuacao.domain.model.Autuador;
 import br.jus.stf.autuacao.infra.AutuadorOauth2Adapter;
 import br.jus.stf.autuacao.infra.NumeroProcessoRestAdapter;

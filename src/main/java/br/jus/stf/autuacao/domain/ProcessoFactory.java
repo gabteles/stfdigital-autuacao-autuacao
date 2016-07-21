@@ -28,6 +28,17 @@ import br.jus.stf.core.shared.protocolo.ProtocoloId;
 @Component
 public class ProcessoFactory {
 
+	/**
+	 * @param processoId
+	 * @param protocoloId
+	 * @param classe
+	 * @param numero
+	 * @param tipoProcesso
+	 * @param meioTramitacao
+	 * @param sigilo
+	 * @param status
+	 * @return
+	 */
 	public Processo novoProcesso(ProcessoId processoId, ProtocoloId protocoloId, Classe classe, Long numero,
 			TipoProcesso tipoProcesso, MeioTramitacao meioTramitacao, Sigilo sigilo, Status status) {
     	Processo processo;
@@ -45,6 +56,19 @@ public class ProcessoFactory {
     	return processo;
     }
     
+	/**
+	 * @param processoId
+	 * @param classe
+	 * @param numero
+	 * @param preferencias
+	 * @param quantidadeRecurso
+	 * @param sigilo
+	 * @param origens
+	 * @param assuntos
+	 * @param partes
+	 * @param status
+	 * @return
+	 */
 	public ProcessoRecursal novoEnvio(ProcessoId processoId, Classe classe, Long numero, Set<Preferencia> preferencias,
 			Integer quantidadeRecurso, Sigilo sigilo, Set<Origem> origens, Set<Assunto> assuntos, Set<Parte> partes,
 			Status status) {

@@ -52,6 +52,12 @@ public class Origem extends ValueObjectSupport<Origem> {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param procedenciaGeografica
+	 * @param tribunalJuizo
+	 * @param numeroProcesso
+	 * @param origemPrincipal
+	 */
 	public Origem(UnidadeFederacao procedenciaGeografica, TribunalJuizo tribunalJuizo, Long numeroProcesso,
 			boolean origemPrincipal) {
 		Validate.notNull(procedenciaGeografica, "Procedência geográfica requerida.");
@@ -64,10 +70,16 @@ public class Origem extends ValueObjectSupport<Origem> {
 		this.origemPrincipal = origemPrincipal;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Long toLong() {
 		return id;
 	}
 	
+	/**
+	 * @return
+	 */
 	public boolean origemPrincipal() {
 		return origemPrincipal;
 	}

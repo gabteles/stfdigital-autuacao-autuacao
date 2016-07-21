@@ -1,4 +1,4 @@
-package br.jus.stf.autuacao.originarios;
+package br.jus.stf.autuacao;
 
 import static br.jus.stf.core.framework.testing.Oauth2TestHelpers.oauthAuthentication;
 import static org.hamcrest.Matchers.equalTo;

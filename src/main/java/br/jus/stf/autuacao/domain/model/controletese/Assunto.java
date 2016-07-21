@@ -30,6 +30,11 @@ public class Assunto extends EntitySupport<Assunto, AssuntoId> {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param codigo
+	 * @param descricao
+	 * @param assuntoPai
+	 */
 	public Assunto(AssuntoId codigo, String descricao, Assunto assuntoPai) {
 		Validate.notNull(codigo, "Código requerido.");
 		Validate.notBlank(descricao, "Descrição requerida.");
@@ -40,10 +45,16 @@ public class Assunto extends EntitySupport<Assunto, AssuntoId> {
 	}
 	
 	
+	/**
+	 * @return
+	 */
 	public String descricao() {
 		return descricao;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Assunto assuntoPai() {
 		return assuntoPai;
 	}
