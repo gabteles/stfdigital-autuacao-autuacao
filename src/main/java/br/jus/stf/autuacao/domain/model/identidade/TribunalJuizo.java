@@ -46,6 +46,11 @@ public class TribunalJuizo extends EntitySupport<TribunalJuizo, Long> {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param codigo
+	 * @param nome
+	 * @param ufsAtuacao
+	 */
 	public TribunalJuizo(Long codigo, String nome, Set<UnidadeFederacao> ufsAtuacao){
 		Validate.notNull(codigo, "Código requerido.");
 		Validate.notBlank(nome, "Nome requerido.");
@@ -60,6 +65,9 @@ public class TribunalJuizo extends EntitySupport<TribunalJuizo, Long> {
 		return codigo;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Set<UnidadeFederacao> ufsAtuacao(){
 		return Collections.unmodifiableSet(ufsAtuacao);
 	}

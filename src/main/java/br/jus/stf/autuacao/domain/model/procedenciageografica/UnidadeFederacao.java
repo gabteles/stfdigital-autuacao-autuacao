@@ -38,6 +38,12 @@ public class UnidadeFederacao extends EntitySupport<UnidadeFederacao, Long> {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param id
+	 * @param nome
+	 * @param sigla
+	 * @param pais
+	 */
 	public UnidadeFederacao(Long id, String nome, String sigla, Pais pais){
 		Validate.notNull(id, "Identificador requerido.");
 		Validate.notBlank(nome, "Nome requerido.");
