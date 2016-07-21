@@ -26,12 +26,12 @@ import br.jus.stf.core.shared.processo.TipoProcesso;
 import br.jus.stf.core.shared.protocolo.ProtocoloId;
 
 /**
- * Testes unitários para registro de remessas originárias.
+ * Testes unitários para processo originário.
  * 
  * @author Rafael Alencar
  * 
  * @since 1.0.0
- * @since 29.06.2016
+ * @since 19.07.2016
  */
 public class ProcessoOriginarioUnitTests {
 	
