@@ -156,6 +156,17 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
 		this.partes.addAll(partes);
 	}
     
+    /**
+     * @param preferencias
+     */
+    public void atribuirPreferencias(Set<Preferencia> preferencias) {
+		Validate.notEmpty(preferencias, "Preferências requeridas.");
+		Validate.isTrue(classe.preferencias().containsAll(preferencias),
+				"Alguma(s) preferência(s) não pertence(m) à classe selecionada.");
+		
+		this.preferencias.addAll(preferencias);
+	}
+    
     protected void autuar(Set<Parte> partes, Autuador autuador, Status status) {
 		Validate.notEmpty(partes, "Partes requeridas.");
 		Validate.notNull(autuador, "Autuador requerido.");

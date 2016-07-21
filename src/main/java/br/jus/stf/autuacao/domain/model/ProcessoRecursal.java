@@ -73,6 +73,22 @@ public class ProcessoRecursal extends Processo {
     	super(id, protocoloId, classe, meioTramitacao, sigilo, status);
     	super.identificar(classe, numero);
     }
+	
+	/**
+	 * @param id
+	 * @param protocoloId
+	 * @param classe
+	 * @param preferencias
+	 * @param numero
+	 * @param meioTramitacao
+	 * @param sigilo
+	 * @param status
+	 */
+	public ProcessoRecursal(ProcessoId id, ProtocoloId protocoloId, Classe classe, Set<Preferencia> preferencias, Long numero, MeioTramitacao meioTramitacao,
+			Sigilo sigilo, Status status) {
+    	super(id, protocoloId, classe, preferencias, meioTramitacao, sigilo, status);
+    	super.identificar(classe, numero);
+    }
     
 	/**
 	 * @param id
@@ -150,7 +166,7 @@ public class ProcessoRecursal extends Processo {
      * @param status
      */
     public void autuar(Set<Assunto> assuntos, Set<Parte> partes, Autuador autuador, Status status) {
-    	Validate.notNull(assuntos, "Assuntos requeridos.");
+    	Validate.notEmpty(assuntos, "Assuntos requeridos.");
     	
 		super.autuar(partes, autuador, status);
 		this.assuntos.addAll(assuntos);

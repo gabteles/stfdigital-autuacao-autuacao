@@ -36,7 +36,7 @@ import br.jus.stf.core.shared.protocolo.ProtocoloId;
 public class ProcessoOriginarioUnitTests {
 	
 	@Test
-	public void registraProcessoOriginarioValida() {
+	public void criaProcessoOriginarioValido() {
 		ProcessoOriginario processo = processoOriginarioValido();
 		
 		assertNotNull("Processo não pode ser nulo.", processo);
