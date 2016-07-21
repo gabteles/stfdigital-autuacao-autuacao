@@ -1,16 +1,12 @@
 package br.jus.stf.autuacao.infra;
 
-import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import br.jus.stf.autuacao.domain.ParteAdapter;
+import br.jus.stf.autuacao.infra.client.ParteRestClient;
 import br.jus.stf.autuacao.interfaces.dto.ParteDto;
 import br.jus.stf.core.shared.protocolo.ProtocoloId;
 
@@ -18,19 +14,10 @@ import br.jus.stf.core.shared.protocolo.ProtocoloId;
 public class ParteAdapterImpl implements ParteAdapter {
 	
 	@Autowired
-	private RestTemplate restTemplate;
-	
-	@Autowired
-	private DiscoveryClient discoveryClient;
+	private ParteRestClient parteRestClient;
 
 	@Override
 	public List<ParteDto> consultar(ProtocoloId protocoloId) {
-		return discoveryClient.getInstances("gateway").stream()
-				.findAny()
-				.map(instance -> {
-					URI servicesUri = instance.getUri();
-					URI uri = UriComponentsBuilder.fromUri(servicesUri).path("/peticionamento/api/peticoes/{id}/envolvidos").queryParam("id", protocoloId.toLong()).build().toUri();
-					return Arrays.asList(restTemplate.getForObject(uri, ParteDto[].class)); 
-				}).orElseThrow(IllegalArgumentException::new);
+		return parteRestClient.envolvidos(protocoloId.toLong());
 	}
 }

@@ -11,8 +11,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -38,8 +37,7 @@ import br.jus.stf.core.shared.processo.Identificacao;
  * @since 1.0.0
  * @since 17.02.2016
  */
-@SpringApplicationConfiguration(ApplicationContextInitializer.class)
-@WebIntegrationTest({"server.port:0", "eureka.client.enabled:false"})
+@SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false"}, classes = ApplicationContextInitializer.class)
 @Ignore
 public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
 	
