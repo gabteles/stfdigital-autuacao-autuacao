@@ -5,7 +5,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import org.elasticsearch.common.lang3.Validate;
+import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
 import br.jus.stf.core.shared.preferencia.PreferenciaId;
@@ -51,7 +51,7 @@ public class Preferencia extends EntitySupport<Preferencia, PreferenciaId> {
 	
 	public boolean isCriminalEleitoral() {
 		// TODO: Verificar uma forma melhor de implementar essa verificação
-		return id.equals(new PreferenciaId(2L)) || id.equals(new PreferenciaId(3L));
+		return id.toLong() == 2L || id.toLong() == 3L;
 	}
 	
 	@Override
