@@ -1,27 +1,28 @@
 package br.jus.stf.autuacao;
 
+import static com.github.jsonj.tools.JsonBuilder.array;
+import static com.github.jsonj.tools.JsonBuilder.field;
+import static com.github.jsonj.tools.JsonBuilder.object;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.ResultActions;
 
-import br.jus.stf.autuacao.domain.model.Autuador;
-import br.jus.stf.autuacao.infra.AutuadorOauth2Adapter;
+import com.github.jsonj.JsonObject;
+
 import br.jus.stf.autuacao.infra.NumeroProcessoRestAdapter;
 import br.jus.stf.autuacao.infra.RabbitConfiguration;
 import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
+import br.jus.stf.core.framework.testing.oauth2.WithMockOauth2User;
 import br.jus.stf.core.shared.eventos.ProcessoRegistrado;
-import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.core.shared.processo.Identificacao;
 
 /**
@@ -33,47 +34,44 @@ import br.jus.stf.core.shared.processo.Identificacao;
  * @since 17.02.2016
  */
 @SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false"}, classes = ApplicationContextInitializer.class)
+@WithMockOauth2User("autuador")
 public class ProcessoOriginarioIntegrationTests extends IntegrationTestsSupport {
 	
-	@Configuration
-	@Profile("test")
-	static class ConfiguracaoTest {
-		
-		@Bean
-		public RabbitTemplate rabbitTemplate() {
-			RabbitTemplate rabbitTemplate = Mockito.mock(RabbitTemplate.class);
-			
-			willDoNothing().given(rabbitTemplate).convertAndSend(RabbitConfiguration.PROCESSO_REGISTRADO_QUEUE, ProcessoRegistrado.class);
-			
-			return rabbitTemplate;
-		}
-		
-		@Bean
-		public NumeroProcessoRestAdapter numeroProcessoAdapter() {
-			NumeroProcessoRestAdapter numeroProcessoAdapter = Mockito.mock(NumeroProcessoRestAdapter.class);
-			
-			given(numeroProcessoAdapter.novoNumeroProcesso("ADO")).willReturn(new Identificacao("ADO", 1L));
-			
-			return numeroProcessoAdapter;
-		}
-		
-		@Bean
-		public AutuadorOauth2Adapter autuadorAdapter() {
-			AutuadorOauth2Adapter autuadorAdapter = Mockito.mock(AutuadorOauth2Adapter.class);
-			
-			given(autuadorAdapter.autuador()).willReturn(new Autuador("autuador", new PessoaId(1L)));
-			
-			return autuadorAdapter;
-		}
+	@MockBean
+	private RabbitTemplate rabbitTemplate;
+	
+	@MockBean
+	private NumeroProcessoRestAdapter numeroProcessoAdapter;
+	
+	@Before
+	public void configuracao() {
+		willDoNothing().given(rabbitTemplate).convertAndSend(RabbitConfiguration.PROCESSO_REGISTRADO_QUEUE, ProcessoRegistrado.class);
+		given(numeroProcessoAdapter.novoNumeroProcesso("ADO")).willReturn(new Identificacao("ADO", 1L));
 	}
 	
 	@Test
 	public void autuarRemessa() throws Exception {
 		loadDataTests("autuarRemessaOriginario.sql");
 		
-		String processo = "{\"processoId\":@processoId,\"classeId\":\"ADO\",\"poloAtivo\":[{\"apresentacao\":\"Maria\",\"pessoa\":1},{\"apresentacao\":\"João\"}],\"poloPassivo\":[{\"apresentacao\":\"Antônia\",\"pessoa\":3}],\"valida\":true}";
-		String processoId = "9000";
-		ResultActions result = mockMvc.perform(post("/api/processos/originario/autuacao").contentType(APPLICATION_JSON).content(processo.replace("@processoId", processoId)));
+		JsonObject autuarRemessaJson = object(
+				field("processoId", 9000),
+				field("classeId", "ADO"),
+				field("poloAtivo", array(
+						object(
+								field("apresentacao", "Maria"),
+								field("pessoa",1)
+						),
+						object(
+								field("apresentacao", "João")
+						))),
+				field("poloPassivo", array(
+						object(
+								field("apresentacao", "Antônia"),
+								field("pessoa", 3)
+						))),
+				field("valida", true)
+		);
+		ResultActions result = mockMvc.perform(post("/api/processos/originario/autuacao").contentType(APPLICATION_JSON).content(autuarRemessaJson.toString()));
 		
 		result.andExpect(status().isOk());
 	}
@@ -82,9 +80,13 @@ public class ProcessoOriginarioIntegrationTests extends IntegrationTestsSupport 
 	public void rejeitarRemessa() throws Exception {
 		loadDataTests("rejeitarRemessaOriginario.sql");
 		
-		String processoId = "9001";
-		String processo = "{\"processoId\":@processoId,\"motivo\":\"Protocolo já foi autuado.\",\"valida\":false}";
-		ResultActions result = mockMvc.perform(post("/api/processos/originario/autuacao").contentType(APPLICATION_JSON).content(processo.replace("@processoId", processoId)));
+		JsonObject rejeitarRemessaJson = object(
+				field("processoId", 9001),
+				field("motivo", "Protocolo já foi autuado."),
+				field("valida", false)
+		);
+		ResultActions result = mockMvc.perform(post("/api/processos/originario/autuacao").contentType(APPLICATION_JSON)
+				.content(rejeitarRemessaJson.toString()));
 		
 		result.andExpect(status().isOk());
 	}
@@ -93,9 +95,25 @@ public class ProcessoOriginarioIntegrationTests extends IntegrationTestsSupport 
 	public void autuarPeticao() throws Exception {
 		loadDataTests("autuarPeticaoOriginario.sql");
 		
-		String processo = "{\"processoId\":@processoId,\"classeId\":\"ADO\",\"poloAtivo\":[{\"apresentacao\":\"Carlos\",\"pessoa\":1},{\"apresentacao\":\"Marta\"}],\"poloPassivo\":[{\"apresentacao\":\"Pedro\",\"pessoa\":3}],\"valida\":true}";
-		String processoId = "9002";
-		ResultActions result = mockMvc.perform(post("/api/processos/originario/autuacao").contentType(APPLICATION_JSON).content(processo.replace("@processoId", processoId)));
+		JsonObject autuarPeticaoJson = object(
+				field("processoId", 9002),
+				field("classeId", "ADO"),
+				field("poloAtivo", array(
+						object(
+								field("apresentacao", "Carlos"),
+								field("pessoa", 1)
+						),
+						object(
+								field("apresentacao", "Marta")
+						))),
+				field("poloPassivo", array(
+						object(
+								field("apresentacao", "Pedro"),
+								field("pessoa", 3)
+						))),
+				field("valida", true)
+		);
+		ResultActions result = mockMvc.perform(post("/api/processos/originario/autuacao").contentType(APPLICATION_JSON).content(autuarPeticaoJson.toString()));
 		
 		result.andExpect(status().isOk());
 	}
@@ -104,9 +122,13 @@ public class ProcessoOriginarioIntegrationTests extends IntegrationTestsSupport 
 	public void rejeitarPeticao() throws Exception {
 		loadDataTests("rejeitarPeticaoOriginario.sql");
 		
-		String processoId = "9003";
-		String processo = "{\"processoId\":@processoId,\"motivo\":\"Protocolo já foi autuado.\",\"valida\":false}";
-		ResultActions result = mockMvc.perform(post("/api/processos/originario/autuacao").contentType(APPLICATION_JSON).content(processo.replace("@processoId", processoId)));
+		JsonObject rejeitarPeticaoJson = object(
+				field("processoId", 9003),
+				field("motivo", "Protocolo já foi autuado."),
+				field("valida", false)
+		);
+		ResultActions result = mockMvc.perform(post("/api/processos/originario/autuacao").contentType(APPLICATION_JSON)
+				.content(rejeitarPeticaoJson.toString()));
 		
 		result.andExpect(status().isOk());
 	}

@@ -6,26 +6,22 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Mockito;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.ResultActions;
 
 import br.jus.stf.autuacao.application.AutuacaoApplicationService;
 import br.jus.stf.autuacao.application.commands.IniciarAutuacaoCommand;
-import br.jus.stf.autuacao.domain.model.Autuador;
-import br.jus.stf.autuacao.infra.AutuadorOauth2Adapter;
 import br.jus.stf.autuacao.infra.NumeroProcessoRestAdapter;
 import br.jus.stf.autuacao.infra.RabbitConfiguration;
 import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
+import br.jus.stf.core.framework.testing.oauth2.WithMockOauth2User;
 import br.jus.stf.core.shared.eventos.ProcessoRegistrado;
-import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.core.shared.processo.Identificacao;
 
 /**
@@ -37,42 +33,23 @@ import br.jus.stf.core.shared.processo.Identificacao;
  * @since 17.02.2016
  */
 @SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false"}, classes = ApplicationContextInitializer.class)
+@WithMockOauth2User("autuador")
 @Ignore
 public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
+	
+	@MockBean
+	private RabbitTemplate rabbitTemplate;
+	
+	@MockBean
+	private NumeroProcessoRestAdapter numeroProcessoAdapter;
 	
 	@Autowired
 	private AutuacaoApplicationService appService;
 	
-	@Configuration
-	@Profile("test")
-	static class ConfiguracaoTest {
-		
-		@Bean
-		public RabbitTemplate rabbitTemplate() {
-			RabbitTemplate rabbitTemplate = Mockito.mock(RabbitTemplate.class);
-			
-			willDoNothing().given(rabbitTemplate).convertAndSend(RabbitConfiguration.PROCESSO_REGISTRADO_QUEUE, ProcessoRegistrado.class);
-			
-			return rabbitTemplate;
-		}
-		
-		@Bean
-		public NumeroProcessoRestAdapter numeroProcessoAdapter() {
-			NumeroProcessoRestAdapter numeroProcessoAdapter = Mockito.mock(NumeroProcessoRestAdapter.class);
-			
-			given(numeroProcessoAdapter.novoNumeroProcesso("ADO")).willReturn(new Identificacao("ADO", 1L));
-			
-			return numeroProcessoAdapter;
-		}
-		
-		@Bean
-		public AutuadorOauth2Adapter autuadorAdapter() {
-			AutuadorOauth2Adapter autuadorAdapter = Mockito.mock(AutuadorOauth2Adapter.class);
-			
-			given(autuadorAdapter.autuador()).willReturn(new Autuador("autuador", new PessoaId(1L)));
-			
-			return autuadorAdapter;
-		}
+	@Before
+	public void configuracao() {
+		willDoNothing().given(rabbitTemplate).convertAndSend(RabbitConfiguration.PROCESSO_REGISTRADO_QUEUE, ProcessoRegistrado.class);
+		given(numeroProcessoAdapter.novoNumeroProcesso("ADO")).willReturn(new Identificacao("ADO", 1L));
 	}
 	
 	@Ignore

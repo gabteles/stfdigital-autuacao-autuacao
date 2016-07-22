@@ -12,6 +12,12 @@ import org.apache.commons.lang3.Validate;
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
 import br.jus.stf.core.shared.controletese.AssuntoId;
 
+/**
+ * @author Rafael Alencar
+ * 
+ * @since 1.0.0
+ * @since 17.05.2016
+ */
 @Entity
 @Table(name = "ASSUNTO", schema = "AUTUACAO")
 public class Assunto extends EntitySupport<Assunto, AssuntoId> {
