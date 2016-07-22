@@ -76,7 +76,6 @@ export class RevisaoRepercussaoGeralController {
 		}
 		
 		this.autuacaoService.consultarTeses(this.tipoTese, this.numeroTese).then((teses : Tese[]) => {
-			
 			 if (teses && teses.length > 0){
 				let teseConsultada : Tese = teses[0];
 				let assuntosConsultados : Array<Assunto> = teseConsultada.assuntos;  
