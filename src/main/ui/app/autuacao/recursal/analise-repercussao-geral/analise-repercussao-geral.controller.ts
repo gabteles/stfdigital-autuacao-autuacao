@@ -29,11 +29,11 @@ export class AnaliseRepercussaoGeralController {
 	public cmd: AnalisarRepercussaoGeralCommand = new AnalisarRepercussaoGeralCommand();
 
 	static $inject = ['$state', 'app.autuacao.recursal.AutuacaoRecursalSharedService', 'app.autuacao.recursal.AssuntoService',
-	                  'app.autuacao.recursal.AnaliseRepercussaoGeralService', 'tiposTese', 'processo', '$stateParams', 'properties', '$scope', 'messagesService'];
+	                  'app.autuacao.recursal.AnaliseRepercussaoGeralService', 'tiposTese', 'processo', '$stateParams', 'messagesService'];
 	
     constructor(private $state: IStateService, private autuacaoRecursalService: AutuacaoRecursalSharedService,
     		    private assuntoService : AssuntoService, private analiseRepercussaoGeralService: AnaliseRepercussaoGeralService,
-    		    public tiposTese, public processo, private $stateParams : IStateParamService, private properties, private $scope : IScope,
+    		    public tiposTese, public processo, private $stateParams : IStateParamService,
     		    private messagesService: app.support.messaging.MessagesService) {
     	this.cmd.processoId = $stateParams['informationId']
     	this.classeProcesso = processo.classe.id;
@@ -74,20 +74,21 @@ export class AnaliseRepercussaoGeralController {
 		}
 		
 		this.autuacaoRecursalService.consultarTeses(this.tipoTese, this.numeroTese).then((teses : Tese[]) => {
-			let teseConsultada : Tese = teses[0];
 			
-			if (teseConsultada !== undefined){
-				let assuntosConsultados : Array<Assunto> = teseConsultada.assuntos;  
+			if (teses && teses.length > 0){
+				let teseConsultada : Tese = teses[0];
 				
+				let assuntosConsultados : Array<Assunto> = teseConsultada.assuntos;  
 				this.adicionarTese(teseConsultada);
 				
 				for (let i = 0; i < assuntosConsultados.length; i++) {
-					this.adicionarAssuntoNaLista(<Assunto>{codigo: assuntosConsultados[i].codigo, descricao: assuntosConsultados[i].descricao, nivel: 0});
+					this.adicionarAssuntoNaLista({codigo: assuntosConsultados[i].codigo, descricao: assuntosConsultados[i].descricao, nivel: 0});
 				}
 				
 				this.numeroTese = null;
-			} 
+			}
 		});
+		return true;
 	};
 	
 	public adicionarTese (tese : Tese) : void{
@@ -119,6 +120,9 @@ export class AnaliseRepercussaoGeralController {
     
     
 	public analisarRepercussaoGeral(): void {
+		if (this.cmd.teses.length > 0){
+			this.cmd.repercussaoGeral = true;
+		}
 	    this.analiseRepercussaoGeralService.analisar(this.cmd)
 	        .then(() => {
             this.$state.go('app.tarefas.minhas-tarefas');
