@@ -85,6 +85,7 @@ export class AnalisarRepercussaoGeralCommand implements Command {
    public assuntos: Array<string> = [];
    public teses: Array<number> = [];
    public observacao: string;
+   public repercussaoGeral : boolean = false;
    
    constructor() {}
 }

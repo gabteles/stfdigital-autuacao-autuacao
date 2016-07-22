@@ -12,31 +12,34 @@ import autuacaoRecursal from "../shared/recursal.module";
 export class RevisaoRepercussaoGeralController {
     
 	public basicForm: Object = {};
-	public numeroProcesso : number;
-	public classeProcesso : string;
 	public assuntosSelecionados : Array<Assunto> = [];
 	public assunto : Assunto;
 	public assuntos : Array<Assunto> = [];
 	public tipoTese : string;
 	public numeroTese : string;
 	public teses : Array<Tese> = [];
-	public observacao : string;
+
+	public cmd: RevisarRepercussaoGeralCommand = new RevisarRepercussaoGeralCommand();
 	
 	static $inject = ['$state', 'app.autuacao.recursal.RevisaoRepercussaoGeralService', 
 	                  'app.autuacao.recursal.AutuacaoRecursalSharedService',
-	                  'app.autuacao.recursal.AssuntoService', 'analise', 'tiposTese'];
+	                  'app.autuacao.recursal.AssuntoService', 'analise', 'tiposTese', 'messagesService'];
 	
 	constructor(private $state: IStateService, private revisaoService: RevisaoRepercussaoGeralService,
-			private autuacaoService: AutuacaoRecursalSharedService, private assuntoService : AssuntoService,
-			private analise, public tiposTese) {
-		
-		//o sistema aqui irá recuperar o processo, a tese e os assuntos relacionados.
-		/*this.numeroProcesso = 100;
-		this.classeProcesso = 'ADI';
-		this.assuntosSelecionados.push(new Assunto('4291', 'Jurisdição e Competência', 0));
-		this.assuntosSelecionados.push(new Assunto('10912', 'Medidas Assecuratórias', 0));
-		this.teses.push(new Tese(170, 'Recurso extraordinário em que se discute', 1, null, 'REPERCUSSAO_GERAL'));*/
-		
+	   private autuacaoService: AutuacaoRecursalSharedService, private assuntoService : AssuntoService,
+	   private analise, public tiposTese, private messagesService: app.support.messaging.MessagesService) {
+	
+	   this.cmd.processoId = analise.processoId;
+	   if (analise.teses.length > 0){
+		   analise.teses.forEach(tese => {
+			   this.adicionarTese(<Tese> tese);
+			   if (tese.assuntos.length > 0){
+				   tese.assuntos.forEach(assunto =>{
+		               this.adicionarAssuntoNaLista(<Assunto> assunto);
+		           });
+			   }
+		   });
+	   }
 	}
 	
 	public pesquisaAssuntos(assunto : string) : void{
@@ -55,12 +58,14 @@ export class RevisaoRepercussaoGeralController {
 		}
 		if (!verificaSeAssuntoExiste){
 			this.assuntosSelecionados.push(assunto);
+			this.cmd.assuntos.push(assunto.codigo);
 			this.assunto = null;
 		}
 	}
 	
 	public removerAssuntosSelecionados ($index) : void{
 		this.assuntosSelecionados.splice($index, 1);
+		this.cmd.assuntos.splice($index, 1);
 	}
 	
 	public consultarTese () : boolean {
@@ -71,11 +76,10 @@ export class RevisaoRepercussaoGeralController {
 		}
 		
 		this.autuacaoService.consultarTeses(this.tipoTese, this.numeroTese).then((teses : Tese[]) => {
-			let teseConsultada : Tese = teses[0];
 			
-			if (teseConsultada !== undefined){
+			 if (teses && teses.length > 0){
+				let teseConsultada : Tese = teses[0];
 				let assuntosConsultados : Array<Assunto> = teseConsultada.assuntos;  
-				
 				this.adicionarTese(teseConsultada);
 				
 				for (let i = 0; i < assuntosConsultados.length; i++) {
@@ -83,8 +87,9 @@ export class RevisaoRepercussaoGeralController {
 				}
 				
 				this.numeroTese = null;
-			} 
+			 }
 		});
+		return true;
 	};
 	
 	public adicionarTese (tese : Tese) : void{
@@ -98,42 +103,29 @@ export class RevisaoRepercussaoGeralController {
 		
 		if (!teseAdicionada){
 			this.teses.push(tese);
+			this.cmd.teses.push(tese.codigo);
 		}
 	};
 	
 	public removerTese($index) : void{
-		
 		for (let i = 0; i < $index.assuntos.length; i++){
 			let indice = this.assuntos.indexOf($index.assuntos[i]);
 			this.assuntos.splice(indice, 1);
+			this.cmd.assuntos.splice(indice, 1);
 		}
 		
 		this.teses.splice($index,1);
+		this.cmd.teses.splice($index,1);
 	};
 	
 	
 	public analisarRepercussaoGeral(): void {
-		//TODO mudar o valor "1" para o id do processo que será recuperado no momento de analisar a repercussao geral
-	    this.revisaoService.revisar(this.commandRevisaoRepercussao(1, this.assuntosSelecionados, this.teses, this.observacao))
-	        .then(() => {
-	            this.$state.go('app.tarefas.minhas-tarefas', {}, { reload: true });
-	    });
+	    this.revisaoService.revisar(this.cmd)
+	         .then(() => {
+            this.$state.go('app.tarefas.minhas-tarefas');
+            this.messagesService.success('Revisão registrada com sucesso!');
+         });
 	};
-	
-	private commandRevisaoRepercussao(processoId : number, assuntosC : Array<Assunto>, teses : Array<Tese>, observacao : string ): RevisarRepercussaoGeralCommand {
-		let assuntosCommand : string[];
-		for(let assunto of assuntosC){
-			assuntosCommand.push(assunto.codigo);
-		}
-		
-		let tesesCommand : number[];
-		for(let tese of teses){
-			tesesCommand.push(tese.codigo);
-		}
-		
-	    return //new RevisarRepercussaoGeralCommand(1, assuntosCommand, tesesCommand, observacao);
-	};
-   
 }
 
 autuacaoRecursal.controller("app.autuacao.recursal.RevisaoRepercussaoGeralController", RevisaoRepercussaoGeralController);

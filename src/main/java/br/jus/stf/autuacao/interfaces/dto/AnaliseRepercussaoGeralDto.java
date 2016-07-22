@@ -16,7 +16,7 @@ public class AnaliseRepercussaoGeralDto extends ProcessoRecursalDto {
 	
 	public AnaliseRepercussaoGeralDto(ProcessoRecursalDto processo, Boolean temTeseRepercussaoGeral, String observacao, List<TeseDto> teses) {
 		try {
-			BeanUtils.copyProperties(this, processo);
+			BeanUtils.copyProperties(processo, this);
 		} catch (Exception e) {
 			throw new RuntimeException("Não foi possível copiar propriedades do dto do processo.", e);
 		}

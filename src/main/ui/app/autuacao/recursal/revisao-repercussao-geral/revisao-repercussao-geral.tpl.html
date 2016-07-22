@@ -14,11 +14,11 @@
                     <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
 	                    <md-input-container flex>
 	                        <label>Classe Processual</label>
-	                        <input ng-model="revisao.classeProcesso" id="classeProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+	                        <input ng-model="revisao.analise.classe.id" id="classeProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
 	                    </md-input-container>
                         <md-input-container flex>
 	                        <label>Número do processo</label>
-	                        <input ng-model="revisao.numeroProcesso" id="numeroProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+	                        <input ng-model="revisao.analise.numero" id="numeroProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
 	                    </md-input-container>
                     </div>
 					<div class="form-title">Pesquisa de Assuntos</div>
@@ -118,14 +118,14 @@
 							</md-card-title>
 							<md-card-content layout="column">
 		                    	<md-input-container class="md-block">
-									<textarea ng-model="revisao.observacao" placeholder="Informe uma observação da análise do processo." md-maxlength="150" rows="5" md-select-on-focus id="observacao"></textarea>
+									<textarea ng-model="revisao.analise.observacao" placeholder="Informe uma observação da análise do processo." md-maxlength="150" rows="2" md-select-on-focus id="observacao"></textarea>
 								</md-input-container>								
 							</md-card-content>
 						</md-card>
                     </div>
-                    <md-button type="button" class="md-raised md-accent" id="btnRegistrarRevisao" aria-label="Submit" 
-                    	ng-disabled="basicForm.$invalid || basicForm.$pristine" ng-click ="revisao.analisarRepercussaoGeral()" >
-                        	Autuar
+                    <md-button type="button" class="md-raised md-accent" id="revisar-repercussao-geral" aria-label="Submit" 
+                    	ng-click ="revisao.analisarRepercussaoGeral()" command="revisao.cmd">
+                        	Revisar
                     </md-button>
                 </form>
             </div>
