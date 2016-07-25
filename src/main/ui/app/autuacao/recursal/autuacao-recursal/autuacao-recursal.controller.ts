@@ -25,29 +25,22 @@ export class AutuacaoRecursalController {
     public cmdAutuar : AutuarProcessoRecursalCommand = new AutuarProcessoRecursalCommand();
     
     /** @ngInject **/
-    static $inject = ['$state', '$stateParams', 'messagesService', 'app.autuacao.AutuacaoSharedService', 'app.autuacao.recursal.AutuacaoRecursalService'];
+    static $inject = ['$state', '$stateParams', 'messagesService', 'app.autuacao.AutuacaoSharedService', 'app.autuacao.recursal.AutuacaoRecursalService', 'processo'];
     
     constructor(private $state: IStateService, private $stateParams: IStateParamsService, private messagesService: app.support.messaging.MessagesService, private autuacaoService: AutuacaoSharedService,
-    		private autuacaoRecursalService : AutuacaoRecursalService){
+    		private autuacaoRecursalService : AutuacaoRecursalService, public processo){
     	
     	this.cmdAutuar.processoId = $stateParams['informationId'];
+    	if (processo.partes.length > 0){
+    		processo.partes.forEach(parte =>{
+    			if (parte.polo === 'ATIVO'){
+    				this.cmdAutuar.poloAtivo.push(parte);
+    			}else{
+    				this.cmdAutuar.poloPassivo.push(parte);
+    			}
+    		});
+    	}
     	
-/*		this.assuntos.push(new Assunto('4291', 'Jurisdição e Competência', null));
-		this.assuntos.push(new Assunto('10912', 'Medidas Assecuratórias', null));
-		this.teses.push(new Tese(170, 'Recurso extraordinário em que se discute', 1, null, 'REPERCUSSAO_GERAL'));
-    	
-		let parteAtiva = new Parte('JOSÉ DE SOUZA', 2);
-		this.cmdAutuar.poloAtivo.push(parteAtiva);
-		let partePassiva = new Parte('ALINE PEREIRA', 3);
-		this.cmdAutuar.poloPassivo.push(partePassiva);
-		this.processoId = 1;
-	
-       autuacaoService.consultarProcesso(1).then((processo: Processo) => {
-			this.numeroProcesso = processo.numero;
-            this.teses = processo.teses;
-            this.assuntos = processo.assuntos;
-            this.processoId = 1;
-		}); */ 
     }
    
     
@@ -89,7 +82,7 @@ export class AutuacaoRecursalController {
      */
     public autuarProcessoRecursal(){
     	
-    	for (let i  of this.assuntos){
+    	for (let i  of this.processo.assuntos){
     		this.cmdAutuar.assuntos.push(i.codigo);
     	}
     	
@@ -102,5 +95,5 @@ export class AutuacaoRecursalController {
     }
 }
 
-autuacaoRecursal.controller("app.autuacao.autuacao-recursal.AutuacaoRecursalController", AutuacaoRecursalController);
+autuacaoRecursal.controller("app.autuacao.recursal.AutuacaoRecursalController", AutuacaoRecursalController);
 export default autuacaoRecursal;

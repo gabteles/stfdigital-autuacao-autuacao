@@ -3,7 +3,7 @@ import IPromise = angular.IPromise;
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 import Properties = app.support.constants.Properties;
 import cmd = app.support.command;
-import {Tese, Assunto, MotivoInaptidao, TipoTese, API_AUTUACAO_RECURSAL} from "./recursal.model";
+import {Tese, Assunto, MotivoInaptidao, TipoTese, API_AUTUACAO_RECURSAL, ProcessoRecursal} from "./recursal.model";
 import {Processo, Classe, Parte} from "../../shared/autuacao.model";
 import autuacaoRecursal from "../shared/recursal.module";
 
@@ -59,6 +59,13 @@ export class AutuacaoRecursalSharedService {
     	   .then((response: IHttpPromiseCallbackArg<Array<Processo>>) => {
     		   return response.data;
     	   });
+    }
+    
+    public consultarProcessoRecursal(idProcesso : number) : IPromise<Array<ProcessoRecursal>> {
+        return this.$http.get(this.api + "/" + idProcesso)
+           .then((response: IHttpPromiseCallbackArg<Array<ProcessoRecursal>>) => {
+               return response.data;
+           });
     }
     
 }

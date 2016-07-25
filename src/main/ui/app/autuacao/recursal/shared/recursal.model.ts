@@ -24,6 +24,7 @@ export class MotivoInaptidao {
 export interface ProcessoRecursal extends Processo {
 	
     assuntos: Array<Assunto>;
+    teses : Array<Tese>;
 }
 
 export interface AnalisePressupostosFormais extends ProcessoRecursal {

@@ -11,6 +11,7 @@ import br.jus.stf.autuacao.infra.RemessaDto;
 public class ProcessoRecursalDto extends ProcessoDto {
 	
 	private List<AssuntoDto> assuntos;
+	private List<TeseDto> teses;
 	
 	ProcessoRecursalDto(){ } 
 	
@@ -25,4 +26,13 @@ public class ProcessoRecursalDto extends ProcessoDto {
 	public void setAssuntos(List<AssuntoDto> assuntos) {
 		this.assuntos = assuntos;
 	}
+
+	public List<TeseDto> getTeses() {
+		return teses;
+	}
+
+	public void setTeses(List<TeseDto> teses) {
+		this.teses = teses;
+	}
+	
 }
