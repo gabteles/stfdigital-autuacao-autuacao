@@ -47,9 +47,9 @@ export interface AnaliseRepercussaoGeral extends ProcessoRecursal {
 export class AutuarProcessoRecursalCommand implements Command {
     
     public processoId: number;
-    public assuntos: Array<string>;
-    public poloAtivo: Array<Parte> = [];
-    public poloPassivo: Array<Parte> = [];
+    public assuntos: Array<string> = [];
+    public poloAtivo: Array<String> = [];
+    public poloPassivo: Array<String> = [];
     
     constructor() {}
 }

@@ -46,13 +46,12 @@ export class AutuacaoRecursalController {
     
     public adicionarPartePoloAtivo(): void {
         for (let i = 0; i < this.cmdAutuar.poloAtivo.length; i++){
-            if (this.cmdAutuar.poloAtivo[i].apresentacao == this.partePoloAtivo.toUpperCase()){
+            if (this.cmdAutuar.poloAtivo[i] === this.partePoloAtivo.toUpperCase()){
                 this.partePoloAtivo = "";
                 return;
             }
         }
-        let parte = new Parte(this.partePoloAtivo.toUpperCase());
-        this.cmdAutuar.poloAtivo.push(parte);
+        this.cmdAutuar.poloAtivo.push(this.partePoloAtivo.toUpperCase());
         this.partePoloAtivo = "";
     }
     
@@ -62,14 +61,13 @@ export class AutuacaoRecursalController {
     
     public adicionarPartePoloPassivo(): void {
         for (let i = 0; i < this.cmdAutuar.poloPassivo.length; i++){
-            if (this.cmdAutuar.poloPassivo[i].apresentacao == this.partePoloPassivo.toUpperCase()){
+            if (this.cmdAutuar.poloPassivo[i] === this.partePoloPassivo.toUpperCase()){
                 this.partePoloPassivo = "";        
                 return;
             }
         }
         
-        let parte = new Parte(this.partePoloPassivo.toUpperCase())
-        this.cmdAutuar.poloPassivo.push(parte);
+        this.cmdAutuar.poloPassivo.push(this.partePoloPassivo.toUpperCase());
         this.partePoloPassivo = "";
     }
     

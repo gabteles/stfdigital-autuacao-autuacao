@@ -123,13 +123,10 @@
                             </md-select>
                         </md-input-container>
 						<div>
-							<label style="font-size:70%; color: rgba(0,0,0,0.87)">Aptidão</label>
-								<div>
-			                        <input type="radio" ng-model="autuacao.valida" value="true" id="yes" checked> 
-			                        <label for="yes">Válida</label> 
-			                        <input type="radio" ng-model="autuacao.valida" value="false" id="no"> 
-			                        <label for="no">Inválida</label>
-			                    </div>
+							<md-radio-group ng-model="autuacao.valida" layout="row">
+								<md-radio-button value="true" class="md-primary">Válida</md-radio-button>
+								<md-radio-button value="false"> Inválida </md-radio-button>
+							</md-radio-group>
 	                    </div>
                     </div>
 					<div ng-hide="autuacao.valida == 'true'">
