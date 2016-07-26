@@ -27,16 +27,16 @@ export class AutuacaoRecursalController {
     /** @ngInject **/
     static $inject = ['$state', '$stateParams', 'messagesService', 'app.autuacao.AutuacaoSharedService', 'app.autuacao.recursal.AutuacaoRecursalService', 'processo'];
     
-    constructor(private $state: IStateService, private $stateParams: IStateParamsService, private messagesService: app.support.messaging.MessagesService, private autuacaoService: AutuacaoSharedService,
-    		private autuacaoRecursalService : AutuacaoRecursalService, public processo){
+    constructor(private $state: IStateService, private $stateParams: IStateParamsService, private messagesService: app.support.messaging.MessagesService,
+    		private autuacaoRecursalService : AutuacaoRecursalService, public processo : ProcessoRecursal){
     	
     	this.cmdAutuar.processoId = $stateParams['informationId'];
     	if (processo.partes.length > 0){
     		processo.partes.forEach(parte =>{
     			if (parte.polo === 'ATIVO'){
-    				this.cmdAutuar.poloAtivo.push(parte);
+    				this.cmdAutuar.poloAtivo.push(parte.apresentacao);
     			}else{
-    				this.cmdAutuar.poloPassivo.push(parte);
+    				this.cmdAutuar.poloPassivo.push(parte.apresentacao);
     			}
     		});
     	}
@@ -56,7 +56,7 @@ export class AutuacaoRecursalController {
     }
     
     public removerPartePoloAtivo(indice: number): void {
-    	this.cmdAutuar.poloAtivo.splice(indice);
+    	this.cmdAutuar.poloAtivo.splice(indice, 1);
     }
     
     public adicionarPartePoloPassivo(): void {
@@ -72,7 +72,7 @@ export class AutuacaoRecursalController {
     }
     
     public removerPartePoloPassivo(indice: number): void {
-    	this.cmdAutuar.poloPassivo.splice(indice);
+    	this.cmdAutuar.poloPassivo.splice(indice, 1);
     }
     
     /**

@@ -35,21 +35,20 @@ describe('Teste do controlador analise-repercussao-geral.controller', () => {
         };
         mockAssuntos = {
                 assuntos : [new Assunto('4291', 'Jurisdição e Competência'), new Assunto('10912', 'Medidas Assecuratórias')]
-            };
+        };
         mockTipoTeses = {
                
-            };
+        };
         mockProcesso = {
         		numero: 1,
         		classe : {id:'HC'}
-        }
+        };
         mockMessagesService = {
             success: () => {}
         };
         mockStateParams = {
                 informationId: 1
         };
-        
         mockTeses  = [{
         		codigo: 1,
         		descricao: 'teste descricao',
