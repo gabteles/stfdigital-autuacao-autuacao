@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.stf.autuacao.domain.model.ProcessoRepository;
-import br.jus.stf.autuacao.domain.model.classe.ClasseRepository;
-import br.jus.stf.autuacao.domain.model.preferencia.PreferenciaRepository;
+import br.jus.stf.autuacao.domain.model.suportejudicial.ClasseRepository;
+import br.jus.stf.autuacao.domain.model.suportejudicial.PreferenciaRepository;
 import br.jus.stf.autuacao.interfaces.dto.ClasseDto;
 import br.jus.stf.autuacao.interfaces.dto.ClasseDtoAssembler;
 import br.jus.stf.autuacao.interfaces.dto.ParteDto;

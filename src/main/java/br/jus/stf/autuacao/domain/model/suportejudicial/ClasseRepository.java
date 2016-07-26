@@ -1,4 +1,4 @@
-package br.jus.stf.autuacao.domain.model.classe;
+package br.jus.stf.autuacao.domain.model.suportejudicial;
 
 import java.util.List;
 

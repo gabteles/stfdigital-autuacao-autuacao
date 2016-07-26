@@ -27,8 +27,8 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.Validate;
 
-import br.jus.stf.autuacao.domain.model.classe.Classe;
-import br.jus.stf.autuacao.domain.model.preferencia.Preferencia;
+import br.jus.stf.autuacao.domain.model.suportejudicial.Classe;
+import br.jus.stf.autuacao.domain.model.suportejudicial.Preferencia;
 import br.jus.stf.core.framework.domaindrivendesign.AggregateRoot;
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
 import br.jus.stf.core.shared.processo.MeioTramitacao;
