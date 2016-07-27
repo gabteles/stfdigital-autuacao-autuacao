@@ -43,7 +43,6 @@ export class AutuacaoRecursalController {
     	
     }
    
-    
     public adicionarPartePoloAtivo(): void {
         for (let i = 0; i < this.cmdAutuar.poloAtivo.length; i++){
             if (this.cmdAutuar.poloAtivo[i] === this.partePoloAtivo.toUpperCase()){
