@@ -11,8 +11,8 @@ import javax.persistence.OneToOne;
 
 import org.apache.commons.lang3.Validate;
 
-import br.jus.stf.autuacao.domain.model.classe.Classe;
-import br.jus.stf.autuacao.domain.model.preferencia.Preferencia;
+import br.jus.stf.autuacao.domain.model.suportejudicial.Classe;
+import br.jus.stf.autuacao.domain.model.suportejudicial.Preferencia;
 import br.jus.stf.core.shared.processo.MeioTramitacao;
 import br.jus.stf.core.shared.processo.ProcessoId;
 import br.jus.stf.core.shared.processo.Sigilo;

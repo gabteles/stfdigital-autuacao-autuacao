@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.jus.stf.autuacao.domain.model.classe.Classe;
-import br.jus.stf.autuacao.domain.model.classe.ClasseRepository;
+import br.jus.stf.autuacao.domain.model.suportejudicial.Classe;
+import br.jus.stf.autuacao.domain.model.suportejudicial.ClasseRepository;
 import br.jus.stf.core.shared.classe.ClasseId;
 import br.jus.stf.core.shared.processo.TipoProcesso;
 
