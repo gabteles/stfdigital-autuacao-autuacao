@@ -4,6 +4,7 @@ import IStateProvider = angular.ui.IStateProvider;
 import IModule = angular.IModule;
 import Properties = app.support.constants.Properties;
 import cmd = app.support.command;
+import IStateParamsService = angular.ui.IStateParamsService;
 import {AutuacaoSharedService} from "../shared/autuacao.service";
 
 /** @ngInject **/
@@ -21,6 +22,10 @@ function config($stateProvider: IStateProvider, properties: Properties) {
         resolve : {
             classes : ['app.autuacao.AutuacaoSharedService', (autuacaoService: AutuacaoSharedService) => {
                 return autuacaoService.listarClasses();
+            }],
+            processo: ['app.autuacao.AutuacaoSharedService', '$stateParams', (autuacaoService: AutuacaoSharedService, $stateParams : IStateParamsService) => {
+                let protocoloId = $stateParams['informationId'];
+                return autuacaoService.consultarProcesso(protocoloId);
             }]
         },
         params : {

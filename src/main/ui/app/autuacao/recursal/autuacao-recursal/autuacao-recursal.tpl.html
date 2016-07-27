@@ -5,24 +5,24 @@
         <div layout="row">
             <div class="form-wrapper md-whiteframe-1dp" flex="100">
                 <form name="basicForm" class="md-inline-form">
-                     <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
-                     <md-card flex layout="column">
-						<md-card-content layout="column">
-		                    <md-input-container flex>
-		                        <label>Classe Processual</label>
-		                        <input ng-model="autuacao.processo.classe.id" id="classeProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
-		                    </md-input-container>
-		                 </md-card-content>
-		              </md-card>
-		              <md-card flex layout="column">
-						<md-card-content layout="column">		                 
-	                        <md-input-container flex>
-		                        <label>Número do processo</label>
-		                        <input ng-model="autuacao.processo.numero" id="numeroProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
-		                    </md-input-container>
-		               </md-card-content>
-		             </md-card>
-                    </div>
+					<div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
+						<md-card flex layout="column">
+							<md-card-content layout="column">
+                				<md-input-container flex>
+                    				<label>Classe Processual</label>
+                    				<input ng-model="autuacao.processo.classe.id" id="classeProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+								</md-input-container>
+							</md-card-content>
+						</md-card>
+						<md-card flex layout="column">
+							<md-card-content layout="column">		                 
+								<md-input-container flex>
+									<label>Número do processo</label>
+									<input ng-model="autuacao.processo.numero" id="numeroProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+								</md-input-container>
+           					</md-card-content>
+         				</md-card>
+					</div>
                     <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
                         <md-input-container flex>
                             <div class="md-title mt-10">Teses de Repercussão Geral</div>
@@ -97,7 +97,7 @@
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="parte in autuacao.cmdAutuar.poloAtivo">
-											    <td>{{parte.apresentacao | uppercase}}</td>
+											    <td>{{parte | uppercase}}</td>
 											    <td align="right">
                                                     <span class="hint-text small">
                                                         <a href="#" ng-click="autuacao.removerPartePoloAtivo(parte)">Remover</a>
@@ -121,7 +121,7 @@
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="parte in autuacao.cmdAutuar.poloPassivo">
-											    <td>{{parte.apresentacao | uppercase}}</td>
+											    <td>{{parte | uppercase}}</td>
 											    <td align="right">
                                                     <span class="hint-text small">
                                                         <a href="#" ng-click="autuacao.removerPartePoloPassivo(parte)">Remover</a>

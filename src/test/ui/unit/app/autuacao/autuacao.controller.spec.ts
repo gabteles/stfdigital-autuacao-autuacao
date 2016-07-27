@@ -2,7 +2,7 @@ import {AutuacaoOriginarioController} from "autuacao/originario/autuacao-origina
 import {AutuacaoOriginarioService, AutuacaoOriginarioCommand} from "autuacao/originario/autuacao-originario.service";
 import {Classe, Preferencia, Processo} from "autuacao/shared/autuacao.model";
 
-describe('Teste do controlador autuacao.controller', () => {
+describe('Teste do controlador autuacao-originario.controller', () => {
 	
 	let controller : AutuacaoOriginarioController;
 	let $q : ng.IQService;
@@ -10,6 +10,9 @@ describe('Teste do controlador autuacao.controller', () => {
 	let mockState;
 	let mockAutuacaoOriginarioService;
 	let mockMessagesService;
+	let mockStateParams;
+    let mockProcesso
+    let mockClasses;
 	
 	beforeEach(inject((_$q_, _$rootScope_) => {
         $q = _$q_;
@@ -20,15 +23,22 @@ describe('Teste do controlador autuacao.controller', () => {
 		mockState = {
 			go : () => {}
 		};
+		mockStateParams = {
+                informationId: 1
+        };
+		mockProcesso = {
+				
+		};
 		mockAutuacaoOriginarioService = {
 			autuar : () =>{}
 		};
 		mockMessagesService = {
 			success: () => {}
 		};
+		
 		let protocoloId = 123;
 		
-	    controller = new AutuacaoOriginarioController(mockState, mockAutuacaoOriginarioService, [new Classe('HC', 'Habeas Corpus', [new Preferencia(1,'Criminal')])], mockMessagesService);
+	    controller = new AutuacaoOriginarioController(mockState, mockStateParams, mockAutuacaoOriginarioService, [new Classe('HC', 'Habeas Corpus', [new Preferencia(1,'Criminal')])], mockProcesso, mockMessagesService);
 	});
 	
 	

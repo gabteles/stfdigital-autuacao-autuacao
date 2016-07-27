@@ -27,7 +27,7 @@ class ValidadorAutuacao implements cmd.CommandValidator {
 	constructor() {}
 	
 	public isValid(command: AutuarProcessoRecursalCommand): boolean {
-		if (command.poloPassivo.length > 0 && command.poloPassivo.length > 0) {
+		if (command.poloPassivo.length > 0 && command.poloAtivo.length > 0) {
 			return true;
 		}
 		return false;

@@ -2,7 +2,9 @@ import ITranslatePartialLoaderService = angular.translate.ITranslatePartialLoade
 import IStateProvider = angular.ui.IStateProvider;
 import IModule = angular.IModule;
 import Properties = app.support.constants.Properties;
+import IStateParamsService = angular.ui.IStateParamsService;
 import autuacaoRecursal from '../shared/recursal.module';
+import {AutuacaoRecursalSharedService} from "../shared/recursal.service";
 
 /** @ngInject **/
 function config($stateProvider: IStateProvider) {
@@ -15,6 +17,12 @@ function config($stateProvider: IStateProvider) {
                 controller : 'app.autuacao.recursal.AutuacaoCriminalEleitoralController',
                 controllerAs: 'autuacao'
             }
+        },
+        resolve : { 
+            processo: ['app.autuacao.recursal.AutuacaoRecursalSharedService', '$stateParams', (autuacaoRecursalService: AutuacaoRecursalSharedService, $stateParams : IStateParamsService) => {
+                let protocoloId = $stateParams['informationId'];
+                return autuacaoRecursalService.consultarProcessoRecursal(protocoloId);
+            }]
         },
         params : {
             informationId : undefined

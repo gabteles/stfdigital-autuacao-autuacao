@@ -42,7 +42,7 @@ export interface AnaliseRepercussaoGeral extends ProcessoRecursal {
 }
 
 /**
- * Comando usado para autuar um processo recursal.
+ * Comando usado para autuar um processo recursal e o processo recursal criminal/eleitoral.
  */
 export class AutuarProcessoRecursalCommand implements Command {
     

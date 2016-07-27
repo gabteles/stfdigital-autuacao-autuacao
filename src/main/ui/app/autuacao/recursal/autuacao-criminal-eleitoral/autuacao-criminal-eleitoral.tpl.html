@@ -9,100 +9,128 @@
         <div layout="row">
             <div class="form-wrapper md-whiteframe-1dp" flex="100">
                 <form name="basicForm" class="md-inline-form">
-                
-                	<div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
-	                    <md-input-container flex>
-	                        <label>Número do processo</label>
-	                        <input ng-model="autuacao.processo.numero" id="numeroProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
-	                    </md-input-container>
-	                    <md-input-container flex>
-	                        <label>Classe Processual</label>
-	                        <input ng-model="autuacao.processo.classe" id="classeProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
-	                    </md-input-container>
-                    </div>
+					<div class="form-title">Processo</div>
+					<div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
+						<md-card flex layout="column">
+							<md-card-content layout="column">
+                				<md-input-container flex>
+                    				<label>Classe Processual</label>
+                    				<input ng-model="autuacao.processo.classe.id" id="classeProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+								</md-input-container>
+							</md-card-content>
+						</md-card>
+						<md-card flex layout="column">
+							<md-card-content layout="column">		                 
+								<md-input-container flex>
+									<label>Número do processo</label>
+									<input ng-model="autuacao.processo.numero" id="numeroProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+								</md-input-container>
+           					</md-card-content>
+         				</md-card>
+					</div>
                     
                     <div class="form-title">Partes</div>
-                    <div layout="column" layout-gt-sm="row" class="layout-gt-sm-row layout-column">
-                        <md-input-container flex="" class="md-icon-float flex md-default-theme md-input-invalid">
-                            <label>Informe o nome da parte do polo ativo</label>
-                            <input type="text" name="txtPartePoloAtivo" id="txtPoloAtivo" ng-model="autuacao.partePoloAtivo" class="ng-pristine" aria-label="" 
-                            	aria-invalid="true" ng-keydown="$event.which === 13 && autuacao.adicionarPartePoloAtivo()" ng-click= "$event.stopPropagation()">
-                             
-                        </md-input-container>
-                        <md-input-container flex="" class="md-icon-float flex md-default-theme md-input-invalid">    
-                            <label>Informe o nome da parte do polo passivo</label>
-                            <input type="text" name="txtPartePoloPassivo" id="txtPoloPassivo" ng-model="autuacao.partePoloPassivo" class="ng-pristine ng-empty ng-invalid ng-invalid-required 
-                            ng-touched" aria-label="" aria-invalid="true"  ng-keydown="$event.which === 13 && autuacao.adicionarPartePoloPassivo()" ng-click= "$event.stopPropagation()">
-                        </md-input-container>
+                    
+					<div  layout="row" layout-gt-xs="row">
+						<md-card flex layout="column">
+							<md-card-title>
+								<md-card-title-text>
+									<span class="md-headline">Polo Ativo</span>
+									<span class="md-subhead">Informe o nome da parte do polo ativo</span>
+								</md-card-title-text>
+							</md-card-title>
+							<md-card-content layout="column">
+								<div layout="row">
+									<md-input-container flex class="md-block">
+			                            <input type="text" name="txtPartePoloAtivo" id="txtPoloAtivo" ng-model="autuacao.partePoloAtivo" class="ng-pristine" aria-label="" 
+                            				aria-invalid="true" ng-keydown="$event.which === 13 && autuacao.adicionarPartePoloAtivo()" ng-click= "$event.stopPropagation()">
+		                        	</md-input-container>
+                        		</div>
+								<div class="simple-table-container" ng-show="autuacao.cmdAutuar.poloAtivo.length > 0">
+	                                <div class="ms-responsive-table-wrapper">
+	                                    <table class="simple" ms-responsive-table>
+	                                        <thead>
+	                                            <tr>
+	                                                <th>Polo Ativo</th>
+	                                                <th></th>
+	                                            </tr>
+	                                        </thead>
+	                                        <tbody>
+	                                            <tr ng-repeat="parte in autuacao.cmdAutuar.poloAtivo">
+												    <td>{{parte | uppercase}}</td>
+												    <td align="right">
+	                                                    <span class="hint-text small">
+	                                                        <a href="#" ng-click="autuacao.removerPartePoloAtivo(parte)">Remover</a>
+	                                                    </span>
+	                                                </td>
+											    </tr>
+	                                        </tbody>
+	                                    </table>
+	                                </div>
+                   				</div>
+                   			</md-card-content>
+                   		</md-card>
+                   		
+                   		<md-card flex layout="column">
+							<md-card-title flex="nogrow">
+								<md-card-title-text>
+									<span class="md-headline">Polo Passivo</span>
+									<span class="md-subhead">Informe o nome da parte do polo passivo</span>
+								</md-card-title-text>
+							</md-card-title>
+							<md-card-content layout="column">
+								<div layout="row">
+									<md-input-container flex class="md-block">
+			                            <input type="text" name="txtPartePoloPassivo" id="txtPoloPassivo" ng-model="autuacao.partePoloPassivo" 
+			                            	class="ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" aria-label="" aria-invalid="true"  
+			                            	ng-keydown="$event.which === 13 && autuacao.adicionarPartePoloPassivo()" ng-click= "$event.stopPropagation()">
+		                        	</md-input-container>
+                        		</div>
+								<div class="simple-table-container" ng-show="autuacao.cmdAutuar.poloPassivo.length > 0">
+	                                <div class="ms-responsive-table-wrapper">
+	                                    <table class="simple" ms-responsive-table>
+	                                        <thead>
+	                                            <tr>
+	                                                <th>Polo Passivo</th>
+	                                                <th></th>
+	                                            </tr>
+	                                        </thead>
+	                                        <tbody>
+												<tr ng-repeat="parte in autuacao.cmdAutuar.poloPassivo">
+												    <td>{{parte | uppercase}}</td>
+												    <td align="right">
+	                                                    <span class="hint-text small">
+	                                                        <a href="#" ng-click="autuacao.removerPartePoloPassivo(parte)">Remover</a>
+	                                                    </span>
+	                                                </td>
+												</tr>
+	                                        </tbody>
+	                                    </table>
+	                                </div>
+                   				</div>
+                   			</md-card-content>
+                   		</md-card>
                     </div>
                     
-                    <div layout="row">
-                        <md-input-container flex="50" class="md-icon-float flex md-default-theme md-input-invalid" ng-show="autuacao.partesPoloAtivo.length > 0">
-                            <div class="simple-table-container md-whiteframe-4dp">
-                                <div class="ms-responsive-table-wrapper">
-                                    <table class="simple" ms-responsive-table>
-                                        <thead>
-                                            <tr>
-                                                <th>Polo Ativo</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr ng-repeat="parte in autuacao.partesPoloAtivo">
-											    <td>{{parte.apresentacao | uppercase}}</td>
-											    <td align="right">
-                                                    <span class="hint-text small">
-                                                        <a href="#" ng-click="autuacao.removerPartePoloAtivo(parte)">Remover</a>
-                                                    </span>
-                                                </td>
-										    </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </md-input-container>
-                        <md-input-container flex="50" class="md-icon-float flex md-default-theme md-input-invalid" ng-show="autuacao.partesPoloPassivo.length > 0">
-                            <div class="simple-table-container md-whiteframe-4dp">
-                                <div class="ms-responsive-table-wrapper">
-                                    <table class="simple" ms-responsive-table>
-                                        <thead>
-                                            <tr>
-                                                <th>Polo Passivo</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr ng-repeat="parte in autuacao.partesPoloPassivo">
-											    <td>{{parte.apresentacao | uppercase}}</td>
-											    <td align="right">
-                                                    <span class="hint-text small">
-                                                        <a href="#" ng-click="autuacao.removerPartePoloPassivo(parte)">Remover</a>
-                                                    </span>
-                                                </td>
-										    </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </md-input-container>
-                    </div>
-
-                    <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
-                    	<ui-select ng-model="autuacao.assunto" on-select="autuacao.adicionarAssuntoNaLista($item)" theme="select2" ng-disabled="disabled" style="min-width: 600px;" id="assunto">
-						    <ui-select-match placeholder="Selecione o códido ou a descrição do assunto" id="assuntoUiSelect">{{$select.selected.codigo + '-' + $select.selected.descricao}}</ui-select-match>
-						    <ui-select-choices refresh="autuacao.pesquisaAssuntos($select.search)" minimum-input-length="3" repeat="codigo as assunto in autuacao.assuntos" id="assuntoUiChoice">
-						    	<div style="padding-left: {{15 * assunto.nivel}}px"> 
-						    		<div ng-bind-html="assunto.codigo +'-' + assunto.descricao"></div>
-						      	</div>
-						    </ui-select-choices>
-						</ui-select>
-					</div>
-					<div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
-                        <md-input-container flex="50" class="md-icon-float flex md-default-theme md-input-invalid" ng-show="autuacao.assuntosSelecionados.length > 0">
-                            <div class="simple-table-container md-whiteframe-4dp">
-                                <div class="ms-responsive-table-wrapper">
-                                    <table class="simple" ms-responsive-table>
-                                        <thead>
+                    <div class="form-title">Assunto</div>
+                    <div layout="row" layout-gt-xs="row">
+						<md-card flex layout="column">
+							<md-card-content layout="column">
+								<div layout="row">
+									<ui-select ng-model="autuacao.assunto" on-select="autuacao.adicionarAssuntoNaLista($item)" theme="select2" ng-disabled="disabled" style="min-width: 600px;" id="assunto">
+						    			<ui-select-match placeholder="Selecione o códido ou a descrição do assunto" id="assuntoUiSelect">{{$select.selected.codigo + '-' + $select.selected.descricao}}</ui-select-match>
+						    			<ui-select-choices refresh="autuacao.pesquisaAssuntos($select.search)" minimum-input-length="3" repeat="codigo as assunto in autuacao.assuntos" id="assuntoUiChoice">
+						    				<div style="padding-left: {{15 * assunto.nivel}}px"> 
+						    					<div ng-bind-html="assunto.codigo +'-' + assunto.descricao"></div>
+						      				</div>
+						    			</ui-select-choices>
+									</ui-select>
+								</div>
+								</br>
+								<div class="simple-table-container" ng-show="autuacao.assuntosSelecionados.length > 0">
+									<div class="ms-responsive-table-wrapper">
+	                                    <table class="simple" ms-responsive-table>
+	                                    	<thead>
                                             <tr>
                                             	<th>Código</th>
                                                 <th>Descrição</th>
@@ -120,13 +148,15 @@
                                                 </td>
 										    </tr>
                                         </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </md-input-container>
-                    </div>
-                    <md-button type="button" class="md-raised md-accent" id="btnRegistrarAutuacao" 
-                    	ng-disabled="basicForm.$invalid || basicForm.$pristine" ng-click ="autuacao.autuarCriminalEleitoral()" >
+	                                    </table>
+	                                 </div>
+								</div>
+							</md-card-content>
+						</md-card>
+					</div>
+
+                    <md-button type="button" class="md-raised md-accent" id="autuar-recursal-criminal-eleitoral" 
+                    	 ng-click ="autuacao.autuarCriminalEleitoral()" command="autuacao.cmdAutuar">
                         	Autuar
                     </md-button>
                       

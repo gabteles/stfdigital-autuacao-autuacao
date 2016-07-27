@@ -11,8 +11,9 @@ export class AutuacaoCriminalEleitoralService {
     private api: string;
 
     /** @ngInject **/
-    constructor(private $http: IHttpService, properties: Properties) { 
+    constructor(private $http: IHttpService, properties : Properties, commandService: cmd.CommandService) { 
     	this.api = properties.apiUrl.concat(API_AUTUACAO_RECURSAL);
+    	commandService.setValidator('autuar-recursal-criminal-eleitoral', new ValidadorAutuacao());
     }
 
     /**
@@ -23,6 +24,17 @@ export class AutuacaoCriminalEleitoralService {
         return this.$http.post(this.api + '/autuacao-criminal-eleitoral', command);
     }   
     
+}
+class ValidadorAutuacao implements cmd.CommandValidator {
+    
+    constructor() {}
+    
+    public isValid(command: AutuarProcessoRecursalCommand): boolean {
+        if (command.poloPassivo.length > 0 && command.poloAtivo.length > 0) {
+            return true;
+        }
+        return false;
+    }
 }
 
 autuacaoRecursal.service('app.autuacao.recursal.AutuacaoCriminalEleitoralService', AutuacaoCriminalEleitoralService);
