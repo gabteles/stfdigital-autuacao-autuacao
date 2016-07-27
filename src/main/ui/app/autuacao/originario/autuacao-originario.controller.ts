@@ -1,12 +1,9 @@
-/**
- * @author Viniciusk
- */
 import IStateService = angular.ui.IStateService;
-import IStateParamService = angular.ui.IStateParamsService;
+import IStateParamsService = angular.ui.IStateParamsService;
 import IPromise = angular.IPromise;
 import MessagesService = app.support.messaging.MessagesService;
 import {AutuacaoOriginarioCommand, AutuacaoOriginarioService} from "./autuacao-originario.service";
-import {Parte} from "../shared/autuacao.model";
+import {Parte, Processo} from "../shared/autuacao.model";
 import autuacaoOriginario from "./autuacao-originario.module";
 
 
@@ -14,19 +11,18 @@ export class AutuacaoOriginarioController {
 	
 	public partePoloAtivo: string;
 	public partePoloPassivo: string;
-	public processo : Object = {};
 	public valida : boolean;
-	public processoId : number;
 
 	public cmdAutuar : AutuacaoOriginarioCommand = new AutuacaoOriginarioCommand();
 	
-	static $inject = ['$state', 'app.autuacao.originario.AutuacaoOriginarioService', 'classes',  'messagesService'];
+	static $inject = ['$state', '$stateParams', 'app.autuacao.originario.AutuacaoOriginarioService', 'classes',  'processo', 'messagesService'];
 	
-    constructor(private $state: IStateService, private autuacaoOriginarioService: AutuacaoOriginarioService,
-            public classes, private messagesService: MessagesService ) {
-    		this.valida = true;
-    		
-    		//consulta o processo aqui!!!
+    constructor(private $state: IStateService, private $stateParams: IStateParamsService, private autuacaoOriginarioService: AutuacaoOriginarioService,
+            public classes, public processo : Processo, private messagesService: MessagesService ) {
+    	
+        this.valida = true;
+        this.cmdAutuar.processoId = $stateParams['informationId'];
+
     }
     
     public adicionarPartePoloAtivo(): void {
