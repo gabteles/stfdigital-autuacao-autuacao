@@ -5,28 +5,43 @@
         <div layout="row">
             <div class="form-wrapper md-whiteframe-1dp" flex="100">
                 <form name="basicForm" class="md-inline-form">
-                    <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
-                        <md-input-container flex="40" >
-                       		<label>Classificação</label>
-                            <md-switch ng-model="revisao.cmd.processoApto" aria-label="Classificacao" class="md-warn md-block" id="classificacao">
-    							{{ revisao.cmd.processoApto ? 'Apto' : 'Inapto' }}
-  							</md-switch>
-                        </md-input-container>
-                        <md-input-container flex="60" ng-show="!revisao.cmd.processoApto">
-                            <label>Motivos de Inaptidão</label>
-                             <md-select multiple ng-model="revisao.cmd.motivosInaptidao" id="cboMotivo">
-                                <md-option ng-repeat="motivoInaptidao in revisao.motivosInaptidao" value="{{motivoInaptidao.codigo}}">
-                                    {{motivoInaptidao.descricao}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-                    </div>                    
-                   <div ng-show="!revisao.cmd.processoApto">
-						<md-input-container class="md-block">
-          					<label>Informe uma observação da análise do processo.</label>
-          					<textarea ng-model="revisao.cmd.observacao" md-maxlength="150" rows="2" md-select-on-focus id="observacao"></textarea>
-        				</md-input-container>
-                    </div>
+                
+                <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
+					<md-card flex layout="column">
+						<md-card-content layout="column">
+               				<md-input-container flex>
+	                       		<label>Classificação</label>
+	                            <md-switch ng-model="revisao.cmd.processoApto" aria-label="Classificacao" id="classificacao">
+	    							{{ revisao.cmd.processoApto ? 'Apto' : 'Inapto' }}
+	  							</md-switch>
+							</md-input-container>
+						</md-card-content>
+					</md-card>
+					<md-card flex layout="column" ng-show="!revisao.cmd.processoApto">
+						<md-card-content layout="column">		                 
+							<md-input-container flex>
+	                            <label>Motivos de Inaptidão</label>
+	                             <md-select multiple ng-model="revisao.cmd.motivosInaptidao" id="cboMotivo">
+	                                <md-option ng-repeat="motivoInaptidao in revisao.motivosInaptidao" value="{{motivoInaptidao.codigo}}">
+	                                    {{motivoInaptidao.descricao}}
+	                                </md-option>
+	                            </md-select>
+							</md-input-container>
+          					</md-card-content>
+        				</md-card>
+				</div>
+					
+                <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row"  ng-show="!revisao.cmd.processoApto">
+					<md-card flex layout="column">
+						<md-card-content layout="column">
+               				<md-input-container flex>
+	          					<label>Informe uma observação da análise do processo.</label>
+	          					<textarea ng-model="revisao.cmd.observacao" md-maxlength="150" rows="2" md-select-on-focus id="observacao"></textarea>
+							</md-input-container>
+						</md-card-content>
+					</md-card>
+				</div>					
+                
                     <md-button type="button" class="md-raised md-accent" id="revisar-pressupostos-formais" aria-label="Submit" 
                     	ng-click ="revisao.revisarAnalisePressupostos()" command="revisao.cmd">
                         	Revisar Análise de Pressupostos
