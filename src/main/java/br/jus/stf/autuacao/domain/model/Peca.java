@@ -48,6 +48,10 @@ public class Peca extends ValueObjectSupport<Peca> {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param tipo
+	 * @param documento
+	 */
 	public Peca(TipoPeca tipo, DocumentoId documento) {
 		Validate.notNull(tipo, "Tipo requerido.");
 		Validate.notNull(documento, "Documento requerido.");
@@ -57,18 +61,30 @@ public class Peca extends ValueObjectSupport<Peca> {
 		this.descricao = tipo.nome();
 	}
 	
+	/**
+	 * @return
+	 */
 	public Long toLong() {
 		return id;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String descricao() {
 		return descricao;
 	}
 	
+	/**
+	 * @return
+	 */
 	public TipoPeca tipo() {
 		return tipo;
 	}
 	
+	/**
+	 * @return
+	 */
 	public DocumentoId documento() {
 		return documento;
 	}
