@@ -10,7 +10,7 @@ import br.jus.stf.autuacao.domain.model.Processo;
 import br.jus.stf.autuacao.domain.model.ProcessoOriginario;
 import br.jus.stf.autuacao.domain.model.ProcessoRecursal;
 import br.jus.stf.autuacao.domain.model.Status;
-import br.jus.stf.autuacao.domain.model.controletese.Assunto;
+import br.jus.stf.autuacao.domain.model.suportejudicial.Assunto;
 import br.jus.stf.autuacao.domain.model.suportejudicial.Classe;
 import br.jus.stf.autuacao.domain.model.suportejudicial.Preferencia;
 import br.jus.stf.core.shared.processo.MeioTramitacao;

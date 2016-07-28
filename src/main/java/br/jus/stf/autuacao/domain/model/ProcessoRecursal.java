@@ -17,10 +17,10 @@ import javax.persistence.OneToMany;
 
 import org.apache.commons.lang3.Validate;
 
-import br.jus.stf.autuacao.domain.model.controletese.Assunto;
-import br.jus.stf.autuacao.domain.model.controletese.Tese;
+import br.jus.stf.autuacao.domain.model.suportejudicial.Assunto;
 import br.jus.stf.autuacao.domain.model.suportejudicial.Classe;
 import br.jus.stf.autuacao.domain.model.suportejudicial.Preferencia;
+import br.jus.stf.autuacao.domain.model.suportejudicial.Tese;
 import br.jus.stf.core.shared.processo.MeioTramitacao;
 import br.jus.stf.core.shared.processo.ProcessoId;
 import br.jus.stf.core.shared.processo.Sigilo;

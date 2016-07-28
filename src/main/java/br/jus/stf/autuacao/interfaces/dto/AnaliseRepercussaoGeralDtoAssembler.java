@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import br.jus.stf.autuacao.domain.model.ProcessoRecursal;
-import br.jus.stf.autuacao.domain.model.controletese.Tese;
+import br.jus.stf.autuacao.domain.model.suportejudicial.Tese;
 
 @Component
 public class AnaliseRepercussaoGeralDtoAssembler {

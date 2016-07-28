@@ -15,7 +15,7 @@ import br.jus.stf.autuacao.domain.model.Parte;
 import br.jus.stf.autuacao.domain.model.Processo;
 import br.jus.stf.autuacao.domain.model.ProcessoOriginario;
 import br.jus.stf.autuacao.domain.model.ProcessoRecursal;
-import br.jus.stf.autuacao.domain.model.controletese.Assunto;
+import br.jus.stf.autuacao.domain.model.suportejudicial.Assunto;
 import br.jus.stf.autuacao.infra.RemessaDto;
 
 /**

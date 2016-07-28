@@ -1,4 +1,4 @@
-package br.jus.stf.autuacao.domain.model.controletese;
+package br.jus.stf.autuacao.domain.model.suportejudicial;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
@@ -22,6 +22,12 @@ import org.apache.commons.lang3.Validate;
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
 import br.jus.stf.core.shared.controletese.TeseId;
 
+/**
+ * @author Rafael Alencar
+ * 
+ * @since 1.0.0
+ * @since 17.05.2016
+ */
 @Entity
 @Table(name = "TESE", schema = "AUTUACAO")
 public class Tese extends EntitySupport<Tese, TeseId> {
@@ -43,12 +49,18 @@ public class Tese extends EntitySupport<Tese, TeseId> {
 	@JoinTable(name = "TESE_ASSUNTO", schema = "AUTUACAO",
 		joinColumns = @JoinColumn(name = "SEQ_TESE", nullable = false),
 		inverseJoinColumns = @JoinColumn(name = "COD_ASSUNTO", nullable = false))
-	private Set<Assunto> assuntos = new HashSet<Assunto>(0);
+	private Set<Assunto> assuntos = new HashSet<>(0);
 	
 	public Tese() {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param id
+	 * @param descricao
+	 * @param tipo
+	 * @param numero
+	 */
 	public Tese(TeseId id, String descricao, TipoTese tipo, Long numero) {
 		Validate.notNull(id, "Identificador requerido.");
 		Validate.notBlank(descricao, "Descrição requerida.");
@@ -61,18 +73,30 @@ public class Tese extends EntitySupport<Tese, TeseId> {
 		this.numero = numero;
 	}
 	
+	/**
+	 * @return
+	 */
 	public TipoTese tipo() {
 		return tipo;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Set<Assunto> assuntos() {
 		return Collections.unmodifiableSet(assuntos);
 	}
 	
+	/**
+	 * @return
+	 */
 	public String descricao() {
 		return descricao;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Long numero() {
 		return numero;
 	}

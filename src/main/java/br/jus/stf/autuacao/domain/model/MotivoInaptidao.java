@@ -9,6 +9,11 @@ import org.apache.commons.lang3.Validate;
 
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
 
+/**
+ * @author Rafael Alencar
+ *
+ * @since 16.05.2016
+ */
 @Entity
 @Table(name = "MOTIVO_INAPTIDAO", schema = "AUTUACAO")
 public class MotivoInaptidao extends EntitySupport<MotivoInaptidao, Long> {
@@ -24,6 +29,10 @@ public class MotivoInaptidao extends EntitySupport<MotivoInaptidao, Long> {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param codigo
+	 * @param descricao
+	 */
 	public MotivoInaptidao(final Long codigo, final String descricao) {
 		Validate.notNull(codigo, "Código requerido.");
 		Validate.notBlank(descricao, "Descrição requerida.");
@@ -42,6 +51,9 @@ public class MotivoInaptidao extends EntitySupport<MotivoInaptidao, Long> {
 		return String.format("%d - %s", codigo, descricao);
 	}
 
+	/**
+	 * @return
+	 */
 	public String descricao() {
 		return descricao;
 	}

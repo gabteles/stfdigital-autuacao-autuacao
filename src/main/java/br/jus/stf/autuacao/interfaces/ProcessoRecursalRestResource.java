@@ -28,8 +28,8 @@ import br.jus.stf.autuacao.application.commands.RevisarPressupostosFormaisComman
 import br.jus.stf.autuacao.application.commands.RevisarRepercussaoGeralCommand;
 import br.jus.stf.autuacao.domain.model.ProcessoRecursal;
 import br.jus.stf.autuacao.domain.model.ProcessoRepository;
-import br.jus.stf.autuacao.domain.model.controletese.TeseRepository;
-import br.jus.stf.autuacao.domain.model.controletese.TipoTese;
+import br.jus.stf.autuacao.domain.model.suportejudicial.TeseRepository;
+import br.jus.stf.autuacao.domain.model.suportejudicial.TipoTese;
 import br.jus.stf.autuacao.interfaces.dto.AnalisePressupostosFormaisDto;
 import br.jus.stf.autuacao.interfaces.dto.AnalisePressupostosFormaisDtoAssembler;
 import br.jus.stf.autuacao.interfaces.dto.AnaliseRepercussaoGeralDto;

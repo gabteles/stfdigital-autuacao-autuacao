@@ -1,4 +1,4 @@
-package br.jus.stf.autuacao.domain.model.controletese;
+package br.jus.stf.autuacao.domain.model.suportejudicial;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
