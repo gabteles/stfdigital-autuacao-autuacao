@@ -25,7 +25,7 @@ export class AutuacaoOriginarioService {
     /** @ngInject **/
     constructor(private $http: IHttpService, private properties : Properties, commandService: cmd.CommandService) {
     	this.api = properties.apiUrl.concat('/autuacao/api/processos/originario');
-    	commandService.setValidator('preautuar-recursal', new ValidadorAutuacao());
+    	commandService.setValidator('autuar-originario', new ValidadorAutuacao());
     }
 
     public autuar(cmd: AutuacaoOriginarioCommand): IPromise<any> {

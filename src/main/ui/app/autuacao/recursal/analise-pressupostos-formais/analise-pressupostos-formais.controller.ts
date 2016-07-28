@@ -19,6 +19,7 @@ export class AnalisePressupostosFormaisController {
     		    private analiseService: AnalisePressupostosFormaisService,
     		    public motivosInaptidao: Array<MotivoInaptidao>, private messagesService: app.support.messaging.MessagesService) {
     	this.cmd.processoId = $stateParams['informationId'];
+    	this.cmd.processoApto = true;
     }
     
 	public registrarAnalise(): void {

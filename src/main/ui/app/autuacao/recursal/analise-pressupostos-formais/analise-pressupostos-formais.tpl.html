@@ -9,32 +9,47 @@
         <div layout="row">
             <div class="form-wrapper md-whiteframe-1dp" flex="100">
                 <form name="basicForm" class="md-inline-form">
-                    <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
-                        <md-input-container flex="40" >
-                       		<label>Classificação *</label>
-                            <md-switch ng-model="analise.cmd.processoApto" aria-label="Classificação" class="md-warn md-block" id="classificacao">
-    							{{ analise.cmd.processoApto ? 'Apto' : 'Inapto' }}
-  							</md-switch>
-                        </md-input-container>
-                        <md-input-container flex="60" ng-show="!analise.cmd.processoApto">
-                            <label>Motivo *</label>
-                            <md-select multiple ng-model="analise.cmd.motivosInaptidao" id="motivoInaptidao">
-                                <md-option ng-repeat="motivoInaptidao in analise.motivosInaptidao" value="{{motivoInaptidao.codigo}}">
-                                    {{motivoInaptidao.descricao}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-                    </div>
-                    <div ng-show="!analise.cmd.processoApto">
-						<md-input-container class="md-block">
-          					<label>Informe uma observação da análise do processo.</label>
-          					<textarea ng-model="analise.cmd.observacao" md-maxlength="150" rows="2" md-select-on-focus id="observacao"></textarea>
-        				</md-input-container>
-                    </div>
-                    <md-button type="button" class="md-raised md-accent" id="analisar-pressupostos-formais" aria-label="Submit"
-                    	command="analise.cmd" ng-click ="analise.registrarAnalise()">
-                        	Finalizar
-                    </md-button>
+                
+                <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
+					<md-card flex layout="column">
+						<md-card-content layout="column">
+               				<md-input-container>
+	                       		<label>Classificação *</label>
+	                            <md-switch ng-model="analise.cmd.processoApto" aria-label="Classificação"  id="classificacao">
+	    							{{ analise.cmd.processoApto ? 'Apto' : 'Inapto' }}
+	  							</md-switch>
+							</md-input-container>
+						</md-card-content>
+					</md-card>
+					<md-card flex layout="column" ng-show="!analise.cmd.processoApto">
+						<md-card-content layout="column">		                 
+							<md-input-container flex>
+	                            <label>Motivo *</label>
+	                            <md-select multiple ng-model="analise.cmd.motivosInaptidao" id="motivoInaptidao">
+	                                <md-option ng-repeat="motivoInaptidao in analise.motivosInaptidao" value="{{motivoInaptidao.codigo}}">
+	                                    {{motivoInaptidao.descricao}}
+	                                </md-option>
+	                            </md-select>
+							</md-input-container>
+          					</md-card-content>
+        				</md-card>
+				</div>
+				
+                <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row" ng-show="!analise.cmd.processoApto">
+					<md-card flex layout="column">
+						<md-card-content layout="column">
+               				<md-input-container>
+								<label>Informe uma observação da análise do processo.</label>
+          						<textarea ng-model="analise.cmd.observacao" md-maxlength="150" rows="2" md-select-on-focus id="observacao"></textarea>
+							</md-input-container>
+						</md-card-content>
+					</md-card>
+				</div>				
+					
+                <md-button type="button" class="md-raised md-accent" id="analisar-pressupostos-formais" aria-label="Submit"
+                	command="analise.cmd" ng-click ="analise.registrarAnalise()">
+                    	Finalizar
+                </md-button>
                 </form>
             </div>
         </div>
