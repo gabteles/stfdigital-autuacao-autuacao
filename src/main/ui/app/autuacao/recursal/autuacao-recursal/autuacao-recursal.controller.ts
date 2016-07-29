@@ -25,13 +25,14 @@ export class AutuacaoRecursalController {
     public cmdAutuar : AutuarProcessoRecursalCommand = new AutuarProcessoRecursalCommand();
     
     /** @ngInject **/
-    static $inject = ['$state', '$stateParams', 'messagesService', 'app.autuacao.AutuacaoSharedService', 'app.autuacao.recursal.AutuacaoRecursalService', 'processo'];
+    static $inject = ['$state', '$stateParams', 'messagesService', 'app.autuacao.recursal.AutuacaoRecursalService', 'processo'];
     
     constructor(private $state: IStateService, private $stateParams: IStateParamsService, private messagesService: app.support.messaging.MessagesService,
     		private autuacaoRecursalService : AutuacaoRecursalService, public processo : ProcessoRecursal){
     	
     	this.cmdAutuar.processoId = $stateParams['informationId'];
-    	if (processo.partes.length > 0){
+    	
+    	if (processo.partes != undefined){
     		processo.partes.forEach(parte =>{
     			if (parte.polo === 'ATIVO'){
     				this.cmdAutuar.poloAtivo.push(parte.apresentacao);
