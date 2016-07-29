@@ -17,7 +17,4 @@ public class TipoTeseDto {
 	public String getNome() {
 		return nome;
 	}
-	
-	
-
 }
