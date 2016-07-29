@@ -14,8 +14,8 @@ import javax.persistence.OneToMany;
 
 import org.apache.commons.lang3.Validate;
 
-import br.jus.stf.autuacao.domain.model.controletese.Tese;
-import br.jus.stf.autuacao.domain.model.controletese.TipoTese;
+import br.jus.stf.autuacao.domain.model.suportejudicial.Tese;
+import br.jus.stf.autuacao.domain.model.suportejudicial.TipoTese;
 import br.jus.stf.core.framework.domaindrivendesign.ValueObjectSupport;
 
 /**

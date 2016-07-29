@@ -9,7 +9,7 @@ import java.util.Set;
 import org.apache.commons.lang.Validate;
 import org.springframework.stereotype.Component;
 
-import br.jus.stf.autuacao.domain.model.controletese.Assunto;
+import br.jus.stf.autuacao.domain.model.suportejudicial.Assunto;
 
 /**
  * 

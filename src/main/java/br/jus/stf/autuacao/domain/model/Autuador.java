@@ -28,6 +28,10 @@ public class Autuador extends ValueObjectSupport<Autuador> {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param login
+	 * @param pessoa
+	 */
 	public Autuador(String login, PessoaId pessoa) {
 		Validate.notBlank(login, "Login requerido.");
 		Validate.notNull(pessoa, "Pessoa requerida.");
@@ -36,10 +40,16 @@ public class Autuador extends ValueObjectSupport<Autuador> {
 		this.pessoa = pessoa;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String login() {
 		return login;
 	}
 	
+	/**
+	 * @return
+	 */
 	public PessoaId pessoa() {
 		return pessoa;
 	}

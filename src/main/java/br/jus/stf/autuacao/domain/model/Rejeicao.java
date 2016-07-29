@@ -30,6 +30,10 @@ public class Rejeicao extends ValueObjectSupport<Rejeicao> {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
+	/**
+	 * @param processo
+	 * @param motivo
+	 */
 	public Rejeicao(ProcessoId processo, String motivo) {
 		Validate.notNull(processo, "Processo requerido.");
 		Validate.notBlank(motivo, "Motivo requerido.");
@@ -38,10 +42,16 @@ public class Rejeicao extends ValueObjectSupport<Rejeicao> {
 		this.motivo = motivo;
 	}
 	
+	/**
+	 * @return
+	 */
 	public ProcessoId processo() {
 		return processo;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String motivo() {
 		return motivo;
 	}

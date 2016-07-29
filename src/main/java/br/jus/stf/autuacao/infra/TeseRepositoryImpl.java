@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Repository;
 
-import br.jus.stf.autuacao.domain.model.controletese.Assunto;
-import br.jus.stf.autuacao.domain.model.controletese.Tese;
-import br.jus.stf.autuacao.domain.model.controletese.TeseRepository;
-import br.jus.stf.autuacao.domain.model.controletese.TipoTese;
+import br.jus.stf.autuacao.domain.model.suportejudicial.Assunto;
+import br.jus.stf.autuacao.domain.model.suportejudicial.Tese;
+import br.jus.stf.autuacao.domain.model.suportejudicial.TeseRepository;
+import br.jus.stf.autuacao.domain.model.suportejudicial.TipoTese;
 import br.jus.stf.core.shared.controletese.AssuntoId;
 import br.jus.stf.core.shared.controletese.TeseId;
 

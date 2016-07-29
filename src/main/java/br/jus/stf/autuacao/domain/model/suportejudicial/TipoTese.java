@@ -1,4 +1,4 @@
-package br.jus.stf.autuacao.domain.model.controletese;
+package br.jus.stf.autuacao.domain.model.suportejudicial;
 
 /**
  * @author Rafael Alencar
@@ -18,6 +18,9 @@ public enum TipoTese {
 		this.descricao = descricao;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String descricao() {
 		return descricao;
 	}

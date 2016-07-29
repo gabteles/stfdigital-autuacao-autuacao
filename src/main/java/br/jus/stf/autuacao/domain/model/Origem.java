@@ -46,7 +46,7 @@ public class Origem extends ValueObjectSupport<Origem> {
 	
 	@Column(name = "FLG_PRINCIPAL")
 	@Type(type = "yes_no")
-	private boolean origemPrincipal;
+	private Boolean origemPrincipal;
 	
 	public Origem() {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
@@ -59,7 +59,7 @@ public class Origem extends ValueObjectSupport<Origem> {
 	 * @param origemPrincipal
 	 */
 	public Origem(UnidadeFederacao procedenciaGeografica, TribunalJuizo tribunalJuizo, Long numeroProcesso,
-			boolean origemPrincipal) {
+			Boolean origemPrincipal) {
 		Validate.notNull(procedenciaGeografica, "Procedência geográfica requerida.");
 		Validate.notNull(tribunalJuizo, "Tribunal de juízo requerido.");
 		Validate.notNull(numeroProcesso, "Número do processo requerido.");
@@ -80,7 +80,7 @@ public class Origem extends ValueObjectSupport<Origem> {
 	/**
 	 * @return
 	 */
-	public boolean origemPrincipal() {
+	public Boolean origemPrincipal() {
 		return origemPrincipal;
 	}
 
