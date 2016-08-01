@@ -57,6 +57,17 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+    public void naoDeveAnalisarPressupostosFormaisSemProcesso() throws Exception {
+		JsonObject processoJson = object(
+				field("processoApto", true),
+				field("observacao", "Análise apta.")
+		);
+		ResultActions result = mockMvc.perform(post("/api/processos/recursal/analise-pressupostos-formais").contentType(APPLICATION_JSON).content(processoJson.toString()));
+		
+		result.andExpect(status().isBadRequest());
+    }
+	
+	@Test
 	public void analiseComRepercussaoGeral() throws Exception {
 		loadDataTests("analisarComRepercussaoGeral.sql");
 
@@ -70,6 +81,18 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
 		
 		result.andExpect(status().isOk());
 	}
+	
+	@Test
+    public void naoDeveAnalisarRepercussaoGeralSemProcesso() throws Exception {
+		JsonObject processoJson = object(
+				field("teses", array(170)),
+				field("assuntos", array("10912","4291")),
+				field("repercussaoGeral", true)
+		);
+		ResultActions result = mockMvc.perform(post("/api/processos/recursal/analise-repercussao-geral").contentType(APPLICATION_JSON).content(processoJson.toString()));
+		
+		result.andExpect(status().isBadRequest());
+    }
 	
 	@Test
 	public void revisarRepercussaoGeral() throws Exception {
@@ -87,6 +110,18 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+    public void naoDeveRevisarRepercussaoGeralSemProcesso() throws Exception {
+		JsonObject processoJson = object(
+				field("teses", array(170)),
+				field("assuntos", array("10912","4291")),
+				field("observacao", "Tema de repercussão geral reconhecido.")
+		);
+		ResultActions result = mockMvc.perform(post("/api/processos/recursal/revisao-repercussao-geral").contentType(APPLICATION_JSON).content(processoJson.toString()));
+		
+		result.andExpect(status().isBadRequest());
+    }
+	
+	@Test
 	public void autuarRecursal() throws Exception {
 		loadDataTests("autuarRecursal.sql");
 
@@ -100,6 +135,18 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
 		
 		result.andExpect(status().isOk());
 	}
+	
+	@Test
+    public void naoDeveAutuarRecursalSemProcesso() throws Exception {
+		JsonObject processoJson = object(
+				field("poloAtivo", array("Pedro", "Paula")),
+				field("poloPassivo", array("Joana")),
+				field("assuntos", array("10912","4291"))
+		);
+		ResultActions result = mockMvc.perform(post("/api/processos/recursal/autuacao").contentType(APPLICATION_JSON).content(processoJson.toString()));
+		
+		result.andExpect(status().isBadRequest());
+    }
 	
 	@Test
 	public void analiseSemRepercussaoGeral() throws Exception {
@@ -161,6 +208,18 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+    public void naoDeveRevisarPressupostosFormaisSemProcesso() throws Exception {
+		JsonObject processoJson = object(
+				field("processoApto", false),
+				field("motivosInaptidao", array(6)),
+				field("observacao", "Inaptidão mantida após revisão.")
+		);
+		ResultActions result = mockMvc.perform(post("/api/processos/recursal/revisao-pressupostos-formais").contentType(APPLICATION_JSON).content(processoJson.toString()));
+		
+		result.andExpect(status().isBadRequest());
+    }
+	
+	@Test
 	public void autuarCriminalEleitoral() throws Exception {
 		loadDataTests("autuarCriminalEleitoral.sql");
 
@@ -174,5 +233,17 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
 		
 		result.andExpect(status().isOk());
 	}
+	
+	@Test
+    public void naoDeveAutuarCriminalEleitoralSemProcesso() throws Exception {
+		JsonObject processoJson = object(
+				field("poloAtivo", array("Maria", "José")),
+				field("poloPassivo", array("Joaquim")),
+				field("assuntos", array("5555","5865"))
+		);
+		ResultActions result = mockMvc.perform(post("/api/processos/recursal/autuacao-criminal-eleitoral").contentType(APPLICATION_JSON).content(processoJson.toString()));
+		
+		result.andExpect(status().isBadRequest());
+    }
 	
 }
