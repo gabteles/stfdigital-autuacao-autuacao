@@ -14,6 +14,12 @@ public class AnalisePressupostosFormaisDto extends ProcessoRecursalDto {
 	private String observacao;
 	private List<MotivoInaptidaoDto> motivosInaptidao;
 	
+	/**
+	 * @param processo
+	 * @param processoApto
+	 * @param observacao
+	 * @param motivosInaptidao
+	 */
 	public AnalisePressupostosFormaisDto(ProcessoRecursalDto processo, Boolean processoApto, String observacao, List<MotivoInaptidaoDto> motivosInaptidao) {
 		try {
 			BeanUtils.copyProperties(processo, this);

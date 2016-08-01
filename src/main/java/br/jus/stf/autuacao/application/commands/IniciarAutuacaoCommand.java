@@ -36,6 +36,14 @@ public class IniciarAutuacaoCommand {
     @ApiModelProperty(value = "Sinaliza se o processo é ou não criminal/eleitoral.", required=true)
     private Boolean criminalEleitoral;
     
+    /**
+     * @param protocoloId
+     * @param classeId
+     * @param tipoProcesso
+     * @param meioTramitacao
+     * @param sigilo
+     * @param criminalEleitoral
+     */
     public IniciarAutuacaoCommand(Long protocoloId, String classeId, String tipoProcesso, String meioTramitacao, String sigilo, Boolean criminalEleitoral) {
         this.protocoloId = protocoloId;
         this.classeId = classeId;

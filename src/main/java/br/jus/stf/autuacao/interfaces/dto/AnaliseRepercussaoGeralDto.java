@@ -14,6 +14,12 @@ public class AnaliseRepercussaoGeralDto extends ProcessoRecursalDto {
 	private String observacao;
 	private List<TeseDto> teses;
 	
+	/**
+	 * @param processo
+	 * @param temTeseRepercussaoGeral
+	 * @param observacao
+	 * @param teses
+	 */
 	public AnaliseRepercussaoGeralDto(ProcessoRecursalDto processo, Boolean temTeseRepercussaoGeral, String observacao, List<TeseDto> teses) {
 		try {
 			BeanUtils.copyProperties(processo, this);
@@ -33,6 +39,7 @@ public class AnaliseRepercussaoGeralDto extends ProcessoRecursalDto {
 		return observacao;
 	}
 	
+	@Override
 	public List<TeseDto> getTeses() {
 		return teses;
 	}
