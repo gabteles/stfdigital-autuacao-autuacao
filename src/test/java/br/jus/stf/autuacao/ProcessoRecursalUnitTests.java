@@ -223,9 +223,9 @@ public class ProcessoRecursalUnitTests {
 		partes.add(parte);
 		
 		Set<Origem> origens = new HashSet<>(0);
-		UnidadeFederacao pernambuco = new UnidadeFederacao(1L, "Pernambuco", "PE", new Pais(1L, "Brasil"));
+		UnidadeFederacao pernambuco = new UnidadeFederacao(16L, "Pernambuco", "PE", new Pais(1L, "Brasil"));
 		Origem origem = new Origem(pernambuco,
-				new TribunalJuizo(1L, "TJPE", new HashSet<UnidadeFederacao>(Arrays.asList(pernambuco))), 2L, true);
+				new TribunalJuizo(5187L, "TRIBUNAL DE JUSTIÇA ESTADUAL", new HashSet<UnidadeFederacao>(Arrays.asList(pernambuco))), 2L, true);
 		
 		origens.add(origem);
 		

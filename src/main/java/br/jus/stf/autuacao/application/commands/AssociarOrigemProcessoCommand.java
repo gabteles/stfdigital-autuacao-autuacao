@@ -18,9 +18,16 @@ public class AssociarOrigemProcessoCommand {
 	private Boolean isPrincipal;
 		
 	public AssociarOrigemProcessoCommand(){
-		
+		// Construtor default
 	}
 	
+	/**
+	 * @param unidadeFederacaoId
+	 * @param codigoJuizoOrigem
+	 * @param numeroProcesso
+	 * @param numeroOrdem
+	 * @param isPrincipal
+	 */
 	public AssociarOrigemProcessoCommand (Long unidadeFederacaoId, long codigoJuizoOrigem, Long numeroProcesso, Long numeroOrdem, Boolean isPrincipal){
 		this.unidadeFederacaoId = unidadeFederacaoId;
 		this.codigoJuizoOrigem = codigoJuizoOrigem;

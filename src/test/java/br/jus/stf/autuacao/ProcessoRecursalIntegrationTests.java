@@ -3,6 +3,7 @@ package br.jus.stf.autuacao;
 import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.field;
 import static com.github.jsonj.tools.JsonBuilder.object;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -17,10 +18,12 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.github.jsonj.JsonObject;
 
+import br.jus.stf.autuacao.infra.NumeroProcessoRestAdapter;
 import br.jus.stf.autuacao.infra.RabbitConfiguration;
 import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
 import br.jus.stf.core.framework.testing.oauth2.WithMockOauth2User;
 import br.jus.stf.core.shared.eventos.ProcessoRegistrado;
+import br.jus.stf.core.shared.processo.Identificacao;
 
 /**
  * Valida a API de autuação de recursais.
@@ -37,9 +40,13 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
 	@MockBean
 	private RabbitTemplate rabbitTemplate;
 	
+	@MockBean
+	private NumeroProcessoRestAdapter numeroProcessoAdapter;
+	
 	@Before
 	public void configuracao() {
 		willDoNothing().given(rabbitTemplate).convertAndSend(RabbitConfiguration.PROCESSO_REGISTRADO_QUEUE, ProcessoRegistrado.class);
+		given(numeroProcessoAdapter.novoNumeroProcesso("RE")).willReturn(new Identificacao("RE", 1L));
 	}
 	
 	@Test
@@ -245,5 +252,69 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
 		
 		result.andExpect(status().isBadRequest());
     }
+	
+	@Test
+	public void enviarProcesso() throws Exception {
+		JsonObject processoJson = object(
+				field("classeId", "RE"),
+				field("sigilo", "SEGREDO_JUSTICA"),
+				field("numeroRecursos", 2),
+				field("preferencias", array(8)),
+				field("origens", array(
+						object(
+								field("unidadeFederacaoId", 16),
+								field("codigoJuizoOrigem", 5187),
+								field("numeroProcesso", 1235201),
+								field("numeroOrdem", 1),
+								field("isPrincipal", true)
+						))),
+				field("assuntos", array("5555","5865")),
+				field("partesPoloAtivo", array(
+						object(
+								field("apresentacao", "Severina"),
+								field("pessoa", 3)
+						))),
+				field("partesPoloPassivo", array(
+						object(
+								field("apresentacao", "Severino"),
+								field("pessoa", 5)
+						))),
+				field("criminalEleitoral", false)
+		);
+		ResultActions result = mockMvc.perform(post("/api/processos/recursal/envio").contentType(APPLICATION_JSON).content(processoJson.toString()));
+		
+		result.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void naoDeveEnviarProcessoComDadosInvalidos() throws Exception {
+		JsonObject processoJson = object(
+				field("sigilo", "SEGREDO_JUSTICA"),
+				field("numeroRecursos", 2),
+				field("preferencias", array(8)),
+				field("origens", array(
+						object(
+								field("unidadeFederacaoId", 16),
+								field("codigoJuizoOrigem", 5187),
+								field("numeroProcesso", 1235201),
+								field("numeroOrdem", 1),
+								field("isPrincipal", true)
+						))),
+				field("assuntos", array("5555","5865")),
+				field("partesPoloAtivo", array(
+						object(
+								field("apresentacao", "Severina"),
+								field("pessoa", 3)
+						))),
+				field("partesPoloPassivo", array(
+						object(
+								field("apresentacao", "Severino"),
+								field("pessoa", 5)
+						)))
+		);
+		ResultActions result = mockMvc.perform(post("/api/processos/recursal/envio").contentType(APPLICATION_JSON).content(processoJson.toString()));
+		
+		result.andExpect(status().isBadRequest());
+	}
 	
 }
