@@ -34,7 +34,7 @@ import br.jus.stf.core.shared.processo.Identificacao;
  * @since 17.02.2016
  */
 @SpringBootTest(value = {"server.port:0", "eureka.client.enabled:false", "spring.cloud.config.enabled:false"}, classes = ApplicationContextInitializer.class)
-@WithMockOauth2User("autuador")
+@WithMockOauth2User(value = "autuador", components = "autuar-originario")
 public class ProcessoOriginarioIntegrationTests extends IntegrationTestsSupport {
 	
 	@MockBean
