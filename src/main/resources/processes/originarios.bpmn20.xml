@@ -9,7 +9,7 @@
 		
         <sequenceFlow id="autuacao" sourceRef="inicio" targetRef="autuar-originario" />
         
-        <userTask id="autuar-originario" name="Autuar Processo Originário" activiti:candidateGroups="autuadores">
+        <userTask id="autuar-originario" name="Autuar Processo Originário" activiti:candidateGroups="autuador">
             <documentation>AUTUACAO</documentation>
         </userTask>
         

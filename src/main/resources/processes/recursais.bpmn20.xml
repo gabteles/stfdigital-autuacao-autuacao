@@ -20,21 +20,21 @@
       </extensionElements>
     </endEvent>
     
-    <exclusiveGateway id="tem-preferencia-criminal-eleitoral" name="Preferência Criminal /Eleitoral?" default="sem-preferencia-criminal-eleitoral"/>
+    <exclusiveGateway id="tem-preferencia-criminal-eleitoral" name="Preferência Criminal/Eleitoral?"/>
     
-    <userTask id="autuar-recursal-criminal-eleitoral" name="Autuar Processo Recursal Criminal/Eleitoral" default="autuacao-recursal-criminal-eleitoral" activiti:candidateGroups="autuador-recursal-criminal-eleitoral">
+    <userTask id="autuar-recursal-criminal-eleitoral" name="Autuar Processo Recursal Criminal/Eleitoral" activiti:candidateGroups="autuador-recursal-criminal-eleitoral">
       <documentation>AUTUACAO</documentation>
     </userTask>
     
     <exclusiveGateway id="deve-distribuir" default="ditribuicao"/>
     
-    <userTask id="analisar-pressupostos-formais" name="Analisar Pressupostos Formais" default="analise-pressupostos-formais" activiti:candidateGroups="analista-pressupostos-formais">
+    <userTask id="analisar-pressupostos-formais" name="Analisar Pressupostos Formais" default="analise-pressupostos-formais" activiti:candidateGroups="analista-pressupostos">
       <documentation>ANALISAR_PRESSUPOSTO</documentation>
     </userTask>
     
     <exclusiveGateway id="tem-aptidao" name="Classificação?" default="apto"/>
     
-    <userTask id="revisar-pressupostos-formais" name="Revisar Pressupostos Formais" default="revisao-pressupostos-formais" activiti:candidateGroups="revisor-processo-inapto">
+    <userTask id="revisar-pressupostos-formais" name="Revisar Pressupostos Formais" default="revisao-pressupostos-formais" activiti:candidateGroups="revisor-processo-recursal-inapto">
       <documentation>REVISAR_PRESSUPOSTO</documentation>
     </userTask>
     
@@ -66,7 +66,9 @@
     
     <sequenceFlow id="verificao-preferencia" sourceRef="inicio" targetRef="tem-preferencia-criminal-eleitoral"/>
     
-    <sequenceFlow id="sem-preferencia-criminal-eleitoral" name="Não" sourceRef="tem-preferencia-criminal-eleitoral" targetRef="analisar-pressupostos-formais"/>
+    <sequenceFlow id="sem-preferencia-criminal-eleitoral" name="Não" sourceRef="tem-preferencia-criminal-eleitoral" targetRef="analisar-pressupostos-formais">
+      <conditionExpression xsi:type="tFormalExpression">${transition == ''}</conditionExpression>
+    </sequenceFlow>
     
     <sequenceFlow id="com-preferencia-criminal-eleitoral" name="Sim" sourceRef="tem-preferencia-criminal-eleitoral" targetRef="autuar-recursal-criminal-eleitoral">
       <conditionExpression xsi:type="tFormalExpression">${transition == 'CRIMINAL_ELEITORAL'}</conditionExpression>
