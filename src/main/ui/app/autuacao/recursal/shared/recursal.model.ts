@@ -96,8 +96,6 @@ export class AnalisarRepercussaoGeralCommand implements Command {
 */
 export class RevisarRepercussaoGeralCommand extends AnalisarRepercussaoGeralCommand {
 
-   public motivo : string;
-
    constructor() {
 	   super();
    }

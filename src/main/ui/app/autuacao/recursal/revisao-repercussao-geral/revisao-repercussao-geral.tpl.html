@@ -12,19 +12,23 @@
             <div class="form-wrapper md-whiteframe-1dp" flex="100">
                 <form name="basicForm">
                     <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row">
-	                    <md-input-container flex>
-	                        <label>Classe Processual</label>
-	                        <input ng-model="revisao.analise.classe.id" id="classeProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
-	                    </md-input-container>
-                        <md-input-container flex>
-	                        <label>Número do processo</label>
-	                        <input ng-model="revisao.analise.numero" id="numeroProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
-	                    </md-input-container>
+                    	<md-card flex layout="column">
+		                    <md-input-container flex>
+		                        <label>Classe Processual</label>
+		                        <input ng-model="revisao.analise.classe.id" id="classeProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+		                    </md-input-container>
+		                </md-card>
+		                <md-card flex layout="column"> 
+	                        <md-input-container flex>
+		                        <label>Número do processo</label>
+		                        <input ng-model="revisao.analise.numero" id="numeroProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
+		                    </md-input-container>
+		                </md-card>
                     </div>
 					<div class="form-title">Pesquisa de Assuntos</div>
 					<div  layout="row" layout-gt-xs="row">
 						<md-card flex layout="column">
-							<md-card-title>
+							<md-card-title flex="nogrow">
 								<md-card-title-text>
 									<span class="md-headline">Tese</span>
 									<span class="md-subhead">Informe o tipo de tese e o seu número</span>
@@ -35,7 +39,6 @@
 									<md-input-container flex class="md-block">
 			                            <label>Classificação</label>
 			                            <md-select ng-model="revisao.tipoTese" id="tipoTese" class="md-teal-200-bg">
-			                                <md-option></md-option>
 			                                <md-option ng-repeat="tipo in revisao.tiposTese" value="{{tipo.id}}">
 			                                    {{tipo.nome}}
 			                                </md-option>
@@ -99,7 +102,7 @@
 											    <td>{{ass.descricao}}</td>
 											    <td>
                                                     <span>
-                                                        <a href="#" ng-click="revisao.removerAssuntosSelecionados(ass)" id="btnRemoverAssunto">Remover</a>
+                                                        <a href="#" ng-click="revisao.removerAssuntosSelecionados($index)" id="btnRemoverAssunto">Remover</a>
                                                     </span>
                                                 </td>
 										    </tr>
@@ -118,7 +121,7 @@
 							</md-card-title>
 							<md-card-content layout="column">
 		                    	<md-input-container class="md-block">
-									<textarea ng-model="revisao.analise.observacao" placeholder="Informe uma observação da análise do processo." md-maxlength="150" rows="2" md-select-on-focus id="observacao"></textarea>
+									<textarea ng-model="revisao.cmd.observacao" placeholder="Informe uma observação da análise do processo." md-maxlength="150" rows="2" id="observacao"></textarea>
 								</md-input-container>								
 							</md-card-content>
 						</md-card>

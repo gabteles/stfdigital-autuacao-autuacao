@@ -61,9 +61,9 @@ export class AnaliseRepercussaoGeralController {
     	}
     }
     
-    public removerAssuntosSelecionados ($index) : void{
-    	this.assuntosSelecionados.splice($index, 1);
-    	this.cmd.assuntos.splice($index, 1);
+    public removerAssuntosSelecionados (indice : number) : void{
+    	this.assuntosSelecionados.splice(indice, 1);
+    	this.cmd.assuntos.splice(indice, 1);
     }
     
 	public consultarTese () : boolean {
@@ -112,6 +112,7 @@ export class AnaliseRepercussaoGeralController {
 			let indice = this.assuntos.indexOf($index.assuntos[i]);
 			this.assuntos.splice(indice, 1);
 			this.cmd.assuntos.splice(indice, 1);
+			this.assuntosSelecionados.splice(indice, 1);
 		}
 		
 		this.teses.splice($index,1);

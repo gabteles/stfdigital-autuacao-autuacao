@@ -1,6 +1,5 @@
 import IStateService = angular.ui.IStateService;
 import IStateParamsService = angular.ui.IStateParamsService;
-import IDialogService = angular.material.IDialogService;
 import {Parte} from "../../shared/autuacao.model";
 import {Tese, Assunto, ProcessoRecursal, AutuarProcessoRecursalCommand} from "../shared/recursal.model";
 import {AutuacaoRecursalService} from "./autuacao-recursal.service";

@@ -30,6 +30,7 @@ export class RevisaoRepercussaoGeralController {
 	   private analise, public tiposTese, private messagesService: app.support.messaging.MessagesService) {
 	
 	   this.cmd.processoId = analise.processoId;
+	   this.cmd.observacao = analise.observacao;
 	   if (analise.teses.length > 0){
 		   analise.teses.forEach(tese => {
 			   this.adicionarTese(<Tese> tese);
@@ -63,9 +64,10 @@ export class RevisaoRepercussaoGeralController {
 		}
 	}
 	
-	public removerAssuntosSelecionados ($index) : void{
-		this.assuntosSelecionados.splice($index, 1);
-		this.cmd.assuntos.splice($index, 1);
+	public removerAssuntosSelecionados (indice : number) : void{
+		//let indice = this.assuntosSelecionados.indexOf($index);
+		this.assuntosSelecionados.splice(indice, 1);
+		this.cmd.assuntos.splice(indice, 1);
 	}
 	
 	public consultarTese () : boolean {
@@ -108,9 +110,9 @@ export class RevisaoRepercussaoGeralController {
 	
 	public removerTese($index) : void{
 		for (let i = 0; i < $index.assuntos.length; i++){
-			let indice = this.assuntos.indexOf($index.assuntos[i]);
-			this.assuntos.splice(indice, 1);
+			let indice = this.assuntosSelecionados.indexOf($index.assuntos[i]);
 			this.cmd.assuntos.splice(indice, 1);
+			this.assuntosSelecionados.splice(indice, 1);
 		}
 		
 		this.teses.splice($index,1);

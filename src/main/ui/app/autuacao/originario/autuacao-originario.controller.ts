@@ -11,7 +11,6 @@ export class AutuacaoOriginarioController {
 	
 	public partePoloAtivo: string;
 	public partePoloPassivo: string;
-	public valida : boolean;
 
 	public cmdAutuar : AutuacaoOriginarioCommand = new AutuacaoOriginarioCommand();
 	
@@ -19,8 +18,6 @@ export class AutuacaoOriginarioController {
 	
     constructor(private $state: IStateService, private $stateParams: IStateParamsService, private autuacaoOriginarioService: AutuacaoOriginarioService,
             public classes, public processo : Processo, private messagesService: MessagesService ) {
-    	
-        this.valida = true;
         this.cmdAutuar.processoId = $stateParams['informationId'];
 
     }

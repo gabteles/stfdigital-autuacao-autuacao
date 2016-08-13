@@ -193,16 +193,16 @@
 							<md-card-content layout="column">		                 
 								<div>
 									<label>Aptidão</label>
-									<md-radio-group ng-model="autuacao.valida" layout="row">
-										<md-radio-button value="true" class="md-primary">Válida</md-radio-button>
-										<md-radio-button value="false"> Inválida </md-radio-button>
+									<md-radio-group ng-model="autuacao.cmdAutuar.valida" layout="row">
+										<md-radio-button value="true" id="valida">Válida</md-radio-button>
+										<md-radio-button value="false" id="invalida"> Inválida </md-radio-button>
 									</md-radio-group>
 			                    </div>
            					</md-card-content>
          				</md-card>
 					</div>
                     
-                    <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row" ng-hide="autuacao.valida == 'true'">
+                    <div layout="column" layout-gt-xs="row" class="layout-gt-xs-row" ng-show="autuacao.cmdAutuar.valida === 'false'">
 						<md-card flex layout="column">
 							<md-card-content layout="column">
 								<md-input-container class="md-block">

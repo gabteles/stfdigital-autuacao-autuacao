@@ -1,6 +1,8 @@
 import ElementFinder = protractor.ElementFinder;
 
-export class AutuacaoRePage {
+import mdHelpers = require('../shared/helpers/md-helpers');
+
+export class AutuacaoRecursalPage {
 	
 	public cadastrarPoloAtivo(nome : string) : void {
 		element(by.id('txtPoloAtivo')).sendKeys(nome);
@@ -13,17 +15,15 @@ export class AutuacaoRePage {
 	};
 	
 	public selecionarAssuntos(termo : string) : void {
-		element(by.model('autuacao.assunto')).click();
+		element(by.id('assunto')).click();
 		element(by.css('input[type=search]')).click();
 		element(by.css('input[type=search]')).sendKeys(termo);
-		element.all(by.repeater('codigo as assunto in autuacao.assuntos')).get(1).click();
+		browser.driver.sleep(500);
+		element.all(by.repeater('assunto in $select.items')).get(1).click();
 	};
 	
-	public registrarAutuacao(botaoId: string) : void {
-		let select = element(by.id(botaoId));
-		//para que a tela desça e o botão de autuar fique visível no momento do teste
-	    browser.executeScript("arguments[0].scrollIntoView();", select.getWebElement());
-	    select.click();
+	public autuar(idBotao : string) : void {
+		element(by.id(idBotao)).click();
 	};
 	
 }

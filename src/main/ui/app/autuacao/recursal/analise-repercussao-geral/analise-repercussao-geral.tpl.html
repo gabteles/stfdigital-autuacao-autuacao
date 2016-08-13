@@ -11,18 +11,20 @@
             <!-- BASIC FORM -->
             <div class="form-wrapper md-whiteframe-1dp" flex="100">
                 <form name="basicForm">
-                	<md-card flex layout="column">
-	                    <div layout="column" layout-gt-xs="row">
+                    <div layout="column" layout-gt-xs="row">
+	                    <md-card flex layout="column">
 		                    <md-input-container flex>
 		                        <label>Classe Processual</label>
 		                        <input ng-model="analise.classeProcesso" id="classeProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
 		                    </md-input-container>
+		                 </md-card>
+		                 <md-card flex layout="column">
 	                        <md-input-container flex>
 		                        <label>Número do processo</label>
 		                        <input ng-model="analise.numeroProcesso" id="numeroProcesso" class="ng-pristine ng-valid md-input ng-empty" disabled="true">
 		                    </md-input-container>
-	                    </div>
-	                </md-card>
+		                </md-card>
+	                </div>
 					<div class="form-title">Pesquisa de Assuntos</div>
 					<div layout="row" layout-gt-xs="row">
 						<md-card flex layout="column">
@@ -37,7 +39,6 @@
 									<md-input-container flex class="md-block">
 			                            <label>Classificação</label>
 			                            <md-select ng-model="analise.tipoTese" id="tipoTese">
-			                                <md-option></md-option>
 			                                <md-option ng-repeat="tipo in analise.tiposTese track by tipo.id" value="{{tipo.id}}">
 			                                    {{tipo.nome}}
 			                                </md-option>
@@ -101,7 +102,7 @@
 											    <td>{{ass.descricao}}</td>
 											    <td>
                                                     <span>
-                                                        <a href="#" ng-click="analise.removerAssuntosSelecionados(ass)">Remover</a>
+                                                        <a href="#" ng-click="analise.removerAssuntosSelecionados($index)">Remover</a>
                                                     </span>
                                                 </td>
 										    </tr>
