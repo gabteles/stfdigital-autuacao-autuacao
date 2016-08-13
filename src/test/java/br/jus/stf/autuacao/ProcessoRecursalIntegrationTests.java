@@ -50,6 +50,7 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+	@WithMockOauth2User(value = "autuador", components = "analisar-pressupostos-formais")
 	public void analiseAptaPressupostosFormais() throws Exception {
 		loadDataTests("analisarAptoPressupostosFormais.sql");
 		
@@ -75,6 +76,7 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
     }
 	
 	@Test
+	@WithMockOauth2User(value = "autuador", components = "analisar-repercussao-geral")
 	public void analiseComRepercussaoGeral() throws Exception {
 		loadDataTests("analisarComRepercussaoGeral.sql");
 
@@ -102,6 +104,7 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
     }
 	
 	@Test
+	@WithMockOauth2User(value = "autuador", components = "revisar-repercussao-geral")
 	public void revisarRepercussaoGeral() throws Exception {
 		loadDataTests("revisarRepercussaoGeral.sql");
 
@@ -129,6 +132,7 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
     }
 	
 	@Test
+	@WithMockOauth2User(value = "autuador-recursal", components = "autuar-recursal")
 	public void autuarRecursal() throws Exception {
 		loadDataTests("autuarRecursal.sql");
 
@@ -156,6 +160,7 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
     }
 	
 	@Test
+	@WithMockOauth2User(value = "autuador", components = "analisar-repercussao-geral")
 	public void analiseSemRepercussaoGeral() throws Exception {
 		loadDataTests("analisarSemRepercussaoGeral.sql");
 
@@ -171,6 +176,7 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+	@WithMockOauth2User(value = "autuador", components = "analisar-pressupostos-formais")
 	public void analiseInaptaPressupostosFormais() throws Exception {
 		loadDataTests("analisarInaptoPressupostosFormais.sql");
 		
@@ -186,6 +192,7 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+	@WithMockOauth2User(value = "autuador", components = "revisar-pressupostos-formais")
 	public void revisarAptoPressupostosFormais() throws Exception {
 		loadDataTests("revisarAptoPressupostosFormais.sql");
 		
@@ -200,6 +207,7 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
 	}
 	
 	@Test
+	@WithMockOauth2User(value = "autuador", components = "revisar-pressupostos-formais")
 	public void revisarInaptoPressupostosFormais() throws Exception {
 		loadDataTests("revisarInaptoPressupostosFormais.sql");
 		
@@ -227,6 +235,7 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
     }
 	
 	@Test
+	@WithMockOauth2User(value = "autuador", components = "autuar-recursal-criminal-eleitoral")
 	public void autuarCriminalEleitoral() throws Exception {
 		loadDataTests("autuarCriminalEleitoral.sql");
 
@@ -254,6 +263,7 @@ public class ProcessoRecursalIntegrationTests extends IntegrationTestsSupport {
     }
 	
 	@Test
+	@WithMockOauth2User(value = "autuador", components = "enviar-processo-recursal")
 	public void enviarProcesso() throws Exception {
 		JsonObject processoJson = object(
 				field("classeId", "RE"),

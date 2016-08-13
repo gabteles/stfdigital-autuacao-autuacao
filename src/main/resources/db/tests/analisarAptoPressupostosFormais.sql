@@ -14,7 +14,7 @@ INSERT INTO PUBLIC.ACT_RU_TASK(ID_, REV_, EXECUTION_ID_, PROC_INST_ID_, PROC_DEF
 ('-44', 1, '-43', '-43', @proc_def_id_, 'Analisar Pressupostos Formais', NULL, 'ANALISAR_PRESSUPOSTO', 'analisar-pressupostos-formais', NULL, NULL, NULL, 50, TIMESTAMP '2016-07-29 16:41:19.75', NULL, NULL, 1, NULL, NULL);        
 
 INSERT INTO PUBLIC.ACT_RU_IDENTITYLINK(ID_, REV_, GROUP_ID_, TYPE_, USER_ID_, TASK_ID_, PROC_INST_ID_, PROC_DEF_ID_) VALUES
-('-45', 1, 'analista-pressupostos-formais', 'candidate', NULL, '-44', NULL, NULL); 
+('-45', 1, 'analista-pressupostos', 'candidate', NULL, '-44', NULL, NULL); 
 
 INSERT INTO PUBLIC.ACT_RU_VARIABLE(ID_, REV_, TYPE_, NAME_, EXECUTION_ID_, PROC_INST_ID_, TASK_ID_, BYTEARRAY_ID_, DOUBLE_, LONG_, TEXT_, TEXT2_) VALUES
 ('-46', 1, 'string', 'transition', '-43', '-43', NULL, NULL, NULL, NULL, NULL, NULL),
