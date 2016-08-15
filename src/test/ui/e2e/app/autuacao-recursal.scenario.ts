@@ -10,7 +10,7 @@ xdescribe('Autuação de Processos Recursais sem ser criminal ou eleitoral', () 
                 
 	it ('Deveria logar no sistema', () => {
 	    loginPage.open();
-	    loginPage.login('autuador', '123');
+	    loginPage.login('autuador-recursal', '123');
 	});
 	
 	it ('Deveria acessar a tarefa de autuar processo recural', () => {

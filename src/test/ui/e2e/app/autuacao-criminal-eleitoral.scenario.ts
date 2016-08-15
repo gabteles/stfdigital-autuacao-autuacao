@@ -10,7 +10,7 @@ describe('Autuação de Processos Recursais criminal e eleitoral', () => {
                 
     it ('Deveria logar no sistema', () => {
         loginPage.open();
-        loginPage.login('autuador', '123');
+        loginPage.login('autuador-recursal-ce', '123');
     });
     
     it ('Deveria acessar a tarefa de autuar processo recursal criminal/eleitoral', () => {

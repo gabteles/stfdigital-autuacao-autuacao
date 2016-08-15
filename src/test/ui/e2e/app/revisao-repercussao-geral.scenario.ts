@@ -11,7 +11,7 @@ describe('Revisão da Repercussao Geral', () => {
             
     it ('Deveria logar no sistema', () => {
         loginPage.open();
-        loginPage.login('autuador', '123');
+        loginPage.login('revisor-repercussao-g', '123');
     });
     
     it ('Deveria acessar a tarefa de revisar repercussão geral', () => {

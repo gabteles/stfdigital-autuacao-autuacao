@@ -12,7 +12,7 @@ describe('Análise de pressupostos formais', () => {
             
 	it ('Deveria logar no sistema', () => {
 	    loginPage.open();
-	    loginPage.login('autuador', '123');
+	    loginPage.login('analista-pressupostos', '123');
 	});
 	
 	it ('Deveria acessar a tarefa de analisar pressupostos formais', () => {

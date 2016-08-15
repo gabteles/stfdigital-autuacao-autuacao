@@ -12,7 +12,7 @@ describe('Revisão de pressupostos formais', () => {
             
     it ('Deveria logar no sistema', () => {
         loginPage.open();
-        loginPage.login('autuador', '123');
+        loginPage.login('revisor-processo-ri', '123');
     });
     
     it ('Deveria acessar a tarefa de revisar pressupostos formais', () => {
