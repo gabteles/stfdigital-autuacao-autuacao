@@ -13,7 +13,7 @@ export class AutuacaoRecursalService {
     /** @ngInject **/
     constructor(private $http: IHttpService, properties : Properties, commandService: cmd.CommandService) {
     	this.api = properties.apiUrl + API_AUTUACAO_RECURSAL;
-    	commandService.setValidator('autuar-recursal', new ValidadorAutuacao());
+    	commandService.addValidator('autuar-recursal', new ValidadorAutuacao());
     }
 
     public autuar(cmd: AutuarProcessoRecursalCommand): IPromise<any> {

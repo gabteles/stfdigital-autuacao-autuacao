@@ -13,7 +13,7 @@ export class RevisaoRepercussaoGeralService {
     /** @ngInject **/
     constructor(private $http: IHttpService, properties: Properties, commandService: cmd.CommandService) {
         this.api = properties.apiUrl.concat(API_AUTUACAO_RECURSAL);
-        commandService.setValidator('revisar-repercussao-geral', new ValidadorRevisao());
+        commandService.addValidator('revisar-repercussao-geral', new ValidadorRevisao());
     }
     
     /**
@@ -37,6 +37,8 @@ export class RevisaoRepercussaoGeralService {
 
 class ValidadorRevisao implements cmd.CommandValidator {
     
+	constructor() { }
+	
 	public isValid(command: RevisarRepercussaoGeralCommand): boolean {
         if (command.teses.length === 0 && command.assuntos.length === 0) return false;
         return true;

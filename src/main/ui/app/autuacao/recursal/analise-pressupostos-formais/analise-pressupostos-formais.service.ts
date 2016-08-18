@@ -13,7 +13,7 @@ export class AnalisePressupostosFormaisService {
     /** @ngInject **/
     constructor(private $http: IHttpService, properties: Properties, commandService: cmd.CommandService) {
     	this.api = properties.apiUrl.concat(API_AUTUACAO_RECURSAL);
-    	commandService.setValidator('analisar-pressupostos-formais', new ValidadorAnalise());
+    	commandService.addValidator("analisar-pressupostos-formais", new ValidadorAnalise());
     }
 
     public analisar(command: AnalisarPressupostosFormaisCommand): IPromise<any> {
@@ -23,6 +23,8 @@ export class AnalisePressupostosFormaisService {
 }
 
 class ValidadorAnalise implements cmd.CommandValidator {
+	
+    constructor() {}
 	
 	public isValid(command: AnalisarPressupostosFormaisCommand): boolean {
 		if (!command.processoApto && command.motivosInaptidao.length == 0) return false;

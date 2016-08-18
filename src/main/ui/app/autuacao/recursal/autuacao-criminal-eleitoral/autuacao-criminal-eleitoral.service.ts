@@ -13,7 +13,7 @@ export class AutuacaoCriminalEleitoralService {
     /** @ngInject **/
     constructor(private $http: IHttpService, properties : Properties, commandService: cmd.CommandService) { 
     	this.api = properties.apiUrl.concat(API_AUTUACAO_RECURSAL);
-    	commandService.setValidator('autuar-recursal-criminal-eleitoral', new ValidadorAutuacao());
+    	commandService.addValidator('autuar-recursal-criminal-eleitoral', new ValidadorAutuacao());
     }
 
     /**
