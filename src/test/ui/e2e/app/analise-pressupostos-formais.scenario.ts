@@ -16,7 +16,7 @@ describe('Análise de pressupostos formais', () => {
 	});
 	
 	it ('Deveria acessar a tarefa de analisar pressupostos formais', () => {
-	    principalPage.acessarTarefa('Analisar Pressupostos Formais', 9006);
+	    principalPage.acessarTarefa('Analisar Pressupostos Formais', 9005);
 	});
 	
 	it('Deveria preencher as informações dos pressupostos inválidos', () => {

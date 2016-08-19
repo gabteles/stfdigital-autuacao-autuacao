@@ -16,7 +16,7 @@ describe('Revisão de pressupostos formais', () => {
     });
     
     it ('Deveria acessar a tarefa de revisar pressupostos formais', () => {
-        principalPage.acessarTarefa('Revisar Pressupostos Formais', 9011);
+        principalPage.acessarTarefa('Revisar Pressupostos Formais', 9005);
     });
     
     it('Deveria classificar o processo como apto', () => {

@@ -2,7 +2,7 @@ import {LoginPage} from "./shared/pages/login.page";
 import {PrincipalPage}  from "./shared/pages/principal.page";
 import {AutuacaoRecursalPage} from "./pages/autuacao-recursal.page";
 
-xdescribe('Autuação de Processos Recursais sem ser criminal ou eleitoral', () => {	
+describe('Autuação de Processos Recursais sem ser criminal ou eleitoral', () => {	
 	
     let loginPage: LoginPage = new LoginPage();
     let principalPage: PrincipalPage = new PrincipalPage();

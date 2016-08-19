@@ -15,7 +15,7 @@ describe('Revisão da Repercussao Geral', () => {
     });
     
     it ('Deveria acessar a tarefa de revisar repercussão geral', () => {
-        principalPage.acessarTarefa('Revisar Repercussão Geral', 9009);
+        principalPage.acessarTarefa('Revisar Repercussão Geral', 9007);
     });
     
     it('Deveria remover um tese', () => {

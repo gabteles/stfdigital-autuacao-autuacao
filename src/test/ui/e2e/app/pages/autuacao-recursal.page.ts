@@ -5,11 +5,13 @@ import mdHelpers = require('../shared/helpers/md-helpers');
 export class AutuacaoRecursalPage {
 	
 	public cadastrarPoloAtivo(nome : string) : void {
+	    element(by.id('txtPoloAtivo')).click();
 		element(by.id('txtPoloAtivo')).sendKeys(nome);
 		browser.actions().sendKeys(protractor.Key.ENTER).perform();
 	};
 	
 	public cadastrarPoloPassivo(nome : string) : void {
+	    element(by.id('txtPoloPassivo')).click();
 		element(by.id('txtPoloPassivo')).sendKeys(nome);
 		browser.actions().sendKeys(protractor.Key.ENTER).perform();
 	};
