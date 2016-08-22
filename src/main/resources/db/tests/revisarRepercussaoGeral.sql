@@ -49,6 +49,6 @@ INSERT INTO PUBLIC.ACT_HI_VARINST(ID_, PROC_INST_ID_, EXECUTION_ID_, TASK_ID_, N
 ('-94', '-91', '-91', NULL, 'transition', 'string', 2, NULL, NULL, NULL, 'REVISAR_RG', NULL, TIMESTAMP '2016-07-29 18:49:49.307', TIMESTAMP '2016-07-29 18:49:49.617');         
 
 INSERT INTO PUBLIC.ACT_HI_IDENTITYLINK(ID_, GROUP_ID_, TYPE_, USER_ID_, TASK_ID_, PROC_INST_ID_) VALUES
-('-104', 'analista-pressupostos-formais', 'candidate', NULL, '-102', NULL),
+('-104', 'analista-pressupostos', 'candidate', NULL, '-102', NULL),
 ('-105', 'analista-repercussao-geral', 'candidate', NULL, '-103', NULL),
 ('-92', 'revisor-repercussao-geral', 'candidate', NULL, '-91', NULL);   
