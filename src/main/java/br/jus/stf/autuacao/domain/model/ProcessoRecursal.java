@@ -166,8 +166,6 @@ public class ProcessoRecursal extends Processo {
      * @param status
      */
     public void autuar(Set<Assunto> assuntos, Set<Parte> partes, Autuador autuador, Status status) {
-		Validate.isTrue(isCriminalEleitoral() || analisePressupostoFormal != null || analiseRepercussaoGeral != null,
-				"Processo inválido para autuação.");
     	Validate.notEmpty(assuntos, "Assuntos requeridos.");
     	Validate.isTrue(
 				!analiseRepercussaoGeral().isPresent() || analiseRepercussaoGeral.teses().stream()
