@@ -74,6 +74,21 @@ public class Tese extends EntitySupport<Tese, TeseId> {
 	}
 	
 	/**
+	 * @param id
+	 * @param descricao
+	 * @param tipo
+	 * @param numero
+	 * @param assuntos
+	 */
+	public Tese(TeseId id, String descricao, TipoTese tipo, Long numero, Set<Assunto> assuntos) {
+		this(id, descricao, tipo, numero);
+		
+		Validate.notEmpty(assuntos, "Assuntos requeridos.");
+		
+		this.assuntos = assuntos;
+	}
+	
+	/**
 	 * @return
 	 */
 	public TipoTese tipo() {

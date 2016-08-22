@@ -6,12 +6,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
 
 import br.jus.stf.autuacao.domain.model.Autuador;
+import br.jus.stf.autuacao.domain.model.MotivoInaptidao;
 import br.jus.stf.autuacao.domain.model.Origem;
 import br.jus.stf.autuacao.domain.model.Parte;
 import br.jus.stf.autuacao.domain.model.ProcessoRecursal;
@@ -22,8 +24,11 @@ import br.jus.stf.autuacao.domain.model.procedenciageografica.UnidadeFederacao;
 import br.jus.stf.autuacao.domain.model.suportejudicial.Assunto;
 import br.jus.stf.autuacao.domain.model.suportejudicial.Classe;
 import br.jus.stf.autuacao.domain.model.suportejudicial.Preferencia;
+import br.jus.stf.autuacao.domain.model.suportejudicial.Tese;
+import br.jus.stf.autuacao.domain.model.suportejudicial.TipoTese;
 import br.jus.stf.core.shared.classe.ClasseId;
 import br.jus.stf.core.shared.controletese.AssuntoId;
+import br.jus.stf.core.shared.controletese.TeseId;
 import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.core.shared.preferencia.PreferenciaId;
 import br.jus.stf.core.shared.processo.MeioTramitacao;
@@ -197,6 +202,84 @@ public class ProcessoRecursalUnitTests {
 		assertTrue("Processo deve ser Criminal/Eleitoral.", processo.isCriminalEleitoral());
 		assertEquals("Assuntos devem ser iguais.", assuntos, processo.assuntos());
 		assertEquals("Partes devem ser iguais.", partes, processo.partes());
+	}
+	
+	@Test
+	public void analisarPressupostosApto() {
+		ProcessoRecursal processo = processoRecursalValido();
+		
+		processo.analisarPressupostosFormais(true, "Processo apto.", null, Status.ANALISAR_RG);
+		
+		assertTrue("Análise de pressupostos não deve ser nula.", processo.analisePressupostoFormal().isPresent());
+	}
+	
+	@Test
+	public void analisarPressupostosInapto() {
+		ProcessoRecursal processo = processoRecursalValido();
+		MotivoInaptidao outro = new MotivoInaptidao(9L, "Outro");
+		
+		processo.analisarPressupostosFormais(false, "Processo inapto.", new HashSet<MotivoInaptidao>(Arrays.asList(outro)), Status.REVISAR_PRESSUPOSTO);
+		
+		assertTrue("Análise de pressupostos não deve ser nula.", processo.analisePressupostoFormal().isPresent());
+	}
+	
+	@Test
+	public void analisarComRepercussaoGeral() {
+		ProcessoRecursal processo = processoRecursalValido();
+		Assunto assunto = new Assunto(new AssuntoId("10604"), "Investigação Penal", null);
+		Tese tese = new Tese(new TeseId(56L), "Recurso extraordinário em que se discute...", TipoTese.REPERCUSSAO_GERAL,
+				50L, new HashSet<Assunto>(Arrays.asList(assunto)));
+
+		processo.analisarRepercussaoGeral("Processo com repercussão geral.", new HashSet<Tese>(Arrays.asList(tese)),
+				new HashSet<Assunto>(Arrays.asList(assunto)), Status.REVISAR_RG);
+
+		assertTrue("Análise de pressupostos não deve ser nula.", processo.analiseRepercussaoGeral().isPresent());
+	}
+	
+	@Test
+	public void analisarSemRepercussaoGeral() {
+		ProcessoRecursal processo = processoRecursalValido();
+		Assunto assunto = new Assunto(new AssuntoId("10568"), "Prescrição", null);
+		Tese tese = new Tese(new TeseId(1037L), "Recurso extraordinário em que se discute...", TipoTese.PRE_TEMA, 466L,
+				new HashSet<Assunto>(Arrays.asList(assunto)));
+		
+		processo.analisarRepercussaoGeral("Processo sem repercussão geral.", new HashSet<Tese>(Arrays.asList(tese)),
+				new HashSet<Assunto>(Arrays.asList(assunto)), Status.AUTUACAO);
+		
+		assertTrue("Análise de pressupostos não deve ser nula.", processo.analiseRepercussaoGeral().isPresent());
+	}
+	
+	@Test(expected = NullPointerException.class)
+	public void naoDeveAnalisarRepercussaoGeralComAssuntosNulo() {
+		ProcessoRecursal processo = processoRecursalValido();
+		Assunto assunto = new Assunto(new AssuntoId("10568"), "Prescrição", null);
+		Tese tese = new Tese(new TeseId(1037L), "Recurso extraordinário em que se discute...", TipoTese.PRE_TEMA, 466L,
+				new HashSet<Assunto>(Arrays.asList(assunto)));
+		
+		processo.analisarRepercussaoGeral("Processo sem repercussão geral.", new HashSet<Tese>(Arrays.asList(tese)), null, Status.REVISAR_RG);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void naoDeveAnalisarRepercussaoGeralComAssuntosVazio() {
+		ProcessoRecursal processo = processoRecursalValido();
+		Assunto assunto = new Assunto(new AssuntoId("10568"), "Prescrição", null);
+		Tese tese = new Tese(new TeseId(1037L), "Recurso extraordinário em que se discute...", TipoTese.PRE_TEMA, 466L,
+				new HashSet<Assunto>(Arrays.asList(assunto)));
+		
+		processo.analisarRepercussaoGeral("Processo sem repercussão geral.", new HashSet<Tese>(Arrays.asList(tese)),
+				Collections.emptySet(), Status.REVISAR_RG);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void naoDeveAnalisarRepercussaoGeralSemTodosAssuntosDasTeses() {
+		ProcessoRecursal processo = processoRecursalValido();
+		Assunto assuntoTese = new Assunto(new AssuntoId("10568"), "Prescrição", null);
+		Assunto assuntoAnalise = new Assunto(new AssuntoId("10604"), "Investigação Penal", null);
+		Tese tese = new Tese(new TeseId(1037L), "Recurso extraordinário em que se discute...", TipoTese.PRE_TEMA, 466L,
+				new HashSet<Assunto>(Arrays.asList(assuntoTese)));
+
+		processo.analisarRepercussaoGeral("Processo sem repercussão geral.", new HashSet<Tese>(Arrays.asList(tese)),
+				new HashSet<Assunto>(Arrays.asList(assuntoAnalise)), Status.AUTUACAO);
 	}
 	
 	@Test

@@ -131,10 +131,12 @@ public class ProcessoRecursal extends Processo {
      */
     public void analisarRepercussaoGeral(String observacao, Set<Tese> teses, Set<Assunto> assuntos, Status status) {
     	Validate.notEmpty(assuntos, "Assuntos requeridos.");
+    	
+    	analiseRepercussaoGeral = new AnaliseRepercussaoGeral(observacao, teses);
+    	
     	Validate.isTrue(teses.stream().allMatch(tese -> assuntos.containsAll(tese.assuntos())),
 				"Assuntos devem conter ao menos os que pertencem às teses selecionadas.");
     	
-    	analiseRepercussaoGeral = new AnaliseRepercussaoGeral(observacao, teses);
     	this.assuntos.addAll(assuntos);
     	super.alterarStatus(status);
 	}
