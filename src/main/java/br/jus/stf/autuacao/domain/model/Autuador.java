@@ -24,7 +24,7 @@ public class Autuador extends ValueObjectSupport<Autuador> {
 	@Transient
 	private PessoaId pessoa;
 	
-	public Autuador() {
+	Autuador() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	

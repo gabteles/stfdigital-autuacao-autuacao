@@ -95,7 +95,7 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
     @Enumerated(EnumType.STRING)
     private Sigilo sigilo;
     
-    public Processo() {
+    Processo() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
 

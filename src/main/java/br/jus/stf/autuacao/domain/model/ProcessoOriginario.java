@@ -33,7 +33,7 @@ public class ProcessoOriginario extends Processo {
     @JoinColumn(name = "SEQ_PROCESSO", referencedColumnName = "SEQ_PROCESSO", insertable = false, updatable = false)
     private Rejeicao rejeicao;
 
-    public ProcessoOriginario() {
+    ProcessoOriginario() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
 

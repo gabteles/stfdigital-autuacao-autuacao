@@ -38,7 +38,7 @@ public class AnalisePressupostoFormal extends ValueObjectSupport<AnalisePressupo
 		inverseJoinColumns = @JoinColumn(name = "COD_MOTIVO_INAPTIDAO", nullable = false))
 	private Set<MotivoInaptidao> motivacaoInaptidao = new HashSet<>(0);
 	
-	public AnalisePressupostoFormal() {
+	AnalisePressupostoFormal() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	

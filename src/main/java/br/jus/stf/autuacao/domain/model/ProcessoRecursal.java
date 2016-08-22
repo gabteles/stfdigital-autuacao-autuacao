@@ -55,7 +55,7 @@ public class ProcessoRecursal extends Processo {
 	@JoinColumn(name = "SEQ_PROCESSO", nullable = false)
 	private Set<Origem> origens = new HashSet<>(0);
 	
-    public ProcessoRecursal() {
+    ProcessoRecursal() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
 
@@ -130,7 +130,6 @@ public class ProcessoRecursal extends Processo {
      * @param status
      */
     public void analisarRepercussaoGeral(String observacao, Set<Tese> teses, Set<Assunto> assuntos, Status status) {
-//    	Validate.notNull(analisePressupostoFormal, "Análise de pressupostos formais requerida.");
     	Validate.notEmpty(assuntos, "Assuntos requeridos.");
     	Validate.isTrue(teses.stream().allMatch(tese -> assuntos.containsAll(tese.assuntos())),
 				"Assuntos devem conter ao menos os que pertencem às teses selecionadas.");
@@ -167,8 +166,8 @@ public class ProcessoRecursal extends Processo {
      * @param status
      */
     public void autuar(Set<Assunto> assuntos, Set<Parte> partes, Autuador autuador, Status status) {
-//		Validate.isTrue(isCriminalEleitoral() || analisePressupostoFormal != null || analiseRepercussaoGeral != null,
-//				"Processo inválido para autuação.");
+		Validate.isTrue(isCriminalEleitoral() || analisePressupostoFormal != null || analiseRepercussaoGeral != null,
+				"Processo inválido para autuação.");
     	Validate.notEmpty(assuntos, "Assuntos requeridos.");
     	Validate.isTrue(
 				!analiseRepercussaoGeral().isPresent() || analiseRepercussaoGeral.teses().stream()

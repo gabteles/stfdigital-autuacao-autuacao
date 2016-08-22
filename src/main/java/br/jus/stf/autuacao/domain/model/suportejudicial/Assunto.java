@@ -32,7 +32,7 @@ public class Assunto extends EntitySupport<Assunto, AssuntoId> {
 	@JoinColumn(name = "COD_ASSUNTO_PAI")
 	private Assunto assuntoPai;
 	
-	public Assunto() {
+	Assunto() {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	

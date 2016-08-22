@@ -48,7 +48,7 @@ public class Origem extends ValueObjectSupport<Origem> {
 	@Type(type = "yes_no")
 	private Boolean origemPrincipal;
 	
-	public Origem() {
+	Origem() {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	

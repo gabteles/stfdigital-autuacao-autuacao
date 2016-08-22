@@ -43,7 +43,7 @@ public class Parte extends ValueObjectSupport<Parte> {
 	@Embedded
 	private PessoaId pessoa;
 	
-	public Parte() {
+	Parte() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
