@@ -4,6 +4,7 @@ import static javax.persistence.CascadeType.ALL;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -48,11 +49,11 @@ public class AnalisePressupostoFormal extends ValueObjectSupport<AnalisePressupo
 	 * @param motivacaoInaptidao
 	 */
 	public AnalisePressupostoFormal(boolean processoApto, String observacao, Set<MotivoInaptidao> motivacaoInaptidao) {
-		Validate.isTrue(processoApto || (motivacaoInaptidao != null && !motivacaoInaptidao.isEmpty()), "Motivação de inaptidão requedida.");
+		Validate.isTrue(processoApto || (motivacaoInaptidao != null && !motivacaoInaptidao.isEmpty()), "Motivação de inaptidão requerida.");
 		
 		this.processoApto = processoApto;
 		this.observacao = observacao;
-		this.motivacaoInaptidao = motivacaoInaptidao;
+		this.motivacaoInaptidao = Optional.ofNullable(motivacaoInaptidao).orElse(Collections.emptySet());
 	}
 	
 	/**

@@ -11,12 +11,12 @@ import br.jus.stf.core.shared.documento.DocumentoId;
 import br.jus.stf.core.shared.documento.TipoDocumentoId;
 
 /**
- * Testes unitários para motivo de inaptidão.
+ * Testes unitários para peca.
  * 
  * @author Rafael Alencar
  * 
  * @since 1.0.0
- * @since 01.08.2016
+ * @since 22.08.2016
  */
 public class PecaUnitTests {
 	
