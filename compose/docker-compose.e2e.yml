@@ -7,6 +7,8 @@ services:
       file: shared/compose/common.yml
       service: autuacao
     image: stfdigital-autuacao-autuacao
+    environment:
+     - spring.profiles.active=development,docker,e2e
     depends_on:
      - rabbit
      - discovery
