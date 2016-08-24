@@ -2,6 +2,15 @@
 # Deve ser rodado em combinação com shared/compose/docker-compose.e2e.base.yml
 version: '2'
 services:
+  recebimento:
+    extends:
+      file: shared/compose/common.yml
+      service: recebimento
+    environment:
+     - spring.profiles.active=development,docker,e2e
+    depends_on:
+     - rabbit
+     - discovery
   autuacao:
     extends:
       file: shared/compose/common.yml
@@ -12,3 +21,4 @@ services:
     depends_on:
      - rabbit
      - discovery
+     - recebimento
