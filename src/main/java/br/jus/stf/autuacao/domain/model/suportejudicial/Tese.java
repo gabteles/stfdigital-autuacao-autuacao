@@ -51,7 +51,7 @@ public class Tese extends EntitySupport<Tese, TeseId> {
 		inverseJoinColumns = @JoinColumn(name = "COD_ASSUNTO", nullable = false))
 	private Set<Assunto> assuntos = new HashSet<>(0);
 	
-	public Tese() {
+	Tese() {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
@@ -71,6 +71,21 @@ public class Tese extends EntitySupport<Tese, TeseId> {
 		this.descricao = descricao;
 		this.tipo = tipo;
 		this.numero = numero;
+	}
+	
+	/**
+	 * @param id
+	 * @param descricao
+	 * @param tipo
+	 * @param numero
+	 * @param assuntos
+	 */
+	public Tese(TeseId id, String descricao, TipoTese tipo, Long numero, Set<Assunto> assuntos) {
+		this(id, descricao, tipo, numero);
+		
+		Validate.notEmpty(assuntos, "Assuntos requeridos.");
+		
+		this.assuntos = assuntos;
 	}
 	
 	/**

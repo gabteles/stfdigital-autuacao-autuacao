@@ -17,7 +17,7 @@ INSERT INTO PUBLIC.ACT_RU_TASK(ID_, REV_, EXECUTION_ID_, PROC_INST_ID_, PROC_DEF
 ('-131', 1, '-130', '-130', @proc_def_id_, 'Revisar Pressupostos Formais', NULL, 'REVISAR_PRESSUPOSTO', 'revisar-pressupostos-formais', NULL, NULL, NULL, 50, TIMESTAMP '2016-07-29 20:33:04.074', NULL, NULL, 1, NULL, NULL);          
 
 INSERT INTO PUBLIC.ACT_RU_IDENTITYLINK(ID_, REV_, GROUP_ID_, TYPE_, USER_ID_, TASK_ID_, PROC_INST_ID_, PROC_DEF_ID_) VALUES
-('-132', 1, 'revisor-processo-inapto', 'candidate', NULL, '-131', NULL, NULL);       
+('-132', 1, 'revisor-processo-recursal-inapto', 'candidate', NULL, '-131', NULL, NULL);       
 
 INSERT INTO PUBLIC.ACT_RU_VARIABLE(ID_, REV_, TYPE_, NAME_, EXECUTION_ID_, PROC_INST_ID_, TASK_ID_, BYTEARRAY_ID_, DOUBLE_, LONG_, TEXT_, TEXT2_) VALUES
 ('-133', 1, 'serializable', 'informationId', '-130', '-130', NULL, '-128', NULL, NULL, NULL, NULL),
@@ -42,5 +42,5 @@ INSERT INTO PUBLIC.ACT_HI_VARINST(ID_, PROC_INST_ID_, EXECUTION_ID_, TASK_ID_, N
 ('-134', '-130', '-130', NULL, 'transition', 'string', 1, NULL, NULL, NULL, 'REVISAR_ANALISE', NULL, TIMESTAMP '2016-07-29 20:33:03.809', TIMESTAMP '2016-07-29 20:33:04.059');    
 
 INSERT INTO PUBLIC.ACT_HI_IDENTITYLINK(ID_, GROUP_ID_, TYPE_, USER_ID_, TASK_ID_, PROC_INST_ID_) VALUES
-('-141', 'analista-pressupostos-formais', 'candidate', NULL, '-140', NULL),
-('-132', 'revisor-processo-inapto', 'candidate', NULL, '-131', NULL);           
+('-141', 'analista-pressupostos', 'candidate', NULL, '-140', NULL),
+('-132', 'revisor-processo-recursal-inapto', 'candidate', NULL, '-131', NULL);           

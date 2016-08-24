@@ -4,6 +4,7 @@ import static javax.persistence.CascadeType.ALL;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -38,7 +39,7 @@ public class AnalisePressupostoFormal extends ValueObjectSupport<AnalisePressupo
 		inverseJoinColumns = @JoinColumn(name = "COD_MOTIVO_INAPTIDAO", nullable = false))
 	private Set<MotivoInaptidao> motivacaoInaptidao = new HashSet<>(0);
 	
-	public AnalisePressupostoFormal() {
+	AnalisePressupostoFormal() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	
@@ -48,11 +49,11 @@ public class AnalisePressupostoFormal extends ValueObjectSupport<AnalisePressupo
 	 * @param motivacaoInaptidao
 	 */
 	public AnalisePressupostoFormal(boolean processoApto, String observacao, Set<MotivoInaptidao> motivacaoInaptidao) {
-		Validate.isTrue(processoApto || (motivacaoInaptidao != null && !motivacaoInaptidao.isEmpty()), "Motivação de inaptidão requedida.");
+		Validate.isTrue(processoApto || (motivacaoInaptidao != null && !motivacaoInaptidao.isEmpty()), "Motivação de inaptidão requerida.");
 		
 		this.processoApto = processoApto;
 		this.observacao = observacao;
-		this.motivacaoInaptidao = motivacaoInaptidao;
+		this.motivacaoInaptidao = Optional.ofNullable(motivacaoInaptidao).orElse(Collections.emptySet());
 	}
 	
 	/**

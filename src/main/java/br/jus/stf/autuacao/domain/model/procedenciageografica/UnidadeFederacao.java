@@ -34,7 +34,7 @@ public class UnidadeFederacao extends EntitySupport<UnidadeFederacao, Long> {
 	@JoinColumn(name = "SEQ_PAIS", nullable = false)
 	private Pais pais;
 
-	public UnidadeFederacao() {
+	UnidadeFederacao() {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	

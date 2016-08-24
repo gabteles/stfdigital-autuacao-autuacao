@@ -42,7 +42,7 @@ public class TribunalJuizo extends EntitySupport<TribunalJuizo, Long> {
 		inverseJoinColumns = @JoinColumn(name = "SEQ_UNIDADE_FEDERACAO", nullable = false))
 	private Set<UnidadeFederacao> ufsAtuacao = new HashSet<>(0);
 	
-	public TribunalJuizo() {
+	TribunalJuizo() {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	

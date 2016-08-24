@@ -49,7 +49,7 @@ public class Classe extends EntitySupport<Classe, ClasseId> {
     @Enumerated(EnumType.STRING)
     private TipoProcesso tipo;
 	
-	public Classe() {
+	Classe() {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	

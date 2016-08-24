@@ -25,7 +25,7 @@ public class MotivoInaptidao extends EntitySupport<MotivoInaptidao, Long> {
 	@Column(name = "DSC_MOTIVO_INAPTIDAO", nullable = false)
 	private String descricao;
 	
-	public MotivoInaptidao() {
+	MotivoInaptidao() {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	

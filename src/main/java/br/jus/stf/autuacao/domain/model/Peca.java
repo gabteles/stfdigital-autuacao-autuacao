@@ -44,7 +44,7 @@ public class Peca extends ValueObjectSupport<Peca> {
 	@Column(nullable = false)
 	private DocumentoId documento;
 	
-	public Peca() {
+	Peca() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	

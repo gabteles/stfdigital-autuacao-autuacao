@@ -25,7 +25,7 @@ public class Pais extends EntitySupport<Pais, Long> {
 	@Column(name = "NOM_PAIS", nullable = false)
 	private String nome;
 
-	public Pais() {
+	Pais() {
 		// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	

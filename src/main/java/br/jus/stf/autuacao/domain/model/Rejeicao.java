@@ -26,7 +26,7 @@ public class Rejeicao extends ValueObjectSupport<Rejeicao> {
 	@Column(name = "DSC_MOTIVO", nullable = false)
 	private String motivo;
 	
-	public Rejeicao() {
+	Rejeicao() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	

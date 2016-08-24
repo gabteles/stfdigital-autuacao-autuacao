@@ -26,7 +26,7 @@ public class TipoPeca extends EntitySupport<TipoPeca, TipoDocumentoId> {
 	@Column(name = "NOM_TIPO_DOCUMENTO", nullable = false)
 	private String nome;
 	
-	public TipoPeca() {
+	TipoPeca() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	

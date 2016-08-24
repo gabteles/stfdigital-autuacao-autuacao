@@ -35,7 +35,7 @@ public class AnaliseRepercussaoGeral extends ValueObjectSupport<AnaliseRepercuss
 		inverseJoinColumns = @JoinColumn(name = "SEQ_TESE", nullable = false))
 	private Set<Tese> teses = new HashSet<>(0);
 	
-	public AnaliseRepercussaoGeral() {
+	AnaliseRepercussaoGeral() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
 	}
 	

@@ -14,7 +14,7 @@ INSERT INTO PUBLIC.ACT_RU_TASK(ID_, REV_, EXECUTION_ID_, PROC_INST_ID_, PROC_DEF
 ('-54', 1, '-53', '-53', @proc_def_id_, 'Analisar Pressupostos Formais', NULL, 'ANALISAR_PRESSUPOSTO', 'analisar-pressupostos-formais', NULL, NULL, NULL, 50, TIMESTAMP '2016-07-29 16:41:19.75', NULL, NULL, 1, NULL, NULL);        
 
 INSERT INTO PUBLIC.ACT_RU_IDENTITYLINK(ID_, REV_, GROUP_ID_, TYPE_, USER_ID_, TASK_ID_, PROC_INST_ID_, PROC_DEF_ID_) VALUES
-('-55', 1, 'analista-pressupostos-formais', 'candidate', NULL, '-54', NULL, NULL); 
+('-55', 1, 'analista-pressupostos', 'candidate', NULL, '-54', NULL, NULL); 
 
 INSERT INTO PUBLIC.ACT_RU_VARIABLE(ID_, REV_, TYPE_, NAME_, EXECUTION_ID_, PROC_INST_ID_, TASK_ID_, BYTEARRAY_ID_, DOUBLE_, LONG_, TEXT_, TEXT2_) VALUES
 ('-56', 1, 'string', 'transition', '-53', '-53', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -36,4 +36,4 @@ INSERT INTO PUBLIC.ACT_HI_VARINST(ID_, PROC_INST_ID_, EXECUTION_ID_, TASK_ID_, N
 ('-57', '-53', '-53', NULL, 'informationId', 'serializable', 0, '-52', NULL, NULL, NULL, NULL, TIMESTAMP '2016-07-29 16:41:19.74', TIMESTAMP '2016-07-29 16:41:19.74');     
 
 INSERT INTO PUBLIC.ACT_HI_IDENTITYLINK(ID_, GROUP_ID_, TYPE_, USER_ID_, TASK_ID_, PROC_INST_ID_) VALUES
-('-55', 'analista-pressupostos-formais', 'candidate', NULL, '-54', NULL);              
+('-55', 'analista-pressupostos', 'candidate', NULL, '-54', NULL);              
