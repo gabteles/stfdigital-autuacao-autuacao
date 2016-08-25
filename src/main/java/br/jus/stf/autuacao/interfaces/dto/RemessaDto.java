@@ -1,4 +1,4 @@
-package br.jus.stf.autuacao.infra;
+package br.jus.stf.autuacao.interfaces.dto;
 
 /**
  * @author viniciusk
@@ -16,6 +16,28 @@ public class RemessaDto {
 	
 	private String numeroSedex;
 	
+	private Long protocolo;
+	
+	RemessaDto() {
+		// Contrutor default
+	}
+	
+	/**
+	 * @param classeSugerida
+	 * @param qtdVolumes
+	 * @param qtdApensos
+	 * @param formaRecebimento
+	 * @param numeroSedex
+	 * @param protocolo
+	 */
+	public RemessaDto(String classeSugerida, int qtdVolumes, int qtdApensos, String formaRecebimento, String numeroSedex, Long protocolo) {
+		this.classeSugerida = classeSugerida;
+		this.qtdVolumes = qtdVolumes;
+		this.qtdApensos = qtdApensos;
+		this.formaRecebimento = formaRecebimento;
+		this.numeroSedex = numeroSedex;
+		this.protocolo = protocolo;
+	}
 
 	public String getClasseSugerida() {
 		return classeSugerida;
@@ -53,6 +75,12 @@ public class RemessaDto {
 		this.numeroSedex = numeroSedex;
 	}
 	
+	public Long getProtocolo() {
+		return protocolo;
+	}
 	
+	public void setProtocolo(Long protocolo) {
+		this.protocolo = protocolo;
+	}
 
 }
