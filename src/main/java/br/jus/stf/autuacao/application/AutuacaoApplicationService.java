@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,14 +46,11 @@ import br.jus.stf.autuacao.domain.model.suportejudicial.Preferencia;
 import br.jus.stf.autuacao.domain.model.suportejudicial.PreferenciaRepository;
 import br.jus.stf.autuacao.domain.model.suportejudicial.Tese;
 import br.jus.stf.autuacao.domain.model.suportejudicial.TeseRepository;
-import br.jus.stf.autuacao.infra.RabbitConfiguration;
 import br.jus.stf.core.framework.component.command.Command;
 import br.jus.stf.core.framework.domaindrivendesign.ApplicationService;
 import br.jus.stf.core.shared.classe.ClasseId;
 import br.jus.stf.core.shared.controletese.AssuntoId;
 import br.jus.stf.core.shared.controletese.TeseId;
-import br.jus.stf.core.shared.eventos.ProcessoAutuado;
-import br.jus.stf.core.shared.eventos.ProcessoRegistrado;
 import br.jus.stf.core.shared.identidade.PessoaId;
 import br.jus.stf.core.shared.preferencia.PreferenciaId;
 import br.jus.stf.core.shared.processo.Identificacao;
@@ -96,9 +92,6 @@ public class AutuacaoApplicationService {
     private StatusRecursalAdapter statusRecursalAdapter;
 
     @Autowired
-	private RabbitTemplate rabbitTemplate;
-    
-    @Autowired
     private PessoaAdapter pessoaAdapter;
     
     @Autowired
@@ -134,8 +127,6 @@ public class AutuacaoApplicationService {
 				numero, tipoProcesso, meioTramitacao, sigilo, status);
         
         processoRepository.save(processo);
-        // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
-        rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_REGISTRADO_QUEUE, new ProcessoRegistrado(command.getProtocoloId(), processoId.toString()));
     }
 
     /**
@@ -162,11 +153,6 @@ public class AutuacaoApplicationService {
         }
 
         processoRepository.save(processo);
-        
-        if (command.isValida()) {
-        	// TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
-        	rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processo.identity().toString(), numero.toString()));
-        }
     }
     
     /**
@@ -186,8 +172,6 @@ public class AutuacaoApplicationService {
         
         processo.autuar(assuntos, partes, autuador, status);
         processoRepository.save(processo);
-        // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
-        rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processo.identity().toString(), processo.toString()));
     }
     
     /**
@@ -207,8 +191,6 @@ public class AutuacaoApplicationService {
         
         processo.autuar(assuntos, partes, autuador, status);
         processoRepository.save(processo);
-        // TODO Rodrigo Barreiros Substituir o RabbitTemplate por um EventPublisher e remover a necessidade de informar a fila
-        rabbitTemplate.convertAndSend(RabbitConfiguration.PROCESSO_AUTUADO_QUEUE, new ProcessoAutuado(processo.identity().toString(), processo.toString()));
     }
     
     /**

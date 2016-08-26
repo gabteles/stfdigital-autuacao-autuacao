@@ -1,6 +1,7 @@
 package br.jus.stf.autuacao.domain.model;
 
 import static java.util.Comparator.comparing;
+import static java.util.Optional.ofNullable;
 import static javax.persistence.CascadeType.ALL;
 
 import java.util.Collections;
@@ -30,7 +31,10 @@ import org.apache.commons.lang3.Validate;
 import br.jus.stf.autuacao.domain.model.suportejudicial.Classe;
 import br.jus.stf.autuacao.domain.model.suportejudicial.Preferencia;
 import br.jus.stf.core.framework.domaindrivendesign.AggregateRoot;
+import br.jus.stf.core.framework.domaindrivendesign.DomainEvent;
 import br.jus.stf.core.framework.domaindrivendesign.EntitySupport;
+import br.jus.stf.core.shared.eventos.ProcessoAutuado;
+import br.jus.stf.core.shared.eventos.ProcessoRegistrado;
 import br.jus.stf.core.shared.processo.MeioTramitacao;
 import br.jus.stf.core.shared.processo.Polo;
 import br.jus.stf.core.shared.processo.ProcessoId;
@@ -95,6 +99,11 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
     @Enumerated(EnumType.STRING)
     private Sigilo sigilo;
     
+    @OneToMany(cascade = ALL)
+    @JoinTable(name = "PROCESSO_EVENTO", schema = "AUTUACAO", joinColumns = @JoinColumn(name = "SEQ_PROCESSO", nullable = false),
+		inverseJoinColumns = @JoinColumn(name = "SEQ_EVENTO", nullable = false))
+    private Set<Evento> eventos = new TreeSet<>(comparing(Evento::criacao));
+    
     Processo() {
     	// Deve ser usado apenas pelo Hibernate, que sempre usa o construtor default antes de popular uma nova instância.
     }
@@ -121,8 +130,14 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
         this.meioTramitacao = meioTramitacao;
         this.sigilo = sigilo;
         this.status = status;
+        
+        registrarEvento(new ProcessoRegistrado(ofNullable(protocoloId).map(p -> p.toLong()).orElse(null), processoId.toString()));
     }
     
+	private void registrarEvento(DomainEvent<?> evento) {
+		eventos.add(new Evento(evento));
+	}
+	
     /**
      * @param id
      * @param protocoloId
@@ -176,6 +191,8 @@ public abstract class Processo extends EntitySupport<Processo, ProcessoId> imple
 		this.status = status;
 		this.autuador = autuador;
 		this.dataAutuacao = new Date();
+		
+		registrarEvento(new ProcessoAutuado(identity().toString(), numero.toString()));
 	}
     
     protected void identificar(Classe classe, Long numero) {

@@ -4,7 +4,6 @@ import static com.github.jsonj.tools.JsonBuilder.array;
 import static com.github.jsonj.tools.JsonBuilder.field;
 import static com.github.jsonj.tools.JsonBuilder.object;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -19,10 +18,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import com.github.jsonj.JsonObject;
 
 import br.jus.stf.autuacao.infra.NumeroProcessoRestAdapter;
-import br.jus.stf.autuacao.infra.RabbitConfiguration;
 import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
 import br.jus.stf.core.framework.testing.oauth2.WithMockOauth2User;
-import br.jus.stf.core.shared.eventos.ProcessoRegistrado;
 import br.jus.stf.core.shared.processo.Identificacao;
 
 /**
@@ -45,7 +42,6 @@ public class ProcessoOriginarioIntegrationTests extends IntegrationTestsSupport 
 	
 	@Before
 	public void configuracao() {
-		willDoNothing().given(rabbitTemplate).convertAndSend(RabbitConfiguration.PROCESSO_REGISTRADO_QUEUE, ProcessoRegistrado.class);
 		given(numeroProcessoAdapter.novoNumeroProcesso("ADO")).willReturn(new Identificacao("ADO", 1L));
 	}
 	
