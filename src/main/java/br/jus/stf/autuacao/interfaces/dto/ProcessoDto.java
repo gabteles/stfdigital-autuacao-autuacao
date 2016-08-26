@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import br.jus.stf.autuacao.infra.RemessaDto;
-
 /**
  * @author viniciusk
  * @author Lucas Rodrigues
@@ -15,7 +13,6 @@ import br.jus.stf.autuacao.infra.RemessaDto;
 public abstract class ProcessoDto {
 
 	private Long processoId;
-	private RemessaDto remessa;
 	private String status;
 	private ClasseDto classe;
 	private Long numero;
@@ -25,6 +22,8 @@ public abstract class ProcessoDto {
 	private String sigilo;
 	private List<ParteDto> partes;
 	private List<PreferenciaDto> preferencias;
+	private Long protocoloId;
+	private String classeSugerida;
 
 
 	ProcessoDto() {
@@ -36,11 +35,13 @@ public abstract class ProcessoDto {
 	
 	/**
 	 * @param processoId
-	 * @param remessaDto
+	 * @param protocoloId
+	 * @param classeSugerida
 	 */
-	public ProcessoDto(Long processoId, RemessaDto remessaDto) {
+	public ProcessoDto(Long processoId, Long protocoloId, String classeSugerida) {
 		this.processoId = processoId;
-		this.remessa = remessaDto;
+		this.protocoloId = protocoloId;
+		this.classeSugerida = classeSugerida;
 	}
 
 	public Long getProcessoId() {
@@ -51,8 +52,8 @@ public abstract class ProcessoDto {
 		this.processoId = processoId;
 	}
 
-	public RemessaDto getRemessa() {
-		return remessa;
+	public String getClasseSugerida() {
+		return classeSugerida;
 	}
 
 	public String getStatus() {
@@ -133,5 +134,9 @@ public abstract class ProcessoDto {
 
 	public void setPreferencias(List<PreferenciaDto> preferencias) {
 		this.preferencias = preferencias;
+	}
+	
+	public Long getProtocoloId() {
+		return protocoloId;
 	}
 }

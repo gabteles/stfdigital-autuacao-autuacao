@@ -7,14 +7,18 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Collections;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.ResultActions;
 
+import br.jus.stf.autuacao.domain.PeticaoAdapter;
 import br.jus.stf.autuacao.domain.RemessaAdapter;
-import br.jus.stf.autuacao.infra.RemessaDto;
+import br.jus.stf.autuacao.interfaces.dto.PeticaoDto;
+import br.jus.stf.autuacao.interfaces.dto.RemessaDto;
 import br.jus.stf.core.framework.testing.IntegrationTestsSupport;
 import br.jus.stf.core.framework.testing.oauth2.WithMockOauth2User;
 import br.jus.stf.core.shared.protocolo.ProtocoloId;
@@ -33,11 +37,16 @@ public class ConsultasProcessoRecursalIntegrationTests extends IntegrationTestsS
 	@MockBean
 	private RemessaAdapter remessaAdapter;
 	
+	@MockBean
+	private PeticaoAdapter peticaoAdapter;
+	
 	@Before
 	public void configuracao() {
-		RemessaDto remessa = new RemessaDto();
+		RemessaDto remessa = new RemessaDto("ADI", 1, 1, "BALCAO", "", 9004L);
+		PeticaoDto peticao = new PeticaoDto(9004L, "ADI", Collections.emptyList());
 		
-		willReturn(remessa).given(remessaAdapter).consultar(new ProtocoloId(9004L));
+		willReturn(remessa).given(remessaAdapter).consultar(new ProtocoloId(9002L));
+		willReturn(peticao).given(peticaoAdapter).consultar(new ProtocoloId(9002L));
 	}
 	
 	@Test

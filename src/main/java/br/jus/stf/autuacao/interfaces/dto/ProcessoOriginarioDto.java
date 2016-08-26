@@ -1,7 +1,5 @@
 package br.jus.stf.autuacao.interfaces.dto;
 
-import br.jus.stf.autuacao.infra.RemessaDto;
-
 /**
  * @author Lucas Rodrigues
  *
@@ -10,8 +8,8 @@ public class ProcessoOriginarioDto extends ProcessoDto {
 	
 	private String motivoRejeicao;
 	
-	public ProcessoOriginarioDto(Long processoId, RemessaDto remessaDto) {
-		super(processoId, remessaDto);
+	public ProcessoOriginarioDto(Long processoId, Long protocoloId, String classeSugerida) {
+		super(processoId, protocoloId, classeSugerida);
 	}
 	
 	public String getMotivoRejeicao() {

@@ -9,6 +9,7 @@ import org.apache.commons.lang3.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import br.jus.stf.autuacao.domain.PeticaoAdapter;
 import br.jus.stf.autuacao.domain.RemessaAdapter;
 import br.jus.stf.autuacao.domain.model.AnaliseRepercussaoGeral;
 import br.jus.stf.autuacao.domain.model.Parte;
@@ -16,7 +17,6 @@ import br.jus.stf.autuacao.domain.model.Processo;
 import br.jus.stf.autuacao.domain.model.ProcessoOriginario;
 import br.jus.stf.autuacao.domain.model.ProcessoRecursal;
 import br.jus.stf.autuacao.domain.model.suportejudicial.Assunto;
-import br.jus.stf.autuacao.infra.RemessaDto;
 
 /**
  * Cria objetos ProcessoDto
@@ -43,36 +43,56 @@ public class ProcessoDtoAssembler {
 	
 	@Autowired
 	private TeseDtoAssembler teseDtoAssembler;
+	
+	@Autowired
+	private PeticaoAdapter peticaoAdapter;
 
 	public ProcessoDto toDto(Processo processo) {
 		Validate.notNull(processo);
 		
 		ProcessoDto processoDto = null;
+		Long protocoloId = null;
+		String classeSugerida = null;
 		
-		RemessaDto remessa = processo.protocoloId().map(remessaAdapter::consultar).orElse(null);
+		switch(processo.meioTramitacao()) {
+			case FISICO:
+				RemessaDto remessa = processo.protocoloId().map(remessaAdapter::consultar).orElse(null);
+				
+				protocoloId = remessa.getProtocolo();
+				classeSugerida = remessa.getClasseSugerida();
+				break;
+			case ELETRONICO:
+				PeticaoDto peticao = processo.protocoloId().map(peticaoAdapter::consultar).orElse(null);
+				
+				protocoloId = peticao.getProtocolo();
+				classeSugerida = peticao.getClasseSugerida();
+				break;
+			default:
+				throw new IllegalArgumentException(String.format("Meio de tramitação não localizado: %s.", processo.meioTramitacao()));
+		}
 	
 		if (processo instanceof ProcessoRecursal){
-			processoDto = toDto((ProcessoRecursal)processo, remessa);
+			processoDto = toDto((ProcessoRecursal)processo, protocoloId, classeSugerida);
 		} else if (processo instanceof ProcessoOriginario) {
-			processoDto = toDto((ProcessoOriginario)processo, remessa);
+			processoDto = toDto((ProcessoOriginario)processo, protocoloId, classeSugerida);
 		}
 		return processoDto;
 	}
 
-	private ProcessoDto toDto(ProcessoOriginario processo, RemessaDto remessa) {
+	private ProcessoDto toDto(ProcessoOriginario processo, Long protocoloId, String classeSugerida) {
 		Long processoId = processo.identity().toLong();
 		
-		ProcessoOriginarioDto dto = new ProcessoOriginarioDto(processoId, remessa);
+		ProcessoOriginarioDto dto = new ProcessoOriginarioDto(processoId, protocoloId, classeSugerida);
 		dto.setMotivoRejeicao(processo.motivoRejeicao());
 		setProcessoDtoCommons(processo, dto);
 		return dto;
 	}
 
-	private ProcessoDto toDto(Processo processo, RemessaDto remessa) {
+	private ProcessoDto toDto(Processo processo, Long protocoloId, String classeSugerida) {
 		ProcessoRecursal processoRecursal = (ProcessoRecursal) processo;
 		Long processoId = processo.identity().toLong();
 		
-		ProcessoRecursalDto dto = new ProcessoRecursalDto(processoId, remessa);
+		ProcessoRecursalDto dto = new ProcessoRecursalDto(processoId, protocoloId, classeSugerida);
 		dto.setAssuntos(toAssuntoDto(processoRecursal.assuntos()));
 		dto.setTeses(toTeseDto(processoRecursal.analiseRepercussaoGeral()));
 		setProcessoDtoCommons(processo, dto);

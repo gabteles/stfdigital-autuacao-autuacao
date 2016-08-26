@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import br.jus.stf.autuacao.domain.RemessaAdapter;
 import br.jus.stf.autuacao.infra.client.RemessaRestClient;
+import br.jus.stf.autuacao.interfaces.dto.RemessaDto;
 import br.jus.stf.core.shared.protocolo.ProtocoloId;
 
 /**

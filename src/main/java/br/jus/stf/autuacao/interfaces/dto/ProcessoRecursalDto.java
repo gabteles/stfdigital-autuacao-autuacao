@@ -2,8 +2,6 @@ package br.jus.stf.autuacao.interfaces.dto;
 
 import java.util.List;
 
-import br.jus.stf.autuacao.infra.RemessaDto;
-
 /**
  * @author Lucas Rodrigues
  *
@@ -15,8 +13,8 @@ public class ProcessoRecursalDto extends ProcessoDto {
 	
 	ProcessoRecursalDto(){ } 
 	
-	public ProcessoRecursalDto(Long processoId, RemessaDto remessaDto) {
-		super(processoId, remessaDto);
+	public ProcessoRecursalDto(Long processoId, Long protocoloId, String classeSugerida) {
+		super(processoId, protocoloId, classeSugerida);
 	}
 
 	public List<AssuntoDto> getAssuntos() {
