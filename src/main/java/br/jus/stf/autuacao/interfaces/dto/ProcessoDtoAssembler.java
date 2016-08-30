@@ -51,19 +51,21 @@ public class ProcessoDtoAssembler {
 		Validate.notNull(processo);
 		
 		ProcessoDto processoDto = null;
+		RemessaDto remessaDto = null;
+		PeticaoDto peticaoDto = null;
 		Long protocoloId = null;
 		String classeSugerida = null;
 		
 		switch(processo.meioTramitacao()) {
 			case FISICO:
 				RemessaDto remessa = processo.protocoloId().map(remessaAdapter::consultar).orElse(null);
-				
+				remessaDto = remessa;
 				protocoloId = remessa.getProtocolo();
 				classeSugerida = remessa.getClasseSugerida();
 				break;
 			case ELETRONICO:
 				PeticaoDto peticao = processo.protocoloId().map(peticaoAdapter::consultar).orElse(null);
-				
+				peticaoDto = peticao;
 				protocoloId = peticao.getProtocolo();
 				classeSugerida = peticao.getClasseSugerida();
 				break;
@@ -72,29 +74,33 @@ public class ProcessoDtoAssembler {
 		}
 	
 		if (processo instanceof ProcessoRecursal){
-			processoDto = toDto((ProcessoRecursal)processo, protocoloId, classeSugerida);
+			processoDto = toDto((ProcessoRecursal)processo, protocoloId, classeSugerida, remessaDto, peticaoDto);
 		} else if (processo instanceof ProcessoOriginario) {
-			processoDto = toDto((ProcessoOriginario)processo, protocoloId, classeSugerida);
+			processoDto = toDto((ProcessoOriginario)processo, protocoloId, classeSugerida, remessaDto, peticaoDto);
 		}
 		return processoDto;
 	}
 
-	private ProcessoDto toDto(ProcessoOriginario processo, Long protocoloId, String classeSugerida) {
+	private ProcessoDto toDto(ProcessoOriginario processo, Long protocoloId, String classeSugerida, RemessaDto remessaDto, PeticaoDto peticaoDto) {
 		Long processoId = processo.identity().toLong();
 		
 		ProcessoOriginarioDto dto = new ProcessoOriginarioDto(processoId, protocoloId, classeSugerida);
 		dto.setMotivoRejeicao(processo.motivoRejeicao());
 		setProcessoDtoCommons(processo, dto);
+		dto.setRemessa(remessaDto);
+		dto.setPeticao(peticaoDto);
 		return dto;
 	}
 
-	private ProcessoDto toDto(Processo processo, Long protocoloId, String classeSugerida) {
+	private ProcessoDto toDto(Processo processo, Long protocoloId, String classeSugerida, RemessaDto remessaDto, PeticaoDto peticaoDto) {
 		ProcessoRecursal processoRecursal = (ProcessoRecursal) processo;
 		Long processoId = processo.identity().toLong();
 		
 		ProcessoRecursalDto dto = new ProcessoRecursalDto(processoId, protocoloId, classeSugerida);
 		dto.setAssuntos(toAssuntoDto(processoRecursal.assuntos()));
 		dto.setTeses(toTeseDto(processoRecursal.analiseRepercussaoGeral()));
+		dto.setRemessa(remessaDto);
+		dto.setPeticao(peticaoDto);
 		setProcessoDtoCommons(processo, dto);
 		return dto;
 	}
