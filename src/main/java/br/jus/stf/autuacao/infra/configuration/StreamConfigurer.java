@@ -14,6 +14,9 @@ import br.jus.stf.core.shared.eventos.ProcessoRegistrado;
 import br.jus.stf.core.shared.eventos.RecebimentoFinalizado;
 
 /**
+ * Configuração do mecanismo que será usado pelo serviço para 
+ * publicação e/ou recebimento de eventos de domínio.
+ * 
  * @author Rodrigo Barreiros
  * 
  * @since 1.0.0
@@ -31,8 +34,7 @@ public class StreamConfigurer extends StreamConfigurerSupport {
 	}
 	
 	/**
-	 * Configuração dos canais que serão usados pelo serviço de peticionamento
-	 * para publicação de eventos de domínio.
+	 * Declaração dos canais mencionados acima.
 	 * 
 	 * @author Rodrigo Barreiros
 	 * 
@@ -42,22 +44,42 @@ public class StreamConfigurer extends StreamConfigurerSupport {
 	public interface Channels {
 
 		/**
-		 * O canal que será usado para publicação de eventos do tipo {@link PeticaoRegistrada}.
+		 * O canal que será usado para receber eventos do tipo {@link PeticaoRegistrada}.
 		 * 
 		 * @return o canal para as petições registradas
 		 */
 		@Input(PeticaoRegistrada.EVENT_KEY)
 		SubscribableChannel peticaoRegistrada();
 
+		/**
+		 * O canal que será usado para receber eventos do tipo {@link RecebimentoFinalizado}.
+		 * 
+		 * @return o canal para recebimentos finalizados
+		 */
 		@Input(RecebimentoFinalizado.EVENT_KEY)
 		SubscribableChannel recebimentoFinalizado();
 		
+		/**
+		 * O canal que será usado para publicação de eventos do tipo {@link ProcessoRegistrado}.
+		 * 
+		 * @return o canal para os processos registrados
+		 */
 		@Output(ProcessoRegistrado.EVENT_KEY)
 		MessageChannel processoRegistrado();
 		
+		/**
+		 * O canal que será usado para publicação de eventos do tipo {@link ProcessoAutuado}.
+		 * 
+		 * @return o canal para os processo autuados
+		 */
 		@Output(ProcessoAutuado.EVENT_KEY)
 		MessageChannel processoAutuado();
 		
+		/**
+		 * O canal que será usado para publicação de eventos do tipo {@link AutuacaoFinalizada}.
+		 * 
+		 * @return o canal para as autuações finalizadas
+		 */
 		@Output(AutuacaoFinalizada.EVENT_KEY)
 		MessageChannel autuacaoFinalizada();
 
