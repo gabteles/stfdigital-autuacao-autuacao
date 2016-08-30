@@ -24,6 +24,8 @@ public abstract class ProcessoDto {
 	private List<PreferenciaDto> preferencias;
 	private Long protocoloId;
 	private String classeSugerida;
+	private PeticaoDto peticao;
+	private RemessaDto remessa;
 
 
 	ProcessoDto() {
@@ -136,6 +138,22 @@ public abstract class ProcessoDto {
 		this.preferencias = preferencias;
 	}
 	
+	public PeticaoDto getPeticao() {
+		return peticao;
+	}
+
+	public void setPeticao(PeticaoDto peticao) {
+		this.peticao = peticao;
+	}
+
+	public RemessaDto getRemessa() {
+		return remessa;
+	}
+
+	public void setRemessa(RemessaDto remessa) {
+		this.remessa = remessa;
+	}
+
 	public Long getProtocoloId() {
 		return protocoloId;
 	}
