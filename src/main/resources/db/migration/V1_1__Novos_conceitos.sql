@@ -24,9 +24,9 @@ create table autuacao.parte (seq_parte number not null, seq_processo number not 
 alter table autuacao.parte add constraint fk_processo_part foreign key (seq_processo) references autuacao.processo(seq_processo);
 alter table autuacao.parte add constraint ck_part_tip_polo check (tip_polo in ('ATIVO', 'PASSIVO', 'INTERESSADO'));
 
-alter table autuacao.processo add column num_processo integer;
-alter table autuacao.processo add column sig_autuador varchar2(30);
-alter table autuacao.processo add column dat_autuacao date;
+alter table autuacao.processo add num_processo integer;
+alter table autuacao.processo add sig_autuador varchar2(30);
+alter table autuacao.processo add dat_autuacao date;
 alter table autuacao.processo add constraint fk_classe_proc foreign key (sig_classe) references autuacao.classe(sig_classe);
 --alter table autuacao.processo add constraint uk_proc_sig_classe unique (sig_classe, NVL(num_processo, seq_processo));
 

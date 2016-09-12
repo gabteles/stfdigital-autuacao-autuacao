@@ -1,4 +1,4 @@
-alter table autuacao.classe add column tip_processo varchar2(10) not null;
+alter table autuacao.classe add tip_processo varchar2(10) not null;
 alter table autuacao.classe add constraint ck_clas_tip_processo check (tip_processo in ('ORIGINARIO', 'RECURSAL'));
 
 create table autuacao.pais (seq_pais number not null, nom_pais varchar2(72) not null, constraint pk_pais primary key (seq_pais));
@@ -46,7 +46,7 @@ alter table autuacao.processo_origem add constraint fk_tribunal_juizo_pror forei
 alter table autuacao.processo_origem add constraint fk_unidade_federacao_pror foreign key (seq_unidade_federacao) references autuacao.unidade_federacao(seq_unidade_federacao);
 alter table autuacao.processo_origem add constraint ck_pror_flg_principal check (flg_principal in ('Y', 'N'));
 
-alter table autuacao.processo add column qtd_recurso integer;
+alter table autuacao.processo add qtd_recurso integer;
 alter table autuacao.processo add tip_meio_tramitacao varchar2(10) not null;
 alter table autuacao.processo add constraint ck_proc_tip_meio_tramitacao check (tip_meio_tramitacao in ('ELETRONICO', 'FISICO'));
 alter table autuacao.processo add tip_sigilo varchar2(15) not null;
@@ -55,8 +55,8 @@ alter table autuacao.processo add flg_processo_apto varchar2(1);
 alter table autuacao.processo add txt_analise_pressuposto_formal varchar2(1000);
 alter table autuacao.processo add constraint ck_proc_flg_processo_apto check (flg_processo_apto is null or flg_processo_apto in ('Y', 'N'));
 alter table autuacao.processo add txt_analise_repercussao_geral varchar2(1000);
-alter table autuacao.processo add column tip_processo varchar2(10) not null;
+alter table autuacao.processo add tip_processo varchar2(10) not null;
 alter table autuacao.processo add constraint ck_proc_tip_processo check (tip_processo in ('ORIGINARIO', 'RECURSAL'));
-alter table autuacao.processo alter column tip_status varchar(20) not null;
+alter table autuacao.processo modify tip_status varchar(20);
 alter table autuacao.processo drop constraint ck_proc_tip_status;
 alter table autuacao.processo add constraint ck_proc_tip_status check (tip_status in ('AUTUACAO', 'AUTUADO', 'REJEITADO', 'ANALISAR_PRESSUPOSTO', 'REVISAR_PRESSUPOSTO', 'ANALISAR_RG', 'REVISAR_RG'));
