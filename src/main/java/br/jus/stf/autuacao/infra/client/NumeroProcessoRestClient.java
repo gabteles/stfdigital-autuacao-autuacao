@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @since 12.07.2016
  */
 @FunctionalInterface
-@FeignClient(name = "services")
+@FeignClient(name = "processos")
 public interface NumeroProcessoRestClient {
 
 	/**
